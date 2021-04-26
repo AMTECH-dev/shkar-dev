@@ -1,3 +1,4 @@
+package amtech;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -9,10 +10,10 @@ class MyHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) {
-        sb = new StringBuilder();
+        this.sb = new StringBuilder();
+        String requestType = httpExchange.getRequestMethod();        
         String data;
         byte[] response;
-        String requestType = httpExchange.getRequestMethod();
 
         if (requestType.equalsIgnoreCase("post")) {
             try (BufferedReader br = new BufferedReader(new InputStreamReader(httpExchange.getRequestBody()))) {
