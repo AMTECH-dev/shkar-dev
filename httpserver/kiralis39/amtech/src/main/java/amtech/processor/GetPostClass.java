@@ -33,7 +33,7 @@ public class GetPostClass {
                 sb.append(data);
             }
 
-            sb.append("<hr><br><h5><a href=\"page.html\">Continue</a>");
+            sb.append("<hr><h5><a href=\"page.html\">Continue</a>");
 
             response = sb.toString().getBytes();
             writeResponse(httpExchange, response);

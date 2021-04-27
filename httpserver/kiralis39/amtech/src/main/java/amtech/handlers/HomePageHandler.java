@@ -5,13 +5,16 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
 public class HomePageHandler implements HttpHandler {
     private StringBuilder sb;
 
     @Override
-    public void handle(HttpExchange httpExchange) {
+    public void handle(HttpExchange httpExchange) throws IOException {
         this.sb = new StringBuilder();
         String requestType = httpExchange.getRequestMethod();
         String data;
@@ -19,14 +22,8 @@ public class HomePageHandler implements HttpHandler {
 
         if (requestType.equalsIgnoreCase("post")) {return;
         } else if (requestType.equalsIgnoreCase("get")) {
-            try (BufferedReader br = new BufferedReader(new FileReader("./pages/page.html"))) {
-                while ((data = br.readLine()) != null) {
-                    sb.append(data);
-                }
-
-                response = sb.toString().getBytes();
-                GetPostClass.writeResponse(httpExchange, response);
-            } catch (IOException e) {e.printStackTrace();}
+            response = Files.readAllBytes(Path.of(Paths.get("./pages/page.html").toUri()));
+            GetPostClass.writeResponse(httpExchange, response);
         }
     }
 }
