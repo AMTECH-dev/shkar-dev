@@ -1,31 +1,24 @@
-package amtech;
+package amtech.handlers;
+
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.*;
 
 
-class MyHandler implements HttpHandler {
-    StringBuilder sb;
+public class HomeHandler implements HttpHandler {
+    private StringBuilder sb;
 
     @Override
     public void handle(HttpExchange httpExchange) {
         this.sb = new StringBuilder();
-        String requestType = httpExchange.getRequestMethod();        
+        String requestType = httpExchange.getRequestMethod();
         String data;
         byte[] response;
 
-        if (requestType.equalsIgnoreCase("post")) {
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(httpExchange.getRequestBody()))) {
-                while ((data = br.readLine()) != null) {
-                    sb.append(data);
-                }
-
-                response = sb.toString().getBytes();
-                writeResponse(httpExchange, response);
-            } catch (IOException e) {e.printStackTrace();}
+        if (requestType.equalsIgnoreCase("post")) {return;
         } else if (requestType.equalsIgnoreCase("get")) {
-            try (BufferedReader br = new BufferedReader(new FileReader("./newHtml.html"))) {
+            try (BufferedReader br = new BufferedReader(new FileReader("./index.html"))) {
                 while ((data = br.readLine()) != null) {
                     sb.append(data);
                 }
