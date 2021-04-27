@@ -15,7 +15,7 @@ public class Main {
             HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
             server.createContext("/reg", new RegFormHandler());
             server.createContext("/page", new HomePageHandler());
-            server.createContext("/", new ResourcesHandler());
+            server.createContext("/files/", new ResourcesHandler());
 //          server.setExecutor(null); // creates a default executor
             server.start();
         } catch (IOException e) {e.printStackTrace();}
