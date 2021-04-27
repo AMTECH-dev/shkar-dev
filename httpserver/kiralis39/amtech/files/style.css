@@ -1,5 +1,8 @@
-<style type="text/css">
-    body {
+* {
+    color:red
+  }
+
+body {
         font-family: Arial-Narrow, Arial, Verdana, sans-serif; /* Семейство шрифтов */
         font-size: 24pt; /* Размер основного шрифта в пунктах  */
         background-color: #404045; /* Цвет фона веб-страницы */
@@ -32,24 +35,3 @@
         font-family: Arial-Narrow, Verdana, sans-serif; /* Семейство шрифтов */
         font-size: 12pt; /* Размер основного шрифта в пунктах  */
     }
-</style>
-
-
-<html>
-<head>
-    <title>Эта мая гланоя стронича</title>
-</head>
-
-<BODY>
-<h1>- * - * - * - * - * - * - * - * - * - * - * -</h1>
-
-<div class="blockBase" id="blockBase">
-    <h2 align="CENTER">=^_^=</h2>
-    <!-- ссылка домой: -->
-    <DIV class="blockLink" id="blockLink">
-        <a href="test.html">К форме регистрации</a>
-    </DIV>
-</div>
-
-</BODY>
-</html>

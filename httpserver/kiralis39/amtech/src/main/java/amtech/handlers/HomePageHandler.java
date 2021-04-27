@@ -1,12 +1,13 @@
 package amtech.handlers;
 
+import amtech.processor.GetPostClass;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.*;
 
 
-public class HomeHandler implements HttpHandler {
+public class HomePageHandler implements HttpHandler {
     private StringBuilder sb;
 
     @Override
@@ -18,25 +19,14 @@ public class HomeHandler implements HttpHandler {
 
         if (requestType.equalsIgnoreCase("post")) {return;
         } else if (requestType.equalsIgnoreCase("get")) {
-            try (BufferedReader br = new BufferedReader(new FileReader("./index.html"))) {
+            try (BufferedReader br = new BufferedReader(new FileReader("./pages/page.html"))) {
                 while ((data = br.readLine()) != null) {
                     sb.append(data);
                 }
 
                 response = sb.toString().getBytes();
-                writeResponse(httpExchange, response);
+                GetPostClass.writeResponse(httpExchange, response);
             } catch (IOException e) {e.printStackTrace();}
         }
-    }
-
-    private void writeResponse(HttpExchange httpExchange, byte[] writeData) {
-        try {
-            httpExchange.getResponseHeaders().add("Content-Type", "text/html; charset=UTF-8");
-            httpExchange.sendResponseHeaders(200, writeData.length);
-
-            try (OutputStream os = httpExchange.getResponseBody()) {
-                os.write(writeData);
-            } catch (Exception e) {e.printStackTrace();}
-        } catch (IOException e) {e.printStackTrace();}
     }
 }
