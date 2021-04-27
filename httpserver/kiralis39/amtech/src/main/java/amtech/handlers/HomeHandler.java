@@ -6,7 +6,7 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.*;
 
 
-public class DHSHandler implements HttpHandler {
+public class HomeHandler implements HttpHandler {
     private StringBuilder sb;
 
     @Override

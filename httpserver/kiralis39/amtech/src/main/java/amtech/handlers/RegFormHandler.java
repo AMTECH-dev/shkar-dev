@@ -40,7 +40,7 @@ public class RegFormHandler implements HttpHandler {
                 sb.append(data);
             }
 
-            sb.append("<hr><br><a href=\"page.html\">Continue</a>");
+            sb.append("<hr><br><a href=\"index.html\">Continue</a>");
 
             response = sb.toString().getBytes();
             writeResponse(httpExchange, response);
