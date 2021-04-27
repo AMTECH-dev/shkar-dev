@@ -27,7 +27,7 @@ public class ImageHandler extends StaticHandler {
         graphics.dispose();
 
         try {
-            File outputFile = new File(Main.class.getResource("static/img/catWithTriangle.png").toURI());
+                File outputFile = new File(Main.class.getResource("static/img/catWithTriangle.png").toURI());
             ImageIO.write(bufferedImage, "png", outputFile);
 
             byte[] response = FileUtils.readAllBytesFromStaticFile("img/catWithTriangle.png");
