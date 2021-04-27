@@ -5,12 +5,12 @@
         body {
             font-family: Arial-Narrow, Arial, Verdana, sans-serif; /* Семейство шрифтов */
             font-size: 28pt; /* Размер основного шрифта в пунктах  */
-            background-color: #404045; /* Цвет фона веб-страницы */
-            color: #333; /* Цвет основного текста */
+            background-color: #ffdead; /* Цвет фона веб-страницы */
+            color: #8b4513; /* Цвет основного текста */
         }
 
         h1 {
-            color: #fff
+            color: #8b4513;
         }
 
         div {
@@ -18,33 +18,33 @@
             margin: 7px; /* Значение отступов */
             padding: 10px; /* Поля вокруг текста */
             border: 4px solid black; /* Параметры границы */
-            background: #fc0; /* Цвет фона */
+            background: #deb887; /* Цвет фона */
         }
 
         #blockName {
             width: 25%; /* Ширина первого слоя */
             padding: 12px; /* Поля вокруг текста */
-            background: #f80; /* Цвет фона */
+            background: #deb887; /* Цвет фона */
         }
 
         #blockSex {
             width: 25%; /* Ширина первого слоя */
             padding: 12px; /* Поля вокруг текста */
-            background: #448; /* Цвет фона */
+            background: #deb887; /* Цвет фона */
         }
 
         #blockSend {
             width: 25%; /* Ширина первого слоя */
             padding: 12px; /* Поля вокруг текста */
             margin-top: 30px;
-            background: #484; /* Цвет фона */
+            background: #deb887; /* Цвет фона */
             height: 30px; /* Высота слоя */
             display: inline-block; /* Строчно-блочный элем<<ент */
         }
 
         #btnSend {
             width: 100%; /* Ширина первого слоя */
-            background: #888; /* Цвет фона */
+            background: #8b4513; /* Цвет фона */
             display: inline-block; /* Строчно-блочный элемент */
             font-family: Arial-Narrow, Verdana, sans-serif; /* Семейство шрифтов */
             font-size: 18pt; /* Размер основного шрифта в пунктах  */
@@ -52,18 +52,18 @@
         </style>
     </head>
 
-    <BODY>
+    <body>
         <h1>Тестовое задание 26 апр. 2021 г.</h1>
 
         <form action="/test" method="post">
             <!-- поле ввода имени: -->
-            <DIV class="blockName" id="blockName">
+            <div class="blockName" id="blockName">
                 <label>Введите своё имя:</label>
-                <INPUT TYPE="TEXT" name="input" value="">
-            </DIV>
+                <input TYPE="TEXT" name="input" value="">
+            </div>
 
             <!-- выбор пола: -->
-            <DIV class="blockSex" id="blockSex">
+            <div class="blockSex" id="blockSex">
                 <p>
                     <select size="3" name="sex">
                         <option disabled>Выберите пол</option>
@@ -71,12 +71,12 @@
                         <option value="female">Женский</option>
                     </select>
                 </p>
-            </DIV>
+            </div>
 
             <!-- кнопка: -->
-            <DIV class="blockSend" id="blockSend">
+            <div class="blockSend" id="blockSend">
                 <input type="submit" value="Отправить" id="btnSend">
-            </DIV>
+            </div>
         </form>
-    </BODY>
+    </body>
 </html>
