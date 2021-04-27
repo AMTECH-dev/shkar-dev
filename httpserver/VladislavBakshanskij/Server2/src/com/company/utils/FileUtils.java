@@ -26,5 +26,4 @@ public class FileUtils {
         if (resource == null) throw new FileNotFoundException();
         return Files.readAllBytes(Paths.get(resource.toURI()));
     }
-
 }

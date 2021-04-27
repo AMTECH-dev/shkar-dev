@@ -16,7 +16,6 @@ public class Main {
             server.createContext("/reg", new RegFormHandler());
             server.createContext("/page", new HomePageHandler());
             server.createContext("/", new ResourcesHandler());
-//          server.setExecutor(null); // creates a default executor
             server.start();
         } catch (IOException e) {e.printStackTrace();}
     }
