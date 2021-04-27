@@ -1,9 +1,6 @@
 package com.company;
 
-import com.company.handlers.PostHandler;
-import com.company.handlers.RootHandler;
-import com.company.handlers.ShowFormHandler;
-import com.company.handlers.TestHandler;
+import com.company.handlers.*;
 import com.sun.net.httpserver.HttpServer;
 
 import java.net.InetSocketAddress;
@@ -15,7 +12,12 @@ public class SimpleHttpServer {
         server.createContext("/test", new TestHandler());
         server.createContext("/getForm", new ShowFormHandler());
         server.createContext("/postquery", new PostHandler());
+
+        server.createContext("/page", new PageHandler());
+        server.createContext("/static", new StaticHandler());
+
         server.setExecutor(null);
         server.start();
+
     }
 }
