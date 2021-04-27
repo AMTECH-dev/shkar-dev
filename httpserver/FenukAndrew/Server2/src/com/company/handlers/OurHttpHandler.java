@@ -19,20 +19,19 @@ public interface OurHttpHandler extends HttpHandler {
     final String PAGE_FOLDER = "pages/";
 
     default byte[] readAllBytesFromPage(String pageName) throws URISyntaxException, IOException {
-        System.out.println("url PATH:"+ Path.of(PAGE_FOLDER + pageName));
+        /*
         URL url=SimpleHttpServer.class.getResource(Path.of(PAGE_FOLDER + pageName).toString());
         System.out.println(url);
         //if (url==null) System.out.println("url NULL");
         URI uri=url.toURI();
         System.out.println(uri);
 
-        url=SimpleHttpServer.class.getResource(Path.of(PAGE_FOLDER).toString());
-        System.out.println(url);
-        uri=url.toURI();
-        System.out.println(uri);
+        return Files.readAllBytes(Paths.get(uri));*/
 
-        //if (uri==null) System.out.println("uri NULL");
-        return Files.readAllBytes(Paths.get(uri));
+        Path path = Paths.get("src/com/company/pages",pageName);
+        Path absolutePath = path.toAbsolutePath();
+        System.out.println(absolutePath);
+        return Files.readAllBytes(absolutePath);
     }
 
     default Map<String, String> getParams(String body) {
