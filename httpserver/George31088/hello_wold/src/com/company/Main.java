@@ -7,6 +7,8 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Main {
 
@@ -84,26 +86,35 @@ public class Main {
             os.close();
         }
     }
+
     static class MyHandler3 implements HttpHandler {
 
-        public void handle(HttpExchange t) throws IOException {
+        public void handle(HttpExchange t) {
             StringBuilder sb = new StringBuilder();
             String line;
             String fileName = t.getRequestURI().getPath();
-            BufferedReader io = new BufferedReader(new FileReader(fileName));
-            while ((line = io.readLine()) != null) {
-                sb.append(line);
+            Path fullFilePath = Paths.get(fileName.substring(1)).toAbsolutePath();
+            try {
+                BufferedReader io = new BufferedReader(new FileReader(fullFilePath.toString()));
+                while ((line = io.readLine()) != null) {
+                    sb.append(line);
+                }
+
+                String result = sb.toString();
+                io.close();
+
+                byte[] response = result.getBytes( /*StandardCharsets.UTF_8*/);
+                // t.getResponseHeaders().add("Content-Type", "text/html; charset=UTF-8");
+                t.sendResponseHeaders(200, response.length);
+                OutputStream os = t.getResponseBody();
+                os.write(response);
+                os.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-            String result = sb.toString();
-            io.close();
 
-            byte[] response = result.getBytes(StandardCharsets.UTF_8);
-           // t.getResponseHeaders().add("Content-Type", "text/html; charset=UTF-8");
-            t.sendResponseHeaders(200, response.length);
-            OutputStream os = t.getResponseBody();
-            os.write(response);
-            os.close();
         }
     }
 }
