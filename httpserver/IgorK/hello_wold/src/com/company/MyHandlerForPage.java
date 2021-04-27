@@ -20,7 +20,6 @@ class MyHandlerForPage implements HttpHandler {
         os.close();
     }
     public void returnPage() {
-
         BufferedReader io = null;
         try {
             io = new BufferedReader(new FileReader("page.html"));
@@ -42,8 +41,5 @@ class MyHandlerForPage implements HttpHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
-
-
 }
