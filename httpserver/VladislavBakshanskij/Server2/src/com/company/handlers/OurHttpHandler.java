@@ -1,23 +1,35 @@
 package com.company.handlers;
 
-import com.company.SimpleHttpServer;
+import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public interface OurHttpHandler extends HttpHandler {
-    final String PAGE_FOLDER = "pages/";
-
-    default byte[] readAllBytesFromPage(String pageName) throws URISyntaxException, IOException {
-        return Files.readAllBytes(Paths.get(SimpleHttpServer.class.getResource(PAGE_FOLDER + pageName).toURI()));
+public abstract class OurHttpHandler implements HttpHandler {
+    protected void sendResponse(HttpExchange exchange, int codeResponse, byte[] response) throws IOException {
+        try (OutputStream responseBody = exchange.getResponseBody()) {
+            exchange.sendResponseHeaders(codeResponse, response.length);
+            responseBody.write(response);
+        }
     }
 
-    default Map<String, String> getParams(String body) {
+    protected String getRequestBody(HttpExchange exchange) throws IOException {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(exchange.getRequestBody()))) {
+            StringBuilder sb = new StringBuilder();
+            String data;
+            while ((data = br.readLine()) != null) {
+                sb.append(data);
+            }
+            return sb.toString();
+        }
+    }
+
+    protected Map<String, String> getQueryParams(String body) {
         Map<String, String> parameters = new HashMap<>();
         for (String pair : body.split("&")) {
             String[] keyValue = pair.split("=");
