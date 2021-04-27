@@ -3,12 +3,8 @@ package com.company;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 
@@ -17,6 +13,7 @@ public class Main {
   public static void main(String[] args) throws Exception {
     HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
     server.createContext("/test", new MyHandler());
+    server.createContext("/page", new MyHandlerForPage());
     server.setExecutor(null); // creates a default executor
     server.start();
 
@@ -44,9 +41,17 @@ public class Main {
         os.close();
       } else {
         String form;
-        BufferedReader io = new BufferedReader(new FileReader("src/test.html"));
-        while ((form = io.readLine()) != null) {
-          sb.append(form);
+
+        BufferedReader io = null;
+        try {
+          FileReader a =new FileReader("test.html");
+          io = new BufferedReader(a);
+          while ((form = io.readLine()) != null) {
+            sb.append(form);
+          }
+        } catch (IOException e) {
+          e.printStackTrace();
+        } finally {
         }
 
         form = sb.toString();
@@ -62,10 +67,11 @@ public class Main {
     }
 
     public void WriteToFile(String s) throws IOException {
-      FileWriter fw = new FileWriter("src/UserInfo.txt", false);
+      FileWriter fw = new FileWriter("UserInfo.txt", false);
       fw.write(s);
       fw.flush();
 
     }
+
   }
 }
