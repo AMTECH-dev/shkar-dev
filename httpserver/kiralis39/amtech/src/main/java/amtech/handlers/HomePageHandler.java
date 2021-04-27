@@ -6,7 +6,7 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.*;
 
 
-public class HomeHandler implements HttpHandler {
+public class HomePageHandler implements HttpHandler {
     private StringBuilder sb;
 
     @Override
@@ -18,7 +18,7 @@ public class HomeHandler implements HttpHandler {
 
         if (requestType.equalsIgnoreCase("post")) {return;
         } else if (requestType.equalsIgnoreCase("get")) {
-            try (BufferedReader br = new BufferedReader(new FileReader("./index.html"))) {
+            try (BufferedReader br = new BufferedReader(new FileReader("./pages/page.html"))) {
                 while ((data = br.readLine()) != null) {
                     sb.append(data);
                 }

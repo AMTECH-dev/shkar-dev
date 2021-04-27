@@ -1,4 +1,4 @@
-package amtech.door;
+package amtech.data;
 
 public class ClientData {
     public static String clientName;
