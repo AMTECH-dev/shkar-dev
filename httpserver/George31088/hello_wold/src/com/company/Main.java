@@ -14,6 +14,7 @@ public class Main {
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
         server.createContext("/test", new MyHandler());
         server.createContext("/page", new MyHandler2());
+        server.createContext("/files", new MyHandler3());
         server.start();
     }
 
@@ -68,6 +69,27 @@ public class Main {
             StringBuilder sb = new StringBuilder();
             String line;
             BufferedReader io = new BufferedReader(new FileReader("page.html"));
+            while ((line = io.readLine()) != null) {
+                sb.append(line);
+            }
+
+            String result = sb.toString();
+            io.close();
+
+            byte[] response = result.getBytes(StandardCharsets.UTF_8);
+            t.getResponseHeaders().add("Content-Type", "text/html; charset=UTF-8");
+            t.sendResponseHeaders(200, response.length);
+            OutputStream os = t.getResponseBody();
+            os.write(response);
+            os.close();
+        }
+    }
+    static class MyHandler3 implements HttpHandler {
+
+        public void handle(HttpExchange t) throws IOException {
+            StringBuilder sb = new StringBuilder();
+            String line;
+            BufferedReader io = new BufferedReader(new FileReader("files"));
             while ((line = io.readLine()) != null) {
                 sb.append(line);
             }
