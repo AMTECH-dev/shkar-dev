@@ -12,11 +12,10 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+            HttpServer server = HttpServer.create(new InetSocketAddress(8001), 0);
             server.createContext("/reg", new RegFormHandler());
             server.createContext("/page", new HomePageHandler());
-            server.createContext("/files/", new ResourcesHandler());
-//          server.setExecutor(null); // creates a default executor
+            server.createContext("/", new ResourcesHandler());
             server.start();
         } catch (IOException e) {e.printStackTrace();}
     }

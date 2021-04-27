@@ -6,7 +6,7 @@ import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class TestHandler implements OurHttpHandler {
+public class TestHandler extends OurHttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         byte[] response = "Welcome Real's HowTo test page".getBytes();
