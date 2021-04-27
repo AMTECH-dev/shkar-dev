@@ -27,7 +27,7 @@ public class MyHandler implements HttpHandler {
             os.close();
         } else {
             String form;
-
+            System.out.println("ffffff");
             BufferedReader io = null;
             try {
                 FileReader a = new FileReader("test.html");
