@@ -1,4 +1,4 @@
-package com.company;
+package com.company.handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -20,7 +20,7 @@ class MyHandlerForFilesFolder implements HttpHandler {
         String pathToFile = Paths.get(pathRequest.substring(1)).toAbsolutePath().toString();
 
         byte[] bytes = Files.readAllBytes((Paths.get(pathToFile)));
-        t.sendResponseHeaders(200, bytes.length);
+        t.sendResponseHeaders(HttpCode.CORRECT.getNumber(), bytes.length);
         OutputStream os = t.getResponseBody();
         os.write(bytes);
 
