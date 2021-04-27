@@ -33,7 +33,7 @@ public class GetPostClass {
                 sb.append(data);
             }
 
-            sb.append("<hr><br><h5><a href=\"page.html\">Continue</a>");
+            sb.append("<hr><h5><a href=\"page.html\">Continue</a>");
 
             response = sb.toString().getBytes();
             writeResponse(httpExchange, response);
@@ -43,7 +43,7 @@ public class GetPostClass {
         } catch (IOException e) {e.printStackTrace();}
     }
 
-    private static void writeResponse(HttpExchange httpExchange, byte[] writeData) {
+    public static void writeResponse(HttpExchange httpExchange, byte[] writeData) {
         try {
             httpExchange.getResponseHeaders().add("Content-Type", "text/html; charset=UTF-8");
             httpExchange.sendResponseHeaders(200, writeData.length);
