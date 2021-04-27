@@ -89,7 +89,8 @@ public class Main {
         public void handle(HttpExchange t) throws IOException {
             StringBuilder sb = new StringBuilder();
             String line;
-            BufferedReader io = new BufferedReader(new FileReader("files"));
+            String fileName = t.getRequestURI().getPath();
+            BufferedReader io = new BufferedReader(new FileReader(fileName));
             while ((line = io.readLine()) != null) {
                 sb.append(line);
             }
@@ -98,7 +99,7 @@ public class Main {
             io.close();
 
             byte[] response = result.getBytes(StandardCharsets.UTF_8);
-            t.getResponseHeaders().add("Content-Type", "text/html; charset=UTF-8");
+           // t.getResponseHeaders().add("Content-Type", "text/html; charset=UTF-8");
             t.sendResponseHeaders(200, response.length);
             OutputStream os = t.getResponseBody();
             os.write(response);
