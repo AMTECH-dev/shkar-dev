@@ -11,10 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public interface OurHttpHandler extends HttpHandler {
-    final String PAGE_FOLDER = "pages/";
 
     default byte[] readAllBytesFromPage(String pageName) throws URISyntaxException, IOException {
-        return Files.readAllBytes(Paths.get(SimpleHttpServer.class.getResource(PAGE_FOLDER + pageName).toURI()));
+        return Files.readAllBytes(Paths.get(SimpleHttpServer.class.getResource("./pages/" + pageName).toURI()));
     }
 
     default Map<String, String> getParams(String body) {
@@ -27,6 +26,7 @@ public interface OurHttpHandler extends HttpHandler {
                 parameters.put(key, keyValue[1]);
             }
         }
+
         return parameters;
     }
 }

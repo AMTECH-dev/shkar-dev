@@ -43,7 +43,7 @@ public class GetPostClass {
         } catch (IOException e) {e.printStackTrace();}
     }
 
-    private static void writeResponse(HttpExchange httpExchange, byte[] writeData) {
+    public static void writeResponse(HttpExchange httpExchange, byte[] writeData) {
         try {
             httpExchange.getResponseHeaders().add("Content-Type", "text/html; charset=UTF-8");
             httpExchange.sendResponseHeaders(200, writeData.length);

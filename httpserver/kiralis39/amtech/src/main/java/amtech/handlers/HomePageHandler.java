@@ -1,5 +1,6 @@
 package amtech.handlers;
 
+import amtech.processor.GetPostClass;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -24,19 +25,8 @@ public class HomePageHandler implements HttpHandler {
                 }
 
                 response = sb.toString().getBytes();
-                writeResponse(httpExchange, response);
+                GetPostClass.writeResponse(httpExchange, response);
             } catch (IOException e) {e.printStackTrace();}
         }
-    }
-
-    private void writeResponse(HttpExchange httpExchange, byte[] writeData) {
-        try {
-            httpExchange.getResponseHeaders().add("Content-Type", "text/html; charset=UTF-8");
-            httpExchange.sendResponseHeaders(200, writeData.length);
-
-            try (OutputStream os = httpExchange.getResponseBody()) {
-                os.write(writeData);
-            } catch (Exception e) {e.printStackTrace();}
-        } catch (IOException e) {e.printStackTrace();}
     }
 }
