@@ -17,6 +17,7 @@ public class Main {
         server.createContext("/getForm", new ShowFormHandler());
         server.createContext("/postquery", new PostHandler());
         server.createContext("/static/"  , new StaticHandler());
+        server.createContext("/cat", new ImageHandler());
         server.setExecutor(null);
         server.start();
     }

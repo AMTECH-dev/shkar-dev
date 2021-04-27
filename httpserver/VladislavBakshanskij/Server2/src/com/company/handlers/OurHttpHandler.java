@@ -21,9 +21,9 @@ public abstract class OurHttpHandler implements HttpHandler {
     protected String getRequestBody(HttpExchange exchange) throws IOException {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(exchange.getRequestBody()))) {
             StringBuilder sb = new StringBuilder();
-            String data;
-            while ((data = br.readLine()) != null) {
-                sb.append(data);
+            String bodyRequestPart;
+            while ((bodyRequestPart = br.readLine()) != null) {
+                sb.append(bodyRequestPart);
             }
             return sb.toString();
         }
