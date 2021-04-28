@@ -6,10 +6,11 @@ import com.sun.net.httpserver.HttpHandler;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class HandlerPage implements HttpHandler {
-    //private static final Logger log = Testing.createLogger("log1.log");
+    private static final Logger log = Testing.createLogger("logHandlerPage.log");
 
     @Override
     public void handle(HttpExchange t) {
@@ -24,7 +25,7 @@ public class HandlerPage implements HttpHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        log.log(Level.SEVERE, "Test OK");
 
         String result = sb.toString();
         byte[] response = result.getBytes(StandardCharsets.UTF_8);

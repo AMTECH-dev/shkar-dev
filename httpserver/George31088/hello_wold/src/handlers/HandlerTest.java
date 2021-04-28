@@ -1,12 +1,16 @@
 package handlers;
 
+import com.company.Testing;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HandlerTest implements HttpHandler {
+    private static Logger log = Testing.createLogger("logHandlerTest.log");
 
     public void handle(HttpExchange t) throws IOException {
         StringBuilder sb = new StringBuilder();
@@ -42,6 +46,7 @@ public class HandlerTest implements HttpHandler {
             os.write(response);
             os.close();
         }
+        log.log(Level.SEVERE, "Test OK");
     }
 
     public void writeToFile(String s) throws IOException {
@@ -49,4 +54,5 @@ public class HandlerTest implements HttpHandler {
         fw.write(s);
         fw.flush();
     }
+
 }
