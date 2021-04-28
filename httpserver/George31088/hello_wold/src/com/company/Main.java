@@ -1,5 +1,4 @@
-package com.company;
-
+package main;
 
 import com.sun.net.httpserver.HttpServer;
 import handlers.HandlerFiles;
