@@ -3,17 +3,15 @@ package com.company.handlers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 
-class MyHandlerForFilesFolder implements HttpHandler {
+public class MyHandlerForFilesFolder implements HttpHandler {
+   // private static final Logger logger = LoggerFactory.createLoggerWithSetting(LoggerFactory.DEFAULT_CONFIG);
+
 
     public void handle(HttpExchange t) throws IOException {
         String pathRequest = t.getRequestURI().getPath();
