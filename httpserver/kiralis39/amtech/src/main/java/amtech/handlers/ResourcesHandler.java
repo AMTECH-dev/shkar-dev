@@ -7,7 +7,7 @@ import amtech.registry.TemporaryData;
 
 import javax.imageio.ImageIO;
 
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
