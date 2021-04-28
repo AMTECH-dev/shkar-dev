@@ -7,6 +7,8 @@ public class TemporaryData {
 	
 	public static final String TEXT_HTML = "text/html; charset=UTF-8";
 	public static final String IMAGE_PNG = "image/png; charset=UTF-8";
+
+	public static final String LOG_PATH = "./log/";
 	
 	public static final String PNG = "png";
 	

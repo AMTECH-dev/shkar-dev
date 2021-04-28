@@ -1,6 +1,7 @@
 package amtech.tools;
 
 import amtech.handlers.RegFormHandler;
+import amtech.registry.TemporaryData;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -13,7 +14,13 @@ public class LogConfigurator {
 
     private static void configurate(Logger logger, String srcClassName) {
         try {
-            FileHandler fh = new FileHandler("./log/srcClassName_" + new SimpleDateFormat("dd.MM.YYYY:HH.mm.ss").format(System.currentTimeMillis()) + ".log");
+            FileHandler fh = new FileHandler(
+                    TemporaryData.LOG_PATH + "/"
+                            + srcClassName + "_"
+                            + new SimpleDateFormat("dd.MM.YYYY:HH.mm.ss")
+                                .format(System.currentTimeMillis())
+                            + ".log");
+
             logger.addHandler(fh);
             logger.setLevel(Level.ALL);
         } catch (IOException e) {
