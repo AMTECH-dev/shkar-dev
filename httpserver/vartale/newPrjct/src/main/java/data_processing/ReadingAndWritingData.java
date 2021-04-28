@@ -9,25 +9,24 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
 
-
 public class ReadingAndWritingData {
-    private static final Logger LOGGER = Logging.getLogger(ReadingAndWritingData.class);
+    private static final Logger logger = Logging.createLoggerWithSetting(Logging.DEFAULT_CONFIG);
 
     private ReadingAndWritingData() {}
 
     public static void writeResponse(HttpExchange httpExchange, HttpStatusCode responseCode, byte[] data) {
         try {
             httpExchange.sendResponseHeaders(responseCode.getStatusCode(), data.length);
+            logger.info("Writing response...");
 
             try (OutputStream os = httpExchange.getResponseBody()) {
                 os.write(data);
-
-                LOGGER.info("Data are writing to " + os.getClass());
+                logger.info("Writing data to OutputStream...");
             } catch (IOException e) {
-                LOGGER.warning("Too many bytes are written!\n" + e.getMessage());
+                logger.warning("I/O error occurs!" + e.getMessage());
             }
-        } catch (IOException e) {
-            LOGGER.warning("No response body is being sent!\n" + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -35,9 +34,8 @@ public class ReadingAndWritingData {
         byte[] data = new byte[]{};
         try {
             data = Files.readAllBytes(Path.of(Paths.get(path).toUri()));
-            LOGGER.info("Data are reading from " + path);
         } catch (IOException e) {
-            LOGGER.warning("Path string cannot be converted to a Path!\n" + e.getMessage());
+            e.printStackTrace();
         }
         return data;
     }

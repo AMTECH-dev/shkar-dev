@@ -11,6 +11,7 @@ import enums.HttpStatusCode;
 import java.nio.file.Paths;
 
 public class FilesHandler implements HttpHandler {
+
     @Override
     public void handle(HttpExchange httpExchange) {
         httpExchange.getResponseHeaders().add(HttpHeader.CONTENT_TYPE.getHeaderName(),
@@ -21,10 +22,10 @@ public class FilesHandler implements HttpHandler {
         String pathToFile = Paths.get(responsePath.substring(1)).toAbsolutePath().toString();
         String pathToImage = Paths.get("files/stop.png").toAbsolutePath().toString();
 
-        if (responsePath.equals("/files/cat.jpg"))
+        if (responsePath.equals("/files/cat.jpg")) {
             ReadingAndWritingData.writeResponse(httpExchange, HttpStatusCode.SUCCESS,
                     ImageProcessing.copyMarkToImage(pathToFile, pathToImage));
-        else
+        } else
             ReadingAndWritingData.writeResponse(httpExchange, HttpStatusCode.SUCCESS,
                     ReadingAndWritingData.readBytesFromPath(pathToFile));
     }
