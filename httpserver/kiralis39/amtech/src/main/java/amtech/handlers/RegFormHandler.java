@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import amtech.door.Main;
 import amtech.tools.LogConfigurator;
+import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -36,6 +37,7 @@ public class RegFormHandler implements HttpHandler {
 
                 sb.append("&<hr><h4><a href=\"page.html\">Continue</a>");
 
+                System.out.println(sb.toString());
                 getUserData(sb.toString().split("&"));
 
                 httpExchange.getResponseHeaders().add(TemporaryData.CONTENT_TYPE, TemporaryData.TEXT_HTML);
@@ -55,10 +57,13 @@ public class RegFormHandler implements HttpHandler {
     
     private void getUserData(String[] splittedUserData) {
         LOGGER.info("Get user form data:");
-    	TemporaryData.clientName = splittedUserData[0].replace("input=", "");
-        TemporaryData.clientSex = splittedUserData[1].replace("sex=", "");
-        LOGGER.info("User name: " + TemporaryData.clientName);
-        LOGGER.info("User sex: " + TemporaryData.clientSex);
+    	TemporaryData.userData.put("userName", splittedUserData[0].replace("input=", ""));
+        TemporaryData.userData.put("userSex", splittedUserData[1].replace("sex=", ""));
+        LOGGER.info("User name: " + TemporaryData.userData.get("userName"));
+        LOGGER.info("User sex: " + TemporaryData.userData.get("userSex"));
+
+        String gsonSerial = new Gson().toJson(TemporaryData.userData);
+        System.out.println(gsonSerial);
     }
 
 	private void writeResponse(HttpExchange httpExchange, byte[] writeData) {
