@@ -27,7 +27,7 @@ public class HandlerTest implements HttpHandler {
             os.close();
         } else {
             String line;
-            BufferedReader io = new BufferedReader(new FileReader("test.html"));
+            BufferedReader io = new BufferedReader(new FileReader("pages/test.html"));
             while ((line = io.readLine()) != null) {
                 sb.append(line);
             }

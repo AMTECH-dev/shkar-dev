@@ -24,10 +24,10 @@ public class WaterMarkImage implements HttpHandler {
 
             graphics.dispose();
 
-        } catch (IOException e) {
-            System.out.println(e);
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         ByteArrayOutputStream ba = new ByteArrayOutputStream();
         ImageIO.write(img, "png", ba);
 
@@ -35,6 +35,7 @@ public class WaterMarkImage implements HttpHandler {
         byte[] response = ba.toByteArray();
         exchange.getResponseHeaders().add("Content-Type", "image/png; charset=UTF-8");
         exchange.sendResponseHeaders(200, response.length);
+
         OutputStream os = exchange.getResponseBody();
         os.write(response);
         os.close();

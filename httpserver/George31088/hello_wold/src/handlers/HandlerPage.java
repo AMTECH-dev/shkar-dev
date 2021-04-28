@@ -13,7 +13,6 @@ public class HandlerPage implements HttpHandler {
 
     @Override
     public void handle(HttpExchange t) {
-        System.out.println("Я в HttpExchange!");
 
         StringBuilder sb = new StringBuilder();
         String line;
@@ -26,7 +25,6 @@ public class HandlerPage implements HttpHandler {
             e.printStackTrace();
         }
 
-        System.out.println("#2");
 
         String result = sb.toString();
         byte[] response = result.getBytes(StandardCharsets.UTF_8);
