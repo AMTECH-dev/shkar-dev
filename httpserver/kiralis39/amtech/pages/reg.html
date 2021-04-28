@@ -2,67 +2,11 @@
 <html>
     <head>
         <title>Тестовое задание клиент-сервер (GET/POST) на Java</title>
-        <style type="text/css">
-            body {
-                font-family: Arial-Narrow, Arial, Verdana, sans-serif; /* Семейство шрифтов */
-                font-size: 24pt; /* Размер основного шрифта в пунктах  */
-                background-color: #404045; /* Цвет фона веб-страницы */
-                color: #333; /* Цвет основного текста */
-            }
-
-            h1 {
-                color: #fff
-            }
-
-            #blockBase {
-                width: 50%; /* Ширина слоя */
-                padding: 9px; /* Поля вокруг текста */
-                border: 3px solid black; /* Параметры границы */
-                background: #fc0; /* Цвет фона */
-            }
-
-            #blockName {
-                width: 97.5%; /* Ширина первого слоя */
-                padding: 9px; /* Поля вокруг текста */
-                background: #f80; /* Цвет фона */
-            }
-
-            #blockSex {
-                margin-top: 3px;
-                width: 97.5%; /* Ширина первого слоя */
-                padding: 9px; /* Поля вокруг текста */
-                background: #448; /* Цвет фона */
-            }
-
-            #blockSend {
-                width: 97.5%; /* Ширина первого слоя */
-                padding: 9px; /* Поля вокруг текста */
-                margin: 3px;
-                background: #666; /* Цвет фона */
-                height: 20px; /* Высота слоя */
-                display: inline-block; /* Строчно-блочный элем<<ент */
-            }
-
-            #btnSend {
-                width: 100%; /* Ширина первого слоя */
-                background: #888; /* Цвет фона */
-                display: inline-block; /* Строчно-блочный элемент */
-                font-family: Arial-Narrow, Verdana, sans-serif; /* Семейство шрифтов */
-                font-size: 18pt; /* Размер основного шрифта в пунктах  */
-            }
-
-            #inputArea {
-                width: 100%; /* Ширина первого слоя */
-                background: #ccc; /* Цвет фона */
-                display: inline-block; /* Строчно-блочный элемент */
-                font-family: Arial-Narrow, Verdana, sans-serif; /* Семейство шрифтов */
-                font-size: 18pt; /* Размер основного шрифта в пунктах  */
-            }\
-        </style>
+        <link href="./files/regPageStyle.css" rel="stylesheet" type="text/css">
     </head>
 
     <body link="yellow" vlink="#ceffce" alink="#ff0000" bgcolor="black">
-        <h1>Тестовое задание 26 апр. 2021 г.</h1>
+        <h1 align="CENTER">Тестовое задание 26 апр. 2021 г.</h1>
 
         <form action="/reg" method="post">
             <div class="blockBase" id="blockBase">
@@ -72,16 +16,17 @@
                     <INPUT TYPE="TEXT" name="input" value="" id="inputArea">
                 </DIV>
 
+
                 <!-- выбор пола: -->
                 <DIV class="blockSex" id="blockSex">
-                    <p>
-                        <select size="3" name="sex">
-                            <option disabled>Выберите пол</option>
-                            <option selected value="male">Мужской</option>
-                            <option value="female">Женский</option>
-                        </select>
-                    </p>
+                    <select size="3" name="sex" id="sexSelector">
+                        <option disabled>Выберите пол:</option>
+
+                        <option value="male">Мужской</option>
+                        <option value="female">Женский</option>
+                    </select>
                 </DIV>
+
 
                 <!-- кнопка: -->
                 <DIV class="blockSend" id="blockSend">

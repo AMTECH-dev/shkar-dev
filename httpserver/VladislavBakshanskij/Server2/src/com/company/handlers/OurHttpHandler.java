@@ -11,6 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class OurHttpHandler implements HttpHandler {
+    protected void sendResponse(HttpExchange exchange, int responseCode, String response) throws IOException {
+        sendResponse(exchange, responseCode, response.getBytes());
+    }
+
     protected void sendResponse(HttpExchange exchange, int codeResponse, byte[] response) throws IOException {
         try (OutputStream responseBody = exchange.getResponseBody()) {
             exchange.sendResponseHeaders(codeResponse, response.length);

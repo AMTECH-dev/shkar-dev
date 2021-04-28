@@ -1,36 +1,44 @@
 package com.company.handlers;
 
+import com.company.error.InvalidRequestException;
+import com.company.factories.LoggerFactory;
 import com.company.http.HttpCode;
+import com.company.http.HttpContentType;
 import com.company.http.HttpHeader;
 import com.company.http.HttpMethod;
+import com.company.utils.FileUtils;
 import com.sun.net.httpserver.HttpExchange;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PostHandler extends OurHttpHandler {
+    private static final Logger logger = LoggerFactory.createLoggerWithConfiguration(PostHandler.class);
+
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        if (exchange.getRequestMethod().equalsIgnoreCase(HttpMethod.POST)) {
-            String responseMessage;
+        try {
+            if (exchange.getRequestMethod().equalsIgnoreCase(HttpMethod.POST)) {
+                Map<String, String> params = getQueryParams(getRequestBody(exchange));
+                String userName = "userName";
+                String sex = "sex";
+                if (!params.containsKey(userName) || !params.containsKey(sex)) {
+                    throw new InvalidRequestException("username or sex not set\nresponse body: " + params);
+                }
+                FileUtils.writeToFile("output.txt", params.toString());
+                String response = String.format("User name: %s \n Sex: %s", params.get(userName),
+                        Sex.getById(Integer.parseInt(params.get(sex))).getDesc());
 
-            Map<String, String> params = getQueryParams(getRequestBody(exchange));
-            responseMessage = String.format("User name: %s \n Sex: %s", params.get("userName"),
-                    Sex.getById(Integer.parseInt(params.get("sex"))).getDesc());
-
-            try (FileOutputStream fileOutputStream = new FileOutputStream("output.txt")) {
-                fileOutputStream.write(params.toString().getBytes());
+                exchange.getResponseHeaders().add(HttpHeader.CONTENT_TYPE, HttpContentType.HTML.getFormattedWithCharset());
+                sendResponse(exchange, HttpCode.SUCCESS, response);
             }
-
-            byte[] response = responseMessage.getBytes();
-            exchange.getResponseHeaders().add(HttpHeader.CONTENT_TYPE, "text/html; charset=utf-8");
-            exchange.sendResponseHeaders(HttpCode.SUCCESS, response.length);
-            OutputStream os = exchange.getResponseBody();
-            os.write(response);
-            os.close();
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, e.getMessage(), e);
+        } catch (InvalidRequestException e) {
+            logger.log(Level.INFO,  e.getMessage());
+            sendResponse(exchange, HttpCode.BAD_REQUEST, "Username or Sex is not set.");
         }
     }
 

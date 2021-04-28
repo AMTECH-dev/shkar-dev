@@ -1,0 +1,67 @@
+body {
+    font-family: Arial-Narrow, Arial, Verdana, sans-serif; /* Семейство шрифтов */
+    font-size: 24pt; /* Размер основного шрифта в пунктах  */
+    background-color: #404045; /* Цвет фона веб-страницы */
+    color: #333; /* Цвет основного текста */
+    border: 3px double gray; /* Параметры границы */
+    padding: 6px;
+    position: relative; /* absolute | fixed | relative | static | inherit */
+}
+
+h1 {
+    font-family: Georgia, 'Times New Roman', Times, serif; /* Семейство шрифтов */
+    color: #fff
+}
+
+#blockBase {
+    width: auto; /* Ширина слоя */
+    padding: 9px; /* Поля вокруг текста */
+    border: 3px solid black; /* Параметры границы */
+    background: #fc0; /* Цвет фона */
+}
+
+#blockName {
+    width: 97.5%; /* Ширина первого слоя */
+    padding: 9px; /* Поля вокруг текста */
+    background: #f80; /* Цвет фона */
+
+}
+
+#blockSex {
+    margin-top: 3px;
+    width: 97.5%; /* Ширина первого слоя */
+    padding: 9px; /* Поля вокруг текста */
+    background: #448; /* Цвет фона */
+    /* position: fixed; /* absolute | fixed | relative | static | inherit */
+}
+
+#blockSend {
+    width: 97.5%; /* Ширина первого слоя */
+    padding: 9px; /* Поля вокруг текста */
+    margin-top: 6px;
+    background: #666; /* Цвет фона */
+    /* height: 20px; */
+    display: inline-block; /* Строчно-блочный элем<<ент */
+}
+
+#btnSend {
+    width: 100%; /* Ширина первого слоя */
+    background: #b0b0b5; /* Цвет фона */
+    display: inline;
+    font-family: Helvetica, Verdana, sans-serif; /* Семейство шрифтов */
+    font-size: 16pt; /* Размер основного шрифта в пунктах  */
+}
+
+#inputArea {
+    width: 100%; /* Ширина первого слоя */
+    background: #eee; /* Цвет фона */
+    display: inline-block; /* Строчно-блочный элемент */
+    font-family: monospace, Helvetica, sans-serif; /* Семейство шрифтов */
+    font-size: 18pt; /* Размер основного шрифта в пунктах  */
+}
+
+#sexSelector {
+    font-family: monospace, Helvetica, sans-serif; /* Семейство шрифтов */
+    font-size: 12pt; /* Размер основного шрифта в пунктах  */
+    width: 100%; /* Ширина первого слоя */
+}

@@ -1,0 +1,10 @@
+апр. 28, 2021 1:45:53 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 28, 2021 1:45:53 PM com.company.handlers.MyHandler handle
+INFO:  GET method
+апр. 28, 2021 1:45:53 PM com.company.handlers.MyHandler handle
+INFO: read to 'text.html' file
+апр. 28, 2021 1:46:07 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 28, 2021 1:46:07 PM com.company.handlers.MyHandler handle
+INFO:  POST method

@@ -6,7 +6,9 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
-class MyHandlerForPage implements HttpHandler {
+public class MyHandlerForPage implements HttpHandler {
+    //private static final Logger logger = LoggerFactory.createLoggerWithSetting(LoggerFactory.DEFAULT_CONFIG);
+
     String form;
     StringBuilder sb = new StringBuilder();
 
