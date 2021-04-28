@@ -1,5 +1,6 @@
 package handlers;
 
+import com.company.Testing;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -7,8 +8,11 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HandlerFiles implements HttpHandler {
+    private static Logger log = Testing.createLogger("logHandlerFiles.log");
 
     public void handle(HttpExchange t) {
         StringBuilder sb = new StringBuilder();
@@ -41,6 +45,7 @@ public class HandlerFiles implements HttpHandler {
                 os.write(response);
             } catch (Exception e) {
                 e.printStackTrace();
+                log.log(Level.SEVERE, "Test OK");
             }
 
         } catch (IOException e) {

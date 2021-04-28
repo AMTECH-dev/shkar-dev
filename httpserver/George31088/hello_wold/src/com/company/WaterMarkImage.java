@@ -6,10 +6,13 @@ import com.sun.net.httpserver.HttpHandler;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
 public class WaterMarkImage implements HttpHandler {
+    private static Logger log = Testing.createLogger("logWaterMarkImage.log");
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -26,6 +29,7 @@ public class WaterMarkImage implements HttpHandler {
 
         } catch (Exception e) {
             e.printStackTrace();
+            log.log(Level.SEVERE, "Test OK");
         }
 
         ByteArrayOutputStream ba = new ByteArrayOutputStream();

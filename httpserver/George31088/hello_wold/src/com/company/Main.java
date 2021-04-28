@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Main {
-    //private static Logger logger = Testing.createLogger("newLog");
+    private static Logger log = Testing.createLogger("logMain.log");
 
     public static void main(String[] args) throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
@@ -21,7 +21,7 @@ public class Main {
         server.start();
 
 
-            //logger.log(Level.SEVERE, "Test OK");
+            log.log(Level.SEVERE, "Test OK");
 
     }
 }
