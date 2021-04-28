@@ -2,17 +2,19 @@ package handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-
-import java.io.IOException;
+import data_processing.ReadingAndWritingData;
+import enums.HttpContentType;
+import enums.HttpHeader;
+import enums.HttpStatusCode;
 
 public class PageHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) {
-        try {
-            ResponseHandling.writeResponse(httpExchange, ResponseHandling.getResponse("page.html"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        httpExchange.getResponseHeaders().add(HttpHeader.CONTENT_TYPE.getHeaderName(),
+                HttpContentType.HTML.getContentType());
+
+        ReadingAndWritingData.writeResponse(httpExchange, HttpStatusCode.SUCCESS,
+                ReadingAndWritingData.readBytesFromPath("page.html"));
     }
 }
