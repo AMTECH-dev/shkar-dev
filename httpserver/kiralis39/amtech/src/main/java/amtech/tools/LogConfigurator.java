@@ -35,7 +35,7 @@ public class LogConfigurator {
 
     public static Logger getLogger(Class cl) {
         try {
-            LogManager.getLogManager().readConfiguration(new FileInputStream(new File("./logging.properties")));
+            LogManager.getLogManager().readConfiguration(new FileInputStream(new File("log.prop")));
         } catch (IOException e) {
             e.printStackTrace();
         }
