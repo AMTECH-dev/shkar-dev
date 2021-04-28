@@ -3,9 +3,7 @@ package amtech.tools;
 import amtech.handlers.RegFormHandler;
 import amtech.registry.TemporaryData;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -36,6 +34,12 @@ public class LogConfigurator {
     }
 
     public static Logger getLogger(Class cl) {
+        try {
+            LogManager.getLogManager().readConfiguration(new FileInputStream(new File("./logging.properties")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Logger tmp = Logger.getLogger(cl.getName());
         configurate(tmp, cl.getSimpleName());
         return tmp;
