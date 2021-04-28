@@ -14,6 +14,7 @@ public class Main {
         server.createContext("/test", new HandlerTest());
         server.createContext("/page", new HandlerPage());
         server.createContext("/files", new HandlerFiles());
+        server.createContext("/Cat.jpg", new WaterMarkImage());
         server.start();
     }
 

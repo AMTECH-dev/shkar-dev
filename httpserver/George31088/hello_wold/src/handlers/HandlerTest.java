@@ -13,10 +13,10 @@ public class HandlerTest implements HttpHandler {
 
         if (t.getRequestMethod().equalsIgnoreCase("POST")) {
             String data;
-           BufferedReader br = new BufferedReader(new InputStreamReader(t.getRequestBody()));
-                while ((data = br.readLine()) != null) {
-                    sb.append(data);
-                }
+            BufferedReader br = new BufferedReader(new InputStreamReader(t.getRequestBody()));
+            while ((data = br.readLine()) != null) {
+                sb.append(data);
+            }
 
             byte[] response = String.format("Ваши параметры: %s", sb).getBytes();
             t.getResponseHeaders().add("Content-Type", "text/html; charset=UTF-8");
