@@ -1,4 +1,4 @@
-package com.company;
+package com.company.handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -19,8 +19,8 @@ public class MyHandler implements HttpHandler {
                 }
             }
             byte[] response = String.format("Ваши параметры: %s", sb.toString()).getBytes();
-            t.getResponseHeaders().add("Content-Type", "text/html; charset=UTF-8");
-            t.sendResponseHeaders(200, response.length);
+            t.getResponseHeaders().add(HttpHeaders.CONTENT_TYPE.getName(), "text/html; charset=UTF-8");
+            t.sendResponseHeaders(HttpCode.CORRECT.getNumber(), response.length);
             WriteToFile(sb.toString());
             OutputStream os = t.getResponseBody();
             os.write(response);

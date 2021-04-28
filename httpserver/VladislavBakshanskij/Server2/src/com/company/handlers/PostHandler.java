@@ -5,27 +5,24 @@ import com.company.http.HttpHeader;
 import com.company.http.HttpMethod;
 import com.sun.net.httpserver.HttpExchange;
 
-import java.io.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-public class PostHandler implements OurHttpHandler {
+public class PostHandler extends OurHttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         if (exchange.getRequestMethod().equalsIgnoreCase(HttpMethod.POST)) {
             String responseMessage;
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(exchange.getRequestBody()))) {
-                StringBuilder sb = new StringBuilder();
-                String data;
-                while ((data = br.readLine()) != null) {
-                    sb.append(data);
-                }
-                Map<String, String> params = getParams(sb.toString());
-                responseMessage = String.format("User name: %s \n Sex: %s", params.get("userName"), Sex.getById(Integer.parseInt(params.get("sex"))).getDesc());
 
-                try (FileOutputStream fileOutputStream = new FileOutputStream("output.txt")) {
-                    fileOutputStream.write(params.toString().getBytes(StandardCharsets.UTF_8));
-                }
+            Map<String, String> params = getQueryParams(getRequestBody(exchange));
+            responseMessage = String.format("User name: %s \n Sex: %s", params.get("userName"),
+                    Sex.getById(Integer.parseInt(params.get("sex"))).getDesc());
+
+            try (FileOutputStream fileOutputStream = new FileOutputStream("output.txt")) {
+                fileOutputStream.write(params.toString().getBytes());
             }
 
             byte[] response = responseMessage.getBytes();
