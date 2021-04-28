@@ -2,34 +2,33 @@ package handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import data_processing.ReadingAndWritingData;
+import enums.HttpContentType;
+import enums.HttpHeader;
+import enums.HttpStatusCode;
+import enums.HttpMethod;
+
 import java.io.*;
 
 public class FormHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) {
-        StringBuilder sb = new StringBuilder();
-        String data;
-        byte[] response;
+        httpExchange.getResponseHeaders().add(HttpHeader.CONTENT_TYPE.getHeaderName(),
+                HttpContentType.HTML.getContentType());
+
         String requestType = httpExchange.getRequestMethod();
 
-        if (requestType.equalsIgnoreCase("post")) {
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(httpExchange.getRequestBody()))) {
-                while ((data = br.readLine()) != null) {
-                    sb.append(data);
-                }
-
-                response = sb.toString().getBytes();
-                ResponseHandling.writeResponse(httpExchange, response);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (requestType.equalsIgnoreCase("get")) {
+        if (requestType.equalsIgnoreCase(HttpMethod.POST.getMethod())) {
             try {
-                ResponseHandling.writeResponse(httpExchange, ResponseHandling.getResponse("form.html"));
+                ReadingAndWritingData.writeResponse(httpExchange, HttpStatusCode.SUCCESS,
+                        ReadingAndWritingData.getRequestBody(httpExchange).getBytes());
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+
+        } else if (requestType.equalsIgnoreCase(HttpMethod.GET.getMethod()))
+            ReadingAndWritingData.writeResponse(httpExchange, HttpStatusCode.SUCCESS,
+                    ReadingAndWritingData.readBytesFromPath("form.html"));
     }
 }
