@@ -14,10 +14,11 @@ body {
     }
 
     #blockBase {
-        width: 50%; /* Ширина слоя */
+        width: 98%; /* Ширина слоя */
         padding: 9px; /* Поля вокруг текста */
         border: 3px solid black; /* Параметры границы */
         background: #fc0; /* Цвет фона */
+        position: relative; /* absolute | fixed | relative | static | inherit */
     }
 
     #blockSend {
