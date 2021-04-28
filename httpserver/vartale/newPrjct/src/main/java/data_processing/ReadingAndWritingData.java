@@ -7,11 +7,13 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.logging.Logger;
+
 
 public class ReadingAndWritingData {
+    private static final Logger LOGGER = Logging.getLogger(ReadingAndWritingData.class);
 
-    private ReadingAndWritingData() {
-    }
+    private ReadingAndWritingData() {}
 
     public static void writeResponse(HttpExchange httpExchange, HttpStatusCode responseCode, byte[] data) {
         try {
@@ -19,11 +21,13 @@ public class ReadingAndWritingData {
 
             try (OutputStream os = httpExchange.getResponseBody()) {
                 os.write(data);
+
+                LOGGER.info("Data are writing to " + os.getClass());
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.warning("Too many bytes are written!\n" + e.getMessage());
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.warning("No response body is being sent!\n" + e.getMessage());
         }
     }
 
@@ -31,9 +35,9 @@ public class ReadingAndWritingData {
         byte[] data = new byte[]{};
         try {
             data = Files.readAllBytes(Path.of(Paths.get(path).toUri()));
-
+            LOGGER.info("Data are reading from " + path);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.warning("Path string cannot be converted to a Path!\n" + e.getMessage());
         }
         return data;
     }
@@ -45,7 +49,6 @@ public class ReadingAndWritingData {
             while ((data = br.readLine()) != null) {
                 sb.append(data);
             }
-
             return sb.toString();
         }
     }

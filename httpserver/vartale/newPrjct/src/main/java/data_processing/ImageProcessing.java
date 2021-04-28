@@ -6,8 +6,10 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.logging.Logger;
 
 public class ImageProcessing {
+    private static final Logger LOGGER = Logging.getLogger(ImageProcessing.class);
 
     private ImageProcessing() {
     }
@@ -18,6 +20,7 @@ public class ImageProcessing {
         BufferedImage origImage = null;
         BufferedImage mark;
         try {
+            LOGGER.info("Images are reading...");
             origImage = ImageIO.read(Paths.get(pathToImage).toFile());
             mark = ImageIO.read(Paths.get(pathToMark).toFile());
 
@@ -25,16 +28,16 @@ public class ImageProcessing {
             graphics.drawImage(mark, 0, 0, origImage.getWidth(), origImage.getHeight(), null);
             graphics.dispose();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.warning("Image not found!\n" + e.getMessage());
         }
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 
         try {
+            LOGGER.info("Image with mark is writing to " + os.getClass());
             if (origImage != null) ImageIO.write(origImage, markFormat, os);
-            else System.out.println(pathToImage.substring(pathToImage.lastIndexOf("/")) + " не создалась");
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.warning("Too many bytes are written!\n" + e.getMessage());
         }
 
         return os.toByteArray();
