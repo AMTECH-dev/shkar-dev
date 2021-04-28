@@ -5,13 +5,18 @@ import com.sun.net.httpserver.HttpHandler;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Logger;
 
 public class MyHandler implements HttpHandler {
+    private static final Logger logger = LoggerFactory.createLoggerWithSetting(LoggerFactory.DEFAULT_CONFIG);
+
     @Override
     public void handle(HttpExchange t) throws IOException {
+        logger.info("run method handle / MyHandle.class");
         StringBuilder sb = new StringBuilder();
 
         if (t.getRequestMethod().equalsIgnoreCase("POST")) {
+            logger.info(" POST method");
             String data;
             try (BufferedReader br = new BufferedReader(new InputStreamReader(t.getRequestBody()))) {
                 while ((data = br.readLine()) != null) {
@@ -26,21 +31,22 @@ public class MyHandler implements HttpHandler {
             os.write(response);
             os.close();
         } else {
+            logger.info(" GET method");
             String form;
-            BufferedReader io = null;
             try {
+                logger.info("read to 'text.html' file");
                 FileReader a = new FileReader("test.html");
-                io = new BufferedReader(a);
+                BufferedReader io = new BufferedReader(a);
                 while ((form = io.readLine()) != null) {
                     sb.append(form);
                 }
+                io.close();
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
             }
 
             form = sb.toString();
-            io.close();
+
 
             byte[] response = form.getBytes(StandardCharsets.UTF_8);
             t.getResponseHeaders().add("Content-Type", "text/html; charset=UTF-8");
