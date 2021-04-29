@@ -3,6 +3,7 @@ package com.company;
 import com.company.handlers.MyHandler;
 import com.company.handlers.MyHandlerForFilesFolder;
 import com.company.handlers.MyHandlerForPage;
+import com.company.handlers.PictureOnPicture;
 import com.company.handlers.Test;
 import com.sun.net.httpserver.HttpServer;
 
@@ -15,7 +16,7 @@ public class Main {
         server.createContext("/test", new MyHandler());
         server.createContext("/page", new MyHandlerForPage());
         server.createContext("/files", new MyHandlerForFilesFolder());
-        server.createContext("/cat", new Test());
+        server.createContext("/cat", new PictureOnPicture());
         server.start();
 
 

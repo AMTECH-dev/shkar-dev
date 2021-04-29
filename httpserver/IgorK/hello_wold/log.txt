@@ -8,3 +8,13 @@ SEVERE: WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 SEVERE: WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 апр. 29, 2021 10:02:23 AM com.company.factories.LoggerFactory main
 SEVERE: WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+апр. 29, 2021 10:29:22 AM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 29, 2021 10:29:22 AM com.company.handlers.MyHandler handle
+INFO:  GET method
+апр. 29, 2021 10:29:22 AM com.company.handlers.MyHandler handle
+INFO: read to 'text.html' file
+апр. 29, 2021 10:29:34 AM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 29, 2021 10:29:34 AM com.company.handlers.MyHandler handle
+INFO:  POST method
