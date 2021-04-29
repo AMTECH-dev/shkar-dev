@@ -6,21 +6,36 @@
     </head>
 
     <body link="yellow" vlink="#ceffce" alink="#ff0000" bgcolor="black">
-        <h1 align="CENTER">Тестовое задание 26 апр. 2021 г.</h1>
+        <h1 align="CENTER">Чтобы попытаться увидеть котика</h1>
 
         <form action="/reg" method="post">
             <div class="blockBase" id="blockBase">
+            
                 <!-- поле ввода имени: -->
                 <DIV class="blockName" id="blockName">
-                    <label>Введите своё имя:</label>
-                    <INPUT TYPE="TEXT" name="userName" id="userName">
+                  
+                  <div class="wrap">
+                    <div class="bblock">
+                      <img src="./files/nameIcon.png" width="128" height="128" alt="nameIcon" align="top">
+                    </div>
+                    
+                    <div class="bblock">
+                      <label>укажите своё имя:</label>
+                    </div>
+                    
+                    <div class="bblock">
+                      <INPUT TYPE="TEXT" name="userName" id="userName">
+                    </div>
+ 
+                  </div>
+                  
                 </DIV>
 
 
                 <!-- выбор пола: -->
                 <DIV class="blockSex" id="blockSex">
                     <select size="3" name="sex" id="sexSelector">
-                        <option disabled>Выберите пол:</option>
+                        <option disabled>и выберите пол:</option>
 
                         <option value="male">Мужской</option>
                         <option value="female">Женский</option>
