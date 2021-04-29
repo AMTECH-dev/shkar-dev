@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpServer;
 import handlers.HandlerFiles;
 import handlers.HandlerPage;
 import handlers.HandlerTest;
+import handlers.HandlerUrl;
 
 import java.net.InetSocketAddress;
 import java.util.logging.Level;
@@ -18,6 +19,7 @@ public class Main {
         server.createContext("/page", new HandlerPage());
         server.createContext("/files", new HandlerFiles());
         server.createContext("/Cat.jpg", new WaterMarkImage());
+        server.createContext("/files/urls.txt", new HandlerUrl());
         server.start();
 
 
