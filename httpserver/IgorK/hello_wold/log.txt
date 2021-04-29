@@ -1,4 +1,10 @@
-апр. 29, 2021 8:59:54 AM com.company.handlers.MyHandler handle
-INFO: run method handle / MyHandle.class
-апр. 29, 2021 8:59:54 AM com.company.handlers.MyHandler handle
-INFO:  POST method
+апр. 29, 2021 9:52:09 AM com.company.factories.LoggerFactory main
+SEVERE: WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+апр. 29, 2021 9:52:37 AM com.company.factories.LoggerFactory main
+SEVERE: WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+апр. 29, 2021 9:52:44 AM com.company.factories.LoggerFactory main
+SEVERE: WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+апр. 29, 2021 9:52:48 AM com.company.factories.LoggerFactory main
+SEVERE: WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+апр. 29, 2021 10:02:23 AM com.company.factories.LoggerFactory main
+SEVERE: WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW

@@ -13,6 +13,6 @@ public class MyHandlerDoublePictures implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
 
         BufferedImage bo = null,square ;
-        square = ImageIO.read(new File("files/1.jpeg"));
+        square = ImageIO.read(new File("files/square.jpeg"));
     }
 }

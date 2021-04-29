@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SerialToJSON {
-    public static void toJSON(String query) {
+    public static Map<String, String> toJSON(String query) {
         String[] splitStart = query.split("&");
         String[] splitEnd = null;
         Map<String, String> map = new HashMap<>();
@@ -14,8 +14,13 @@ public class SerialToJSON {
             splitEnd = s.split("=");
             map.put(splitEnd[0], splitEnd[1]);
         }
-        String gson = new Gson().toJson(map);
-        System.out.println(gson);
-
+        return map;
     }
+
+    public static String returnGSON(Map<String, String> aMap) {
+        String gson = new Gson().toJson(aMap);
+        System.out.println(gson);
+        return gson;
+    }
+
 }
