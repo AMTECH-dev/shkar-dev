@@ -14,8 +14,8 @@ public class PictureOnPicture implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) {
         try {
-            BufferedImage bi = ImageIO.read(new File("./src/files/cat.jpg"));
-            BufferedImage bi2 = ImageIO.read(new File("./src/files/square.jpeg"));
+            BufferedImage bi = ImageIO.read(new File("./files/cat.jpg"));
+            BufferedImage bi2 = ImageIO.read(new File("./files/square.jpeg"));
 
             Graphics graphics = bi.getGraphics();
             graphics.drawImage(bi2, 0, 0, bi2.getWidth(), bi2.getHeight(), null);

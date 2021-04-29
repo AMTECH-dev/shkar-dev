@@ -2,6 +2,7 @@ package com.company.handlers;
 
 import com.company.enums.HttpCode;
 import com.company.enums.HttpHeaders;
+import com.company.utils.SendResponse;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -10,19 +11,14 @@ import java.nio.charset.StandardCharsets;
 
 public class MyHandlerForPage implements HttpHandler {
     //private static final Logger logger = LoggerFactory.createLoggerWithSetting(LoggerFactory.DEFAULT_CONFIG);
-
     String form;
     StringBuilder sb = new StringBuilder();
 
     public void handle(HttpExchange t) throws IOException {
         returnPage();
-
         byte[] response = form.getBytes(StandardCharsets.UTF_8);
         t.getResponseHeaders().add(HttpHeaders.CONTENT_TYPE.getName(), "text/html; charset=UTF-8");
-        t.sendResponseHeaders(HttpCode.CORRECT.getNumber(), response.length);
-        OutputStream os = t.getResponseBody();
-        os.write(response);
-        os.close();
+             SendResponse.response(t,HttpCode.CORRECT.getNumber(), response);
     }
 
     public void returnPage() {

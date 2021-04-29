@@ -4,7 +4,7 @@ import com.company.handlers.MyHandler;
 import com.company.handlers.MyHandlerForFilesFolder;
 import com.company.handlers.MyHandlerForPage;
 import com.company.handlers.PictureOnPicture;
-import com.company.handlers.Test;
+import com.company.handlers.PictureOnPicture;
 import com.sun.net.httpserver.HttpServer;
 
 import java.net.InetSocketAddress;

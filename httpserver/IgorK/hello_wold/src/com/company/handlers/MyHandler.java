@@ -1,13 +1,17 @@
 package com.company.handlers;
 
-import com.company.factories.LoggerFactory;
 import com.company.enums.HttpCode;
 import com.company.enums.HttpHeaders;
+import com.company.factories.LoggerFactory;
+import com.company.utils.SendResponse;
 import com.company.utils.WriteToFile;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
@@ -28,10 +32,7 @@ public class MyHandler implements HttpHandler {
             }
             byte[] response = String.format(sb.toString()).getBytes();
             t.getResponseHeaders().add(HttpHeaders.CONTENT_TYPE.getName(), "text/html; charset=UTF-8");
-            t.sendResponseHeaders(HttpCode.CORRECT.getNumber(), response.length);
-            OutputStream os = t.getResponseBody();
-            os.write(response);
-            os.close();
+            SendResponse.response(t, HttpCode.CORRECT.getNumber(), response);
             WriteToFile.writeToFile(sb.toString());
         } else {
             logger.info(" GET method");
@@ -50,21 +51,10 @@ public class MyHandler implements HttpHandler {
             form = sb.toString();
             byte[] response = form.getBytes(StandardCharsets.UTF_8);
             t.getResponseHeaders().add("Content-Type", "text/html; charset=UTF-8");
-            t.sendResponseHeaders(200, response.length);
-            OutputStream os = t.getResponseBody();
-            os.write(response);
-            os.close();
+            SendResponse.response(t, HttpCode.CORRECT.getNumber(), response);
         }
         SerialToJSON.toJSON(sb.toString());
     }
-
-
-
-    /*public void writeToFile(String s) throws IOException {
-        FileWriter fw = new FileWriter("UserInfo.txt", false);
-        fw.write(s);
-        fw.flush();
-    }*/
 }
 
 

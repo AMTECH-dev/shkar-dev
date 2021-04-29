@@ -12,7 +12,12 @@ public class SerialToJSON {
         Map<String, String> map = new HashMap<>();
         for (String s : splitStart) {
             splitEnd = s.split("=");
-            map.put(splitEnd[0], splitEnd[1]);
+            if (splitEnd[1] != null) {
+                map.put(splitEnd[0], splitEnd[1]);
+            } else {
+                splitEnd[1] = "unknown";
+                map.put(splitEnd[0], splitEnd[1]);
+            }
         }
         return map;
     }
