@@ -7,10 +7,10 @@ import java.util.Map;
 
 public class Mapper {
     public static Map<String, String> getParametersFromQueryString(String query) {
-        String[] pairs = query.split("&"); // a=1&b=2 -> [a=1, b=2]
+        String[] pairs = query.split("&");
         Map<String, String> map = new HashMap<>();
         for (String s : pairs) {
-            String[] keyValue = s.split("="); // a= ->[a]
+            String[] keyValue = s.split("=");
             if (keyValue.length > 1) {
                 map.put(keyValue[0], keyValue[1]);
             }
