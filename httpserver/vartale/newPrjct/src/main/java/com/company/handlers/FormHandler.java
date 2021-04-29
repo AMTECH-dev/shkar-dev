@@ -12,7 +12,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
-import java.nio.file.Paths;
 import java.util.Map;
 
 public class FormHandler implements HttpHandler {
@@ -34,7 +33,7 @@ public class FormHandler implements HttpHandler {
                 ReadingAndWritingData.writeResponse(httpExchange, HttpStatusCode.SUCCESS,
                         requestBody.getBytes());
 
-                Map<String, String> options = ReadingAndWritingData.getRequestOptions(requestBody);
+                Map<String, String> options = ReadingAndWritingData.getRequestOptionsMap(requestBody);
                 if (!options.containsKey(name) || !options.containsKey(gender)) {
                     logger.error("Options are empty!\t" + options);
                 }

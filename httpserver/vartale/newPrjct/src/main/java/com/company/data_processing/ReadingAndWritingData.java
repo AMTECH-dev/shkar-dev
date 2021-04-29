@@ -67,7 +67,7 @@ public class ReadingAndWritingData {
         }
     }
 
-    public static Map<String, String> getRequestOptions(String requestBody) {
+    public static Map<String, String> getRequestOptionsMap(String requestBody) {
         String[] requestBodyParts = requestBody.split("&");
         Map<String, String> options = new HashMap<>();
 

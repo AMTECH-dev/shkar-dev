@@ -1,5 +1,6 @@
 package com.company.handlers;
 
+import com.company.data_processing.Utils;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.company.data_processing.ImageProcessing;
@@ -24,11 +25,11 @@ public class FilesHandler implements HttpHandler {
 
         String responsePath = httpExchange.getRequestURI().getPath();
 
-        String pathToFile = Paths.get(responsePath.substring(1)).toAbsolutePath().toString();
-        String pathToImage = Paths.get("files/stop.png").toAbsolutePath().toString();
+        String pathToFile = Utils.toAbsPathToString(responsePath.substring(1));
+        String pathToImage = Utils.toAbsPathToString("files/stop.png");
 
         if (responsePath.equals("/files/cat.jpg")) {
-            logger.info("Response equals cat.jpg");
+            logger.info("Response equals 'cat.jpg'");
 
             ReadingAndWritingData.writeResponse(httpExchange, HttpStatusCode.SUCCESS,
                     ImageProcessing.copyMarkToImage(pathToFile, pathToImage));
