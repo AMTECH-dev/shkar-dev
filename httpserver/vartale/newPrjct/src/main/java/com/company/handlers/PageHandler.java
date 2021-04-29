@@ -1,11 +1,11 @@
-package handlers;
+package com.company.handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import data_processing.ReadingAndWritingData;
-import enums.HttpContentType;
-import enums.HttpHeader;
-import enums.HttpStatusCode;
+import com.company.data_processing.ReadingAndWritingData;
+import com.company.enums.HttpContentType;
+import com.company.enums.HttpHeader;
+import com.company.enums.HttpStatusCode;
 
 public class PageHandler implements HttpHandler {
 

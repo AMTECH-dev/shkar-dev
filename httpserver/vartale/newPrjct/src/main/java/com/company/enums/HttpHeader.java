@@ -1,4 +1,4 @@
-package enums;
+package com.company.enums;
 
 public enum HttpHeader {
     CONTENT_TYPE("Content-Type");

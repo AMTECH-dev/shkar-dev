@@ -1,21 +1,21 @@
-package handlers;
+package com.company.handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import data_processing.Converting;
-import data_processing.Logging;
-import data_processing.ReadingAndWritingData;
-import enums.HttpContentType;
-import enums.HttpHeader;
-import enums.HttpStatusCode;
-import enums.HttpMethod;
+import com.company.data_processing.Converting;
+import com.company.data_processing.ReadingAndWritingData;
+import com.company.enums.HttpContentType;
+import com.company.enums.HttpHeader;
+import com.company.enums.HttpStatusCode;
+import com.company.enums.HttpMethod;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class FormHandler implements HttpHandler {
-    private static final Logger logger = Logging.createLoggerWithSetting(Logging.DEFAULT_CONFIG);
+    private static final Logger logger = LogManager.getLogger(FormHandler.class);
 
     @Override
     public void handle(HttpExchange httpExchange) {
@@ -33,14 +33,16 @@ public class FormHandler implements HttpHandler {
                 ReadingAndWritingData.writeResponse(httpExchange, HttpStatusCode.SUCCESS,
                         requestBody.getBytes());
 
-                Map<String, String> options = ReadingAndWritingData.getRequestOptions(requestBody);
+                Map<String, String> options = ReadingAndWritingData.getRequestOptionsMap(requestBody);
                 if (!options.containsKey(name) || !options.containsKey(gender)) {
-                    logger.warning("Options are empty!\t" + options);
+                    logger.error("Options are empty!\t" + options);
                 }
                 String jsonWithOptions = Converting.convertMapToJSON(options);
+                ReadingAndWritingData.writeToFile("optionsJSON.txt", jsonWithOptions);
+
                 System.out.println(jsonWithOptions);
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
             }
 
         } else if (requestType.equalsIgnoreCase(HttpMethod.GET.getMethod()))

@@ -1,6 +1,7 @@
 package amtech.tools;
 
-import amtech.registry.TemporaryData;
+import amtech.registry.MediaTypes;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -19,7 +20,7 @@ public class Watermark {
             g2D.dispose();
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(canvas, TemporaryData.PNG, baos);
+            ImageIO.write(canvas, MediaTypes.PNG, baos);
             return baos.toByteArray();
         } catch (Exception e) {
             LOGGER.warning("Exception: " + e.getMessage());

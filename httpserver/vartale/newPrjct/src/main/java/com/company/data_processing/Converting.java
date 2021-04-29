@@ -1,4 +1,4 @@
-package data_processing;
+package com.company.data_processing;
 
 import com.google.gson.Gson;
 

@@ -1,7 +1,9 @@
-package data_processing;
+package com.company.data_processing;
 
 import com.sun.net.httpserver.HttpExchange;
-import enums.HttpStatusCode;
+import com.company.enums.HttpStatusCode;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -9,10 +11,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class ReadingAndWritingData {
-    private static final Logger logger = Logging.createLoggerWithSetting(Logging.DEFAULT_CONFIG);
+    private static final Logger logger = LogManager.getLogger(ReadingAndWritingData.class);
 
     private ReadingAndWritingData() {
     }
@@ -26,27 +27,39 @@ public class ReadingAndWritingData {
                 os.write(data);
                 logger.info("Writing data to OutputStream...");
             } catch (IOException e) {
-                logger.warning("I/O error occurs!" + e.getMessage());
+                logger.error("I/O error occurs!" + e.getMessage());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 
     public static byte[] readBytesFromPath(String path) {
         byte[] data = new byte[]{};
         try {
+            logger.info("Reading data...");
             data = Files.readAllBytes(Path.of(Paths.get(path).toUri()));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
         return data;
+    }
+
+    public static void writeToFile(String pathToFile, String data) {
+        try {
+            FileWriter fw = new FileWriter(pathToFile);
+            fw.write(data);
+            fw.close();
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
     }
 
     public static String getRequestBody(HttpExchange exchange) throws IOException {
         StringBuilder sb = new StringBuilder();
         String data;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(exchange.getRequestBody()))) {
+            logger.info("Reading data...");
             while ((data = br.readLine()) != null) {
                 sb.append(data);
             }
@@ -54,7 +67,7 @@ public class ReadingAndWritingData {
         }
     }
 
-    public static Map<String, String> getRequestOptions(String requestBody) {
+    public static Map<String, String> getRequestOptionsMap(String requestBody) {
         String[] requestBodyParts = requestBody.split("&");
         Map<String, String> options = new HashMap<>();
 
