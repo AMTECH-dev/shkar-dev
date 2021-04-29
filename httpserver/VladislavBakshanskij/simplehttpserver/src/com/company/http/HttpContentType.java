@@ -6,11 +6,12 @@ public enum HttpContentType {
     HTML("text/html", "html", "htm"),
     PNG("image/png", "png"),
     CSS("text/css", "css"),
-    JAVASCRIPT("text/javascript", "js", "javascript");
+    JAVASCRIPT("text/javascript", "js", "javascript"),
+    JSON("application/json");
     private static final String FORMAT_WITH_CHARSET = "%s; charset=utf-8";
 
-    private String value;
-    private String[] alternatives;
+    private final String value;
+    private final String[] alternatives;
 
     HttpContentType(String value, String... alternatives) {
         this.value = value;

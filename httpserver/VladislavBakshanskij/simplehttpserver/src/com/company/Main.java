@@ -17,7 +17,8 @@ public class Main {
         server.createContext("/getForm", new ShowFormHandler());
         server.createContext("/postquery", new PostHandler());
         server.createContext("/static/"  , new StaticHandler());
-        server.setExecutor(null);
+        server.createContext("/api/urls/"  , new GetAllUrls());
+        server.createContext("/urls"  , new ShowUrlPageHandler());
         server.start();
     }
 }

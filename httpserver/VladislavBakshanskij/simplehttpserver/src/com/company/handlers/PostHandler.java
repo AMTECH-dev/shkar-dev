@@ -2,20 +2,21 @@ package com.company.handlers;
 
 import com.company.error.InvalidRequestException;
 import com.company.factories.LoggerFactory;
-import com.company.http.HttpCode;
 import com.company.http.HttpContentType;
 import com.company.http.HttpHeader;
 import com.company.http.HttpMethod;
 import com.company.utils.FileUtils;
+import com.company.utils.JsonUtils;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class PostHandler extends OurHttpHandler {
-    private static final Logger logger = LoggerFactory.createLoggerWithConfiguration(PostHandler.class);
+    private static final Logger logger = LoggerFactory.createLogger(PostHandler.class);
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -27,18 +28,18 @@ public class PostHandler extends OurHttpHandler {
                 if (!params.containsKey(userName) || !params.containsKey(sex)) {
                     throw new InvalidRequestException("username or sex not set\nresponse body: " + params);
                 }
-                FileUtils.writeToFile("output.txt", params.toString());
+                FileUtils.writeToFile("output.json", JsonUtils.toJson(params));
                 String response = String.format("User name: %s \n Sex: %s", params.get(userName),
                         Sex.getById(Integer.parseInt(params.get(sex))).getDesc());
 
                 exchange.getResponseHeaders().add(HttpHeader.CONTENT_TYPE, HttpContentType.HTML.getFormattedWithCharset());
-                sendResponse(exchange, HttpCode.SUCCESS, response);
+                sendResponse(exchange, HttpURLConnection.HTTP_OK, response);
             }
         } catch (IOException e) {
             logger.log(Level.SEVERE, e.getMessage(), e);
         } catch (InvalidRequestException e) {
             logger.log(Level.INFO,  e.getMessage());
-            sendResponse(exchange, HttpCode.BAD_REQUEST, "Username or Sex is not set.");
+            sendResponse(exchange, HttpURLConnection.HTTP_BAD_REQUEST, "Username or Sex is not set.");
         }
     }
 

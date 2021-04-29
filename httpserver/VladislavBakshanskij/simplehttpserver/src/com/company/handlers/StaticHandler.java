@@ -1,7 +1,6 @@
 package com.company.handlers;
 
 import com.company.factories.LoggerFactory;
-import com.company.http.HttpCode;
 import com.company.http.HttpContentType;
 import com.company.http.HttpHeader;
 import com.company.utils.FileUtils;
@@ -10,12 +9,13 @@ import com.sun.net.httpserver.HttpExchange;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class StaticHandler extends OurHttpHandler {
-    private static final Logger logger = LoggerFactory.createLoggerWithConfiguration(StaticHandler.class);
+    private static final Logger logger = LoggerFactory.createLogger(StaticHandler.class);
     private static final String PATH_TO_HANDLER = "/static/";
 
     @Override
@@ -26,9 +26,10 @@ public class StaticHandler extends OurHttpHandler {
             if (path.endsWith("cat.png")) response = ImageUtils.createWaterMark("cat.png", "triangle.png", "catWithTriangle.png");
             else response = FileUtils.readAllBytesFromStaticFile(path);
             httpExchange.getResponseHeaders().add(HttpHeader.CONTENT_TYPE, HttpContentType.getByFileName(path).getFormattedWithCharset());
-            sendResponse(httpExchange, HttpCode.SUCCESS, response);
+            sendResponse(httpExchange, HttpURLConnection.HTTP_OK, response);
         } catch (FileNotFoundException e) {
-            sendResponse(httpExchange, HttpCode.NOT_FOUND, "Resource not found".getBytes());
+            sendResponse(httpExchange, HttpURLConnection.HTTP_NOT_FOUND, "Resource not found".getBytes());
+            logger.log(Level.INFO, "Invalid Resource path", e);
         } catch (URISyntaxException e) {
             logger.log(Level.INFO, "Invalid Resource path", e);
         } catch (IOException e) {

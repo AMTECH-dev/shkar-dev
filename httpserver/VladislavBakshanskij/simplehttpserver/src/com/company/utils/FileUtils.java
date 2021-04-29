@@ -4,20 +4,19 @@ import com.company.Main;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.*;
 
 public class FileUtils {
     private static final String STATIC_FOLDER = "static/";
     private static final String PATH_TO_IMAGE_FOLDER = STATIC_FOLDER + "img/";
     private static final String PAGE_FOLDER = STATIC_FOLDER + "pages/";
+    private static final String DEFAULT_LOG_DIRECTORY_NAME = "log";
 
     public static byte[] readAllBytesFromPage(String pageName) throws URISyntaxException, IOException {
         return readAllBytesFromPath(PAGE_FOLDER + pageName);
@@ -56,7 +55,32 @@ public class FileUtils {
         return Main.class.getResource(pathToResource);
     }
 
-    public static InputStream getConfigFileStream(String configFileName) {
-        return Main.class.getResourceAsStream(configFileName);
+    public static InputStream getResourceAsStream(String resourceName) {
+        return Main.class.getResourceAsStream(STATIC_FOLDER + resourceName);
+    }
+
+    public static Set<String> loadAllUrlsFromFile(String fileName) {
+        Set<String> urls = new HashSet<>();
+
+        try (var br = new BufferedReader(new FileReader(new File(getURLResource(STATIC_FOLDER + fileName).toURI())))) {
+            String url;
+            while ((url = br.readLine()) != null) {
+                urls.add(url);
+            }
+        } catch (Exception ignored) {
+        }
+
+        return urls;
+    }
+
+    public static Map<String, String> loadPropertiesFromFile(String fileName) throws IOException {
+        InputStream configFileStream = getResourceAsStream(fileName);
+        Map<String, String> propertyMap = new HashMap<>();
+        Properties properties = new Properties();
+        properties.load(configFileStream);
+        String logDirectory = properties.getProperty("log.directory");
+        if (logDirectory == null) logDirectory = DEFAULT_LOG_DIRECTORY_NAME;
+        properties.put("log.directory", logDirectory);
+        return propertyMap;
     }
 }
