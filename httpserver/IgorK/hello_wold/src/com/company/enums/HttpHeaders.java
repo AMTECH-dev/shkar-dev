@@ -1,4 +1,4 @@
-package com.company.handlers.enums;
+package com.company.enums;
 
 public enum HttpHeaders {
     CONTENT_TYPE("Content-Type");

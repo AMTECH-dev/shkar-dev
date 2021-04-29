@@ -1,4 +1,4 @@
-package com.company.handlers;
+package com.company.utils;
 
 import java.io.FileWriter;
 import java.io.IOException;

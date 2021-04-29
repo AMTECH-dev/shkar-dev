@@ -1,7 +1,9 @@
 package com.company.handlers;
 
-import com.company.handlers.enums.HttpCode;
-import com.company.handlers.enums.HttpHeaders;
+import com.company.factories.LoggerFactory;
+import com.company.enums.HttpCode;
+import com.company.enums.HttpHeaders;
+import com.company.utils.WriteToFile;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -10,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
 public class MyHandler implements HttpHandler {
-    private static final Logger logger = LoggerFactory.createLoggerWithSetting(LoggerFactory.DEFAULT_CONFIG);
+    private static final Logger logger = LoggerFactory.createLogger();
 
     @Override
     public void handle(HttpExchange t) throws IOException {
@@ -55,6 +57,8 @@ public class MyHandler implements HttpHandler {
         }
         SerialToJSON.toJSON(sb.toString());
     }
+
+
 
     /*public void writeToFile(String s) throws IOException {
         FileWriter fw = new FileWriter("UserInfo.txt", false);

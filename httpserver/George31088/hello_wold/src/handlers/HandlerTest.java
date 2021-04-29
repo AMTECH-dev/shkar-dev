@@ -1,11 +1,13 @@
 package handlers;
 
+import com.company.Mapper;
 import com.company.Testing;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,6 +49,8 @@ public class HandlerTest implements HttpHandler {
             os.close();
         }
         log.log(Level.SEVERE, "Test OK");
+        Map<String, String> params = Mapper.getParametersFromQueryString(sb.toString());
+        writeToFile(Mapper.toJSON(params));
     }
 
     public void writeToFile(String s) throws IOException {

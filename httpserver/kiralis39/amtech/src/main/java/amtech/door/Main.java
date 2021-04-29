@@ -6,16 +6,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.util.Properties;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import amtech.handlers.HomePageHandler;
 import amtech.handlers.RegFormHandler;
 import amtech.handlers.ResourcesHandler;
-import amtech.registry.TemporaryData;
+import amtech.registry.ConfigKeys;
+import amtech.registry.Configurations;
 import amtech.tools.LogConfigurator;
 import com.sun.net.httpserver.HttpServer;
 
@@ -25,8 +22,11 @@ public class Main {
     private static File[] needsFilesArray;
 
     public static void main(String[] args) {
+        System.out.println(); // empty line into console
+
         filesCheck();
         loadProps();
+        runAccessCheck();
 
         LOGGER = LogConfigurator.getLogger(Main.class);
         LOGGER.info("Logger Name: " + LOGGER.getName() + " is started succefull!");
@@ -45,15 +45,12 @@ public class Main {
 
     private static void filesCheck() {
         needsFilesArray = new File[] {
-                new File("config.cfg"),
-                new File("log.prop")
+                new File("config.cfg")
         };
 
         for (File f : needsFilesArray) {
             Path self = Paths.get(f.toURI());
-            while (Files.notExists(self)) {
-                LOGGER.info("Попытка создания файла '" + self + "'...");
-
+            if (Files.notExists(self)) {
                 try {
                     Files.createFile(self);
                 } catch (IOException e1) {
@@ -64,20 +61,22 @@ public class Main {
     }
 
     private static void loadProps() {
-        Properties config = new Properties();
         try (InputStreamReader ISR = new InputStreamReader(new FileInputStream(needsFilesArray[0]), StandardCharsets.UTF_8)) {
-            config.load(ISR);
+            Configurations.globalConfig.load(ISR);
 
-            TemporaryData.LOG_PATH = config.getProperty("logPath");
-            if (TemporaryData.LOG_PATH == null) {
-                config.setProperty("logPath", "./log/");
-                TemporaryData.LOG_PATH = config.getProperty("logPath");
-            }
+            Configurations.globalConfig.putIfAbsent(ConfigKeys.GLOBAL.ALLOW_START.name(), "false");
+            Configurations.globalConfig.putIfAbsent(ConfigKeys.LOG.LOG_PATH.name(), "./log/");
 
-            config.store(new OutputStreamWriter(new FileOutputStream(needsFilesArray[0])), "updated");
+            Configurations.globalConfig.store(new OutputStreamWriter(new FileOutputStream(needsFilesArray[0])), "updated");
         } catch (Exception ex) {
             LOGGER.info("Проблема при чтении config.properties");
             ex.printStackTrace();
+        }
+    }
+
+    private static void runAccessCheck() {
+        if (Configurations.globalConfig.getOrDefault(ConfigKeys.GLOBAL.ALLOW_START.name(), "false").equals("false")) {
+            System.exit(112);
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.company.handlers;
 
-import com.company.handlers.enums.HttpCode;
+import com.company.enums.HttpCode;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
