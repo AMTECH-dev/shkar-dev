@@ -7,12 +7,15 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class ReadingAndWritingData {
     private static final Logger logger = Logging.createLoggerWithSetting(Logging.DEFAULT_CONFIG);
 
-    private ReadingAndWritingData() {}
+    private ReadingAndWritingData() {
+    }
 
     public static void writeResponse(HttpExchange httpExchange, HttpStatusCode responseCode, byte[] data) {
         try {
@@ -49,5 +52,17 @@ public class ReadingAndWritingData {
             }
             return sb.toString();
         }
+    }
+
+    public static Map<String, String> getRequestOptions(String requestBody) {
+        String[] requestBodyParts = requestBody.split("&");
+        Map<String, String> options = new HashMap<>();
+
+        for (String keyValue : requestBodyParts) {
+            String[] kv = keyValue.split("=");
+
+            if (kv.length > 1) options.put(kv[0], kv[1]);
+        }
+        return options;
     }
 }
