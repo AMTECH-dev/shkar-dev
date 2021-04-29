@@ -1,4 +1,4 @@
-package enums;
+package com.company.enums;
 
 public enum HttpContentType {
     HTML("text/html; charset=UTF-8"),

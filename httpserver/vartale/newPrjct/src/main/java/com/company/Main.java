@@ -1,8 +1,10 @@
+package com.company;
+
 import java.io.*;
 import java.net.InetSocketAddress;
 
 import com.sun.net.httpserver.HttpServer;
-import handlers.*;
+import com.company.handlers.*;
 
 public class Main {
     public static void main(String[] args) {

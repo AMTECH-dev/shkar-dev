@@ -1,4 +1,4 @@
-package enums;
+package com.company.enums;
 
 public enum HttpStatusCode {
     INFORMATIONAL(100),
