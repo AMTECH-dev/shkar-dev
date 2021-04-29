@@ -17,7 +17,7 @@ public class LogConfigurator {
                     Configurations.globalConfig.get(ConfigKeys.LOG.LOG_PATH.name()) + "/"
                             + srcClassName + "_"
                             + sdf.format(System.currentTimeMillis())
-                            + LOGFILE_EXT, 0, 100, true);
+                            + LOGFILE_EXT, 0, 30, true);
 
             logger.addHandler(new ConsoleHandler());
             logger.addHandler(fileHandler);

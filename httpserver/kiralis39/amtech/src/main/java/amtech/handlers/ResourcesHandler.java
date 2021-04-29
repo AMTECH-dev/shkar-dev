@@ -40,7 +40,7 @@ public class ResourcesHandler extends Responser implements HttpHandler {
 
         } catch (Exception e) {
             LOGGER.warning("Something wrong?.. Exc.: " + e.getMessage());
-            writeResponse(httpExchange, new byte[]{0}, ReturnCodes.BAD_REQUEST); // произошел непредвиденный сбой?..
+            writeResponse(httpExchange, ReturnCodes.UNDEFINED_PROBLEM);
         }
 
     }
@@ -62,11 +62,11 @@ public class ResourcesHandler extends Responser implements HttpHandler {
             } catch (IOException e) {
                 LOGGER.warning("Exception: " + e.getMessage());
                 e.printStackTrace();
-                writeResponse(httpExchange, new byte[]{0}, ReturnCodes.ERR_404); // что-то случилось?
+                writeResponse(httpExchange, ReturnCodes.ERR_404);
             }
         } else {
             LOGGER.warning("Requared resource is a directory or absent?");
-            writeResponse(httpExchange, new byte[]{0}, ReturnCodes.NO_CONTENT); // код 'no-content'
+            writeResponse(httpExchange, ReturnCodes.NO_CONTENT);
         }
     }
 
@@ -95,7 +95,7 @@ public class ResourcesHandler extends Responser implements HttpHandler {
         } catch (IOException e) {
             LOGGER.warning("May be a requared resource is a directory or absent? Exc.: " + e.getMessage());
             e.printStackTrace();
-            writeResponse(httpExchange, new byte[]{0}, ReturnCodes.NO_CONTENT); // код 'no-content'
+            writeResponse(httpExchange, ReturnCodes.NO_CONTENT);
         }
     }
 }

@@ -14,50 +14,51 @@ h1 {
 }
 
 #blockBase {
-    width: auto; /* Ширина слоя */
+    width: 50%; /* Ширина слоя */
     padding: 9px; /* Поля вокруг текста */
     border: 3px solid black; /* Параметры границы */
     background: #fc0; /* Цвет фона */
+    display: block; /* Строчно-блочный элем<<ент */
+    margin-left: 25%;
 }
 
 #blockName {
-    width: 97.5%; /* Ширина первого слоя */
+    width: auto; /* Ширина первого слоя */
     padding: 9px; /* Поля вокруг текста */
     background: #f80; /* Цвет фона */
+}
 
+#userName {
+    background: #eee; /* Цвет фона */
+    font-family: monospace, Helvetica, sans-serif; /* Семейство шрифтов */
+    font-size: 18pt; /* Размер основного шрифта в пунктах  */
+    display: inline-block; /* Строчно-блочный элемент */
+    width: 25%; /* Ширина первого слоя */
 }
 
 #blockSex {
     margin-top: 3px;
-    width: 97.5%; /* Ширина первого слоя */
+    width: auto; /* Ширина первого слоя */
     padding: 9px; /* Поля вокруг текста */
     background: #448; /* Цвет фона */
     /* position: fixed; /* absolute | fixed | relative | static | inherit */
 }
 
 #blockSend {
-    width: 97.5%; /* Ширина первого слоя */
     padding: 9px; /* Поля вокруг текста */
     margin-top: 6px;
     background: #666; /* Цвет фона */
-    /* height: 20px; */
-    display: inline-block; /* Строчно-блочный элем<<ент */
+    display: block; /* Строчно-блочный элем<<ент */
+    width: auto; /* Ширина первого слоя */
 }
 
 #btnSend {
-    width: 100%; /* Ширина первого слоя */
+    width: 20%; /* Ширина первого слоя */
+    margin-left: 80%;
     background: #b0b0b5; /* Цвет фона */
-    display: inline;
+    /*  display: inline; */
     font-family: Helvetica, Verdana, sans-serif; /* Семейство шрифтов */
     font-size: 16pt; /* Размер основного шрифта в пунктах  */
-}
-
-#inputArea {
-    width: 100%; /* Ширина первого слоя */
-    background: #eee; /* Цвет фона */
-    display: inline-block; /* Строчно-блочный элемент */
-    font-family: monospace, Helvetica, sans-serif; /* Семейство шрифтов */
-    font-size: 18pt; /* Размер основного шрифта в пунктах  */
 }
 
 #sexSelector {

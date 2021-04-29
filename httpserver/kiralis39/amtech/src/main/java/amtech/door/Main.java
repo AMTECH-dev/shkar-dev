@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import amtech.handlers.HomePageHandler;
 import amtech.handlers.RegFormHandler;
 import amtech.handlers.ResourcesHandler;
+import amtech.handlers.URLParserHandler;
 import amtech.registry.ConfigKeys;
 import amtech.registry.Configurations;
 import amtech.tools.LogConfigurator;
@@ -35,6 +36,7 @@ public class Main {
             server = HttpServer.create(new InetSocketAddress(8000), 0);
             server.createContext("/reg", new RegFormHandler());
             server.createContext("/page", new HomePageHandler());
+            server.createContext("/parser", new URLParserHandler());
             server.createContext("/", new ResourcesHandler());
             server.start();
         } catch (IOException e) {
