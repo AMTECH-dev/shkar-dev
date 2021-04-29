@@ -11,7 +11,9 @@ public final class LoggerFactory {
         Logger log = Logger.getLogger(LoggerFactory.class.getName());
         try {
             LogManager.getLogManager().readConfiguration(LoggerFactory.class.getResourceAsStream(fileSettings));
-        } catch (IOException ignored) {log.severe("ERROR in LoggerFactory FILE" );
+        } catch (IOException ignored) {
+            ignored.getMessage();
+            log.severe("ERROR in LoggerFactory FILE" );
 
         }
         return log;

@@ -1,5 +1,7 @@
 package com.company.handlers;
 
+import com.company.handlers.enums.HttpCode;
+import com.company.handlers.enums.HttpHeaders;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -14,7 +16,6 @@ public class MyHandler implements HttpHandler {
     public void handle(HttpExchange t) throws IOException {
         logger.info("run method handle / MyHandle.class");
         StringBuilder sb = new StringBuilder();
-
         if (t.getRequestMethod().equalsIgnoreCase("POST")) {
             logger.info(" POST method");
             String data;
@@ -23,13 +24,13 @@ public class MyHandler implements HttpHandler {
                     sb.append(data);
                 }
             }
-            byte[] response = String.format("Ваши параметры: %s", sb.toString()).getBytes();
+            byte[] response = String.format(sb.toString()).getBytes();
             t.getResponseHeaders().add(HttpHeaders.CONTENT_TYPE.getName(), "text/html; charset=UTF-8");
             t.sendResponseHeaders(HttpCode.CORRECT.getNumber(), response.length);
-            WriteToFile(sb.toString());
             OutputStream os = t.getResponseBody();
             os.write(response);
             os.close();
+            WriteToFile.writeToFile(sb.toString());
         } else {
             logger.info(" GET method");
             String form;
@@ -44,10 +45,7 @@ public class MyHandler implements HttpHandler {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             form = sb.toString();
-
-
             byte[] response = form.getBytes(StandardCharsets.UTF_8);
             t.getResponseHeaders().add("Content-Type", "text/html; charset=UTF-8");
             t.sendResponseHeaders(200, response.length);
@@ -55,15 +53,14 @@ public class MyHandler implements HttpHandler {
             os.write(response);
             os.close();
         }
+        SerialToJSON.toJSON(sb.toString());
     }
 
-    public void WriteToFile(String s) throws IOException {
+    /*public void writeToFile(String s) throws IOException {
         FileWriter fw = new FileWriter("UserInfo.txt", false);
         fw.write(s);
         fw.flush();
-
-    }
-
+    }*/
 }
 
 
