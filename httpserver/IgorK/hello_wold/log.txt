@@ -88,3 +88,9 @@ INFO: run method handle / MyHandle.class
 INFO:  GET method
 апр. 29, 2021 1:47:22 PM com.company.handlers.MyHandler handle
 INFO: read to 'text.html' file
+апр. 29, 2021 1:48:56 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 29, 2021 1:48:56 PM com.company.handlers.MyHandler handle
+INFO:  GET method
+апр. 29, 2021 1:48:56 PM com.company.handlers.MyHandler handle
+INFO: read to 'text.html' file
