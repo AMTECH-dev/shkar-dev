@@ -11,14 +11,12 @@ import com.sun.net.httpserver.HttpHandler;
 
 import javax.print.DocFlavor;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 
@@ -30,18 +28,25 @@ public class URLParserHandler extends Responser implements HttpHandler {
         String requestType = httpExchange.getRequestMethod();
 
         try {
-            ArrayList<String> urlData = new ArrayList<String>(Files.readAllLines(Paths.get("urls.txt")));
+            Set<String> urlData = new HashSet<>(Files.readAllLines(Paths.get("urls.txt")));
             StringBuilder sb = new StringBuilder();
-            String urlAnswer;
+            HttpURLConnection conn;
 
             for (String url: urlData) {
-                Map<String, List<String>> tmp = new URL(url).openConnection().getHeaderFields();
-                sb.append("<p>");
-                for (Map.Entry<String, List<String>> entry : tmp.entrySet()) {
-                    sb.append(Arrays.asList(entry) + "<br>");
+                conn = (HttpURLConnection) new URL(url).openConnection();
+                conn.setRequestMethod("HEAD");
+
+                if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    Map<String, List<String>> fieldsMap = conn.getHeaderFields();
+                    for (Map.Entry<String, List<String>> entry : fieldsMap.entrySet()) {
+                        sb.append(Arrays.asList(entry) + "<br>");
+                    }
+                    sb.append("<hr>");
                 }
-                sb.append("</p>");
+
+                if (conn != null) {conn.disconnect();}
             }
+
 
             httpExchange.getResponseHeaders().add(ContentTypes.CONTENT_TYPE, ContentTypes.TEXT_HTML);
             writeResponse(httpExchange, sb.toString().getBytes());
