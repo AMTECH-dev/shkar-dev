@@ -12,7 +12,8 @@ public class Mapper {
         for (String s : pairs) {
             String[] keyValue = s.split("="); // a= ->[a]
             if (keyValue.length > 1) {
-                map.put(keyValue[0], keyValue[1]);}
+                map.put(keyValue[0], keyValue[1]);
+            }
         }
         return map;
     }
@@ -22,8 +23,4 @@ public class Mapper {
         return gson;
     }
 
-    public static void main(String[] args) {
-        Map<String, String> parametersFromQueryString = getParametersFromQueryString("a=1&b=2");
-        System.out.println(parametersFromQueryString);
-    }
 }
