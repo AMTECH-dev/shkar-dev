@@ -1,4 +1,4 @@
-package com.company.handlers;
+package com.company.handlers.enums;
 
 public enum HttpCode {
 

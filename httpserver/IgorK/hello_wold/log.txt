@@ -1,0 +1,4 @@
+апр. 29, 2021 8:59:54 AM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 29, 2021 8:59:54 AM com.company.handlers.MyHandler handle
+INFO:  POST method

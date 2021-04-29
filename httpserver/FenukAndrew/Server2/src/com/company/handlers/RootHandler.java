@@ -18,7 +18,8 @@ public class RootHandler implements OurHttpHandler {
             OutputStream os = exchange.getResponseBody();
             os.write(response);
             os.close();
-        } catch (URISyntaxException ignored) {
+        } catch (URISyntaxException ex) {
+            ex.printStackTrace();
         }
     }
 }
