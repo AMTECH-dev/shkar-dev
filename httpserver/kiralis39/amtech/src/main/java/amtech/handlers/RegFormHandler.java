@@ -2,6 +2,7 @@ package amtech.handlers;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -42,7 +43,7 @@ public class RegFormHandler extends Responser implements HttpHandler {
                 Map<String, String> userMap = getUserDataMap(sb.toString().split("&"));
                 if (userMap == null) {
                     httpExchange.getResponseHeaders().add(ContentTypes.CONTENT_TYPE, ContentTypes.TEXT_HTML);
-                    writeResponse(httpExchange, ReturnCodes.NOT_ACCEPTABLE);
+                    writeResponse(httpExchange, HttpURLConnection.HTTP_NOT_ACCEPTABLE);
                     return;
                 }
 
@@ -57,7 +58,7 @@ public class RegFormHandler extends Responser implements HttpHandler {
             } catch (Exception e) {
                 LOGGER.warning("RegForm exception: " + e.getMessage());
             	e.printStackTrace();
-                writeResponse(httpExchange, ReturnCodes.BAD_REQUEST);
+                writeResponse(httpExchange, HttpURLConnection.HTTP_BAD_REQUEST);
             }
             
         } else if (requestType.equalsIgnoreCase(QueryTypes.GET)) {
@@ -69,7 +70,7 @@ public class RegFormHandler extends Responser implements HttpHandler {
             } catch (Exception e) {
                 LOGGER.warning("RegForm exception: " + e.getMessage());
                 e.printStackTrace();
-                writeResponse(httpExchange, ReturnCodes.PAGE_LOAD_PROBLEM);
+                writeResponse(httpExchange, HttpURLConnection.HTTP_NOT_FOUND);
             }
 
         }

@@ -53,7 +53,7 @@ public class URLParserHandler extends Responser implements HttpHandler {
         } catch (Exception e) {
             LOGGER.severe("Exception: " + e.getMessage());
             e.printStackTrace();
-            writeResponse(httpExchange, ReturnCodes.BAD_REQUEST);
+            writeResponse(httpExchange, HttpURLConnection.HTTP_BAD_REQUEST);
         }
 
     }

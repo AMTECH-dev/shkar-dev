@@ -7,6 +7,7 @@ import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.util.logging.Logger;
 
 
@@ -17,20 +18,20 @@ public class Responser {
         String message = "";
 
         switch (sendCode) {
-            case ReturnCodes.BAD_REQUEST: message = AnswerMessages.formErrorMessage;
+            case HttpURLConnection.HTTP_BAD_REQUEST: message = AnswerMessages.formErrorMessage;
                 break;
-            case ReturnCodes.NOT_ACCEPTABLE: message = AnswerMessages.notEnougtDataMessage;
+            case HttpURLConnection.HTTP_NOT_ACCEPTABLE: message = AnswerMessages.notEnougtDataMessage;
                 break;
             case ReturnCodes.UNDEFINED_PROBLEM: message = AnswerMessages.undefinedErrorMessage;
                 break;
-            case ReturnCodes.ERR_404: message = AnswerMessages.undefinedErrorMessage;
+            case HttpURLConnection.HTTP_NOT_FOUND:
+            case HttpURLConnection.HTTP_UNAVAILABLE: message = AnswerMessages.pageLoadErrorMessage;
                 break;
-            case ReturnCodes.NO_CONTENT: message = AnswerMessages.notExistsErrorMessage;
+            case HttpURLConnection.HTTP_NO_CONTENT: message = AnswerMessages.notExistsErrorMessage;
                 break;
-            case ReturnCodes.HASDELETED_PROBLEM: message = AnswerMessages.resourceDeletedErrorMessage;
+            case HttpURLConnection.HTTP_GONE: message = AnswerMessages.resourceDeletedErrorMessage;
                 break;
-            case ReturnCodes.PAGE_LOAD_PROBLEM: message = AnswerMessages.pageLoadErrorMessage;
-                break;
+
             default: message = AnswerMessages.undefinedErrorMessage;
         }
 
@@ -38,7 +39,7 @@ public class Responser {
     }
 
     protected void writeResponse(HttpExchange httpExchange, byte[] bytes) {
-        writeResponse(httpExchange, bytes, ReturnCodes.OK);
+        writeResponse(httpExchange, bytes, HttpURLConnection.HTTP_OK);
     }
 
     protected void writeResponse(HttpExchange httpExchange, byte[] writeData, int sendCode) {
@@ -46,7 +47,7 @@ public class Responser {
 
         if (writeData.length < 0) {
             LOGGER.severe("RegFormHandler(): writeData lenght less 0. Its ok?");
-            resultCode = ReturnCodes.ERR_404;
+            resultCode = HttpURLConnection.HTTP_NOT_FOUND;
         }
 
         try {

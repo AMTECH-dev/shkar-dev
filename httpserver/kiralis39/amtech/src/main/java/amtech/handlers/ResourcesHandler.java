@@ -16,6 +16,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
@@ -62,11 +63,11 @@ public class ResourcesHandler extends Responser implements HttpHandler {
             } catch (IOException e) {
                 LOGGER.warning("Exception: " + e.getMessage());
                 e.printStackTrace();
-                writeResponse(httpExchange, ReturnCodes.ERR_404);
+                writeResponse(httpExchange, HttpURLConnection.HTTP_NOT_FOUND);
             }
         } else {
             LOGGER.warning("Requared resource is a directory or absent?");
-            writeResponse(httpExchange, ReturnCodes.NO_CONTENT);
+            writeResponse(httpExchange, HttpURLConnection.HTTP_NO_CONTENT);
         }
     }
 
@@ -95,7 +96,7 @@ public class ResourcesHandler extends Responser implements HttpHandler {
         } catch (IOException e) {
             LOGGER.warning("May be a requared resource is a directory or absent? Exc.: " + e.getMessage());
             e.printStackTrace();
-            writeResponse(httpExchange, ReturnCodes.NO_CONTENT);
+            writeResponse(httpExchange, HttpURLConnection.HTTP_NO_CONTENT);
         }
     }
 }
