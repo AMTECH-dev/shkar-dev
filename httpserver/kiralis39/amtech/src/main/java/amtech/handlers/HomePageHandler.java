@@ -22,7 +22,7 @@ public class HomePageHandler extends Responser implements HttpHandler {
         String requestType = httpExchange.getRequestMethod();
 
         if (requestType.equalsIgnoreCase(QueryTypes.POST)) {
-            LOGGER.info("page.html not work for 'POST' now, than returned nothing...");
+            LOGGER.info("This page not work for 'POST' now, than returned nothing...");
             return;
         } else if (requestType.equalsIgnoreCase(QueryTypes.GET)) {
         	byte[] response = Files.readAllBytes(Path.of(Paths.get("./pages/page.html").toUri()));

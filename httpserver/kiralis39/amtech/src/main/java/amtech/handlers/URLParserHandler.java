@@ -3,17 +3,12 @@ package amtech.handlers;
 
 import amtech.logic.Responser;
 import amtech.registry.ContentTypes;
-import amtech.registry.QueryTypes;
-import amtech.registry.ReturnCodes;
 import amtech.tools.LogConfigurator;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import javax.print.DocFlavor;
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -21,7 +16,7 @@ import java.util.logging.Logger;
 
 
 public class URLParserHandler extends Responser implements HttpHandler {
-    private static final Logger LOGGER = LogConfigurator.getLogger(RegFormHandler.class);
+    private static final Logger LOGGER = LogConfigurator.getLogger(SeeCatHandler.class);
 
     @Override
     public void handle(HttpExchange httpExchange) {

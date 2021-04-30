@@ -46,14 +46,14 @@ public class Responser {
         int resultCode = sendCode;
 
         if (writeData.length < 0) {
-            LOGGER.severe("RegFormHandler(): writeData lenght less 0. Its ok?");
+            LOGGER.severe("writeData lenght less 0. Its ok?");
             resultCode = HttpURLConnection.HTTP_NOT_FOUND;
         }
 
         try {
             httpExchange.sendResponseHeaders(resultCode, writeData.length);
 
-            LOGGER.info("Writing a response to page.html with code " + resultCode + "...");
+            LOGGER.finest("Writing a response to with code " + resultCode + "...");
             try (OutputStream os = httpExchange.getResponseBody()) {
                 os.write(writeData);
             } catch (Exception e) {
