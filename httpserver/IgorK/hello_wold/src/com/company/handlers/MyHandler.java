@@ -3,6 +3,7 @@ package com.company.handlers;
 import com.company.enums.HttpCode;
 import com.company.enums.HttpHeaders;
 import com.company.factories.LoggerFactory;
+import com.company.utils.RegularExpression;
 import com.company.utils.SendResponse;
 import com.company.utils.WriteToFile;
 import com.sun.net.httpserver.HttpExchange;
@@ -13,6 +14,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class MyHandler implements HttpHandler {
@@ -34,6 +36,8 @@ public class MyHandler implements HttpHandler {
             t.getResponseHeaders().add(HttpHeaders.CONTENT_TYPE.getName(), "text/html; charset=UTF-8");
             SendResponse.response(t, HttpCode.CORRECT.getNumber(), response);
             WriteToFile.write(sb.toString());
+            Map<String, String> stringStringMap = SerialToJSON.toJSON(sb.toString());
+            RegularExpression.checkingUserData(stringStringMap);
         } else {
             logger.info(" GET method");
             String form;
@@ -55,6 +59,9 @@ public class MyHandler implements HttpHandler {
             SendResponse.response(t, HttpCode.CORRECT.getNumber(), response);
         }
         SerialToJSON.toJSON(sb.toString());
+
+
+
     }
 }
 

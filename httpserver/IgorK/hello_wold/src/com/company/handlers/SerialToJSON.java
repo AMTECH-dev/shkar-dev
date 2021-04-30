@@ -8,7 +8,12 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class SerialToJSON {
+    public static void main(String[] args) {
+
+    }
+
     private static final Logger logger = LoggerFactory.createLogger();
+
     public static Map<String, String> toJSON(String query) {
         logger.info("Start toJSON method, class SerialToJSON ");
         String[] splitStart = query.split("&");
@@ -32,5 +37,4 @@ public class SerialToJSON {
         System.out.println(gson);
         return gson;
     }
-
 }

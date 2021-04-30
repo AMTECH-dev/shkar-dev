@@ -94,3 +94,279 @@ INFO: run method handle / MyHandle.class
 INFO:  GET method
 апр. 29, 2021 1:48:56 PM com.company.handlers.MyHandler handle
 INFO: read to 'text.html' file
+апр. 30, 2021 9:50:53 AM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 9:50:53 AM com.company.handlers.MyHandler handle
+INFO:  GET method
+апр. 30, 2021 9:50:53 AM com.company.handlers.MyHandler handle
+INFO: read to 'text.html' file
+апр. 30, 2021 9:50:53 AM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 9:50:53 AM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 10:28:25 AM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 10:28:25 AM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 10:28:31 AM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 11:25:00 AM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 11:25:00 AM com.company.handlers.MyHandler handle
+INFO:  GET method
+апр. 30, 2021 11:25:00 AM com.company.handlers.MyHandler handle
+INFO: read to 'text.html' file
+апр. 30, 2021 11:25:00 AM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 11:25:00 AM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 1:44:02 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 1:44:02 PM com.company.handlers.MyHandler handle
+INFO:  POST method
+апр. 30, 2021 1:44:02 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 1:44:02 PM com.company.utils.WriteToFile write
+INFO: Start write method, class WriteToFile 
+апр. 30, 2021 1:44:02 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 1:44:02 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 1:48:28 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 1:48:28 PM com.company.handlers.MyHandler handle
+INFO:  GET method
+апр. 30, 2021 1:48:28 PM com.company.handlers.MyHandler handle
+INFO: read to 'text.html' file
+апр. 30, 2021 1:48:28 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 1:48:28 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 1:48:28 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 1:48:42 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 1:48:42 PM com.company.handlers.MyHandler handle
+INFO:  POST method
+апр. 30, 2021 1:48:42 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 1:48:42 PM com.company.utils.WriteToFile write
+INFO: Start write method, class WriteToFile 
+апр. 30, 2021 1:48:42 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 1:50:26 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 1:50:26 PM com.company.handlers.MyHandler handle
+INFO:  GET method
+апр. 30, 2021 1:50:26 PM com.company.handlers.MyHandler handle
+INFO: read to 'text.html' file
+апр. 30, 2021 1:50:26 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 1:50:26 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 1:50:26 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 1:51:12 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 1:51:12 PM com.company.handlers.MyHandler handle
+INFO:  POST method
+апр. 30, 2021 1:51:12 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 1:51:12 PM com.company.utils.WriteToFile write
+INFO: Start write method, class WriteToFile 
+апр. 30, 2021 1:51:12 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 1:51:12 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 1:54:00 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 1:54:00 PM com.company.handlers.MyHandler handle
+INFO:  GET method
+апр. 30, 2021 1:54:00 PM com.company.handlers.MyHandler handle
+INFO: read to 'text.html' file
+апр. 30, 2021 1:54:00 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 1:54:00 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 1:54:23 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 1:54:23 PM com.company.handlers.MyHandler handle
+INFO:  POST method
+апр. 30, 2021 1:54:23 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 1:54:23 PM com.company.utils.WriteToFile write
+INFO: Start write method, class WriteToFile 
+апр. 30, 2021 1:54:23 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 1:55:53 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 1:55:53 PM com.company.handlers.MyHandler handle
+INFO:  GET method
+апр. 30, 2021 1:55:53 PM com.company.handlers.MyHandler handle
+INFO: read to 'text.html' file
+апр. 30, 2021 1:55:53 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 1:55:53 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 1:56:03 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 1:56:03 PM com.company.handlers.MyHandler handle
+INFO:  POST method
+апр. 30, 2021 1:56:03 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 1:56:03 PM com.company.utils.WriteToFile write
+INFO: Start write method, class WriteToFile 
+апр. 30, 2021 1:56:03 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 2:01:07 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 2:01:07 PM com.company.handlers.MyHandler handle
+INFO:  GET method
+апр. 30, 2021 2:01:07 PM com.company.handlers.MyHandler handle
+INFO: read to 'text.html' file
+апр. 30, 2021 2:01:07 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 2:01:07 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 2:01:13 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 2:01:13 PM com.company.handlers.MyHandler handle
+INFO:  POST method
+апр. 30, 2021 2:01:13 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 2:01:13 PM com.company.utils.WriteToFile write
+INFO: Start write method, class WriteToFile 
+апр. 30, 2021 2:01:13 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 2:30:47 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 2:30:47 PM com.company.handlers.MyHandler handle
+INFO:  GET method
+апр. 30, 2021 2:30:47 PM com.company.handlers.MyHandler handle
+INFO: read to 'text.html' file
+апр. 30, 2021 2:30:47 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 2:30:47 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 2:31:32 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 2:31:32 PM com.company.handlers.MyHandler handle
+INFO:  POST method
+апр. 30, 2021 2:31:32 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 2:31:32 PM com.company.utils.WriteToFile write
+INFO: Start write method, class WriteToFile 
+апр. 30, 2021 2:31:32 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 2:34:21 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 2:34:21 PM com.company.handlers.MyHandler handle
+INFO:  GET method
+апр. 30, 2021 2:34:21 PM com.company.handlers.MyHandler handle
+INFO: read to 'text.html' file
+апр. 30, 2021 2:34:21 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 2:34:21 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 2:34:50 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 2:34:50 PM com.company.handlers.MyHandler handle
+INFO:  POST method
+апр. 30, 2021 2:34:50 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 2:34:50 PM com.company.utils.WriteToFile write
+INFO: Start write method, class WriteToFile 
+апр. 30, 2021 2:34:50 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 2:35:57 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 2:35:57 PM com.company.handlers.MyHandler handle
+INFO:  GET method
+апр. 30, 2021 2:35:57 PM com.company.handlers.MyHandler handle
+INFO: read to 'text.html' file
+апр. 30, 2021 2:35:57 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 2:35:57 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 2:36:16 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 2:36:16 PM com.company.handlers.MyHandler handle
+INFO:  POST method
+апр. 30, 2021 2:36:16 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 2:36:16 PM com.company.utils.WriteToFile write
+INFO: Start write method, class WriteToFile 
+апр. 30, 2021 2:36:16 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 2:37:57 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 2:37:57 PM com.company.handlers.MyHandler handle
+INFO:  GET method
+апр. 30, 2021 2:37:57 PM com.company.handlers.MyHandler handle
+INFO: read to 'text.html' file
+апр. 30, 2021 2:37:57 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 2:37:57 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 2:38:27 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 2:38:27 PM com.company.handlers.MyHandler handle
+INFO:  POST method
+апр. 30, 2021 2:38:27 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 2:38:27 PM com.company.utils.WriteToFile write
+INFO: Start write method, class WriteToFile 
+апр. 30, 2021 2:38:27 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 2:39:23 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 2:39:23 PM com.company.handlers.MyHandler handle
+INFO:  GET method
+апр. 30, 2021 2:39:23 PM com.company.handlers.MyHandler handle
+INFO: read to 'text.html' file
+апр. 30, 2021 2:39:23 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 2:39:23 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 2:39:38 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 2:39:38 PM com.company.handlers.MyHandler handle
+INFO:  POST method
+апр. 30, 2021 2:39:38 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 2:39:38 PM com.company.utils.WriteToFile write
+INFO: Start write method, class WriteToFile 
+апр. 30, 2021 2:39:38 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 2:39:47 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 2:39:55 PM com.company.handlers.MyHandler handle
+INFO:  GET method
+апр. 30, 2021 2:39:55 PM com.company.handlers.MyHandler handle
+INFO: read to 'text.html' file
+апр. 30, 2021 2:39:55 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 2:39:55 PM com.company.utils.SendResponse response
+SEVERE: Exceptions: com.company.utils.SendResponse
+апр. 30, 2021 2:39:55 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 2:39:55 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 2:39:55 PM com.company.handlers.MyHandler handle
+INFO:  GET method
+апр. 30, 2021 2:39:55 PM com.company.handlers.MyHandler handle
+INFO: read to 'text.html' file
+апр. 30, 2021 2:39:55 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 2:39:55 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
+апр. 30, 2021 2:40:15 PM com.company.handlers.MyHandler handle
+INFO: run method handle / MyHandle.class
+апр. 30, 2021 2:40:21 PM com.company.handlers.MyHandler handle
+INFO:  POST method
+апр. 30, 2021 2:40:46 PM com.company.utils.SendResponse response
+INFO: Start response method, class SendResponse 
+апр. 30, 2021 2:40:46 PM com.company.utils.WriteToFile write
+INFO: Start write method, class WriteToFile 
+апр. 30, 2021 2:40:46 PM com.company.handlers.SerialToJSON toJSON
+INFO: Start toJSON method, class SerialToJSON 
