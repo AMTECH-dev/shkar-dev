@@ -23,7 +23,7 @@ public class Main {
         server.start();
 
 
-            log.log(Level.SEVERE, "Test OK");
+        log.log(Level.SEVERE, "Test OK");
 
     }
 }
