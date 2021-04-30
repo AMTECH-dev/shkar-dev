@@ -1,8 +1,8 @@
 package com.company.handlers;
 
 import com.company.data_processing.Converting;
+import com.company.data_processing.HttpProtocol;
 import com.company.data_processing.ParsingUrl;
-import com.company.data_processing.ReadingAndWritingData;
 import com.company.enums.HttpContentType;
 import com.company.enums.HttpHeader;
 import com.company.enums.HttpStatusCode;
@@ -38,10 +38,9 @@ public class UrlHandler implements HttpHandler {
 
         String jsonWithHeaders = new Gson().toJson(headers);
 
-        httpExchange.getResponseHeaders().add(HttpHeader.CONTENT_TYPE.getHeaderName(),
-                HttpContentType.HTML.getContentType());
+        HttpProtocol.addResponseHeaders(httpExchange, HttpHeader.CONTENT_TYPE, HttpContentType.HTML);
 
-        ReadingAndWritingData.writeResponse(httpExchange, HttpStatusCode.SUCCESS,
+        HttpProtocol.writeResponse(httpExchange, HttpStatusCode.SUCCESS,
                 jsonWithHeaders.getBytes());
     }
 }

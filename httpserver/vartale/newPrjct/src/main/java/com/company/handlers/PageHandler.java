@@ -1,5 +1,6 @@
 package com.company.handlers;
 
+import com.company.data_processing.HttpProtocol;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.company.data_processing.ReadingAndWritingData;
@@ -11,10 +12,9 @@ public class PageHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) {
-        httpExchange.getResponseHeaders().add(HttpHeader.CONTENT_TYPE.getHeaderName(),
-                HttpContentType.HTML.getContentType());
+        HttpProtocol.addResponseHeaders(httpExchange, HttpHeader.CONTENT_TYPE, HttpContentType.HTML);
 
-        ReadingAndWritingData.writeResponse(httpExchange, HttpStatusCode.SUCCESS,
+        HttpProtocol.writeResponse(httpExchange, HttpStatusCode.SUCCESS,
                 ReadingAndWritingData.readBytesFromPath("page.html"));
     }
 }

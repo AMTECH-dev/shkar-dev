@@ -1,5 +1,6 @@
 package com.company.handlers;
 
+import com.company.data_processing.HttpProtocol;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.company.data_processing.Converting;
@@ -21,15 +22,13 @@ public class FormHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) {
-        httpExchange.getResponseHeaders().add(HttpHeader.CONTENT_TYPE.getHeaderName(),
-                HttpContentType.HTML.getContentType());
+        HttpProtocol.addResponseHeaders(httpExchange, HttpHeader.CONTENT_TYPE, HttpContentType.HTML);
 
         String requestType = httpExchange.getRequestMethod();
-
         if (requestType.equalsIgnoreCase(HttpMethod.POST.getMethod())) {
 
             try {
-                String requestBody = ReadingAndWritingData.getRequestBody(httpExchange);
+                String requestBody = HttpProtocol.getRequestBody(httpExchange);
 
                 Map<String, String> options = ReadingAndWritingData.getRequestOptionsMap(requestBody);
 
@@ -37,11 +36,9 @@ public class FormHandler implements HttpHandler {
                         StandardCharsets.UTF_8);
                 ReadingAndWritingData.writeToFile("optionsJSON.txt", jsonWithUserData);
 
-                String formattedUserData = jsonWithUserData.substring(1, jsonWithUserData.length() - 1)
-                        .replaceAll(",", "<br>")
-                        .replaceAll("\"", " ");
+                String formattedUserData = formatJsonToTextTable(jsonWithUserData);
 
-                ReadingAndWritingData.writeResponse(httpExchange, HttpStatusCode.SUCCESS,
+                HttpProtocol.writeResponse(httpExchange, HttpStatusCode.SUCCESS,
                         formattedUserData.getBytes());
 
             } catch (IOException e) {
@@ -49,7 +46,13 @@ public class FormHandler implements HttpHandler {
             }
 
         } else if (requestType.equalsIgnoreCase(HttpMethod.GET.getMethod()))
-            ReadingAndWritingData.writeResponse(httpExchange, HttpStatusCode.SUCCESS,
+            HttpProtocol.writeResponse(httpExchange, HttpStatusCode.SUCCESS,
                     ReadingAndWritingData.readBytesFromPath("form.html"));
+    }
+
+    private static String formatJsonToTextTable(String json) {
+        return json.substring(1, json.length() - 1)
+                .replaceAll(",", "<br>")
+                .replaceAll("\"", " ");
     }
 }

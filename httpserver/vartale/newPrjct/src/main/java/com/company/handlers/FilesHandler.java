@@ -1,6 +1,7 @@
 package com.company.handlers;
 
-import com.company.data_processing.Converting;
+import com.company.data_processing.HttpProtocol;
+import com.company.file_utils.FileUtils;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.company.data_processing.ImageManipulation;
@@ -16,23 +17,22 @@ public class FilesHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) {
-        httpExchange.getResponseHeaders().add(HttpHeader.CONTENT_TYPE.getHeaderName(),
-                HttpContentType.HTML.getContentType());
+        HttpProtocol.addResponseHeaders(httpExchange, HttpHeader.CONTENT_TYPE, HttpContentType.HTML);
 
         LOGGER.info("FilesHandler in process...");
 
         String responsePath = httpExchange.getRequestURI().getPath();
 
-        String pathToFile = Converting.stringToAbsPathToString(responsePath.substring(1));
-        String pathToImage = Converting.stringToAbsPathToString("files/stop.png");
+        String pathToFile = FileUtils.stringToAbsPathToString(responsePath.substring(1));
+        String pathToImage = FileUtils.stringToAbsPathToString("files/stop.png");
 
         if (responsePath.equals("/files/cat.jpg")) {
             LOGGER.info("Response equals 'cat.jpg'");
 
-            ReadingAndWritingData.writeResponse(httpExchange, HttpStatusCode.SUCCESS,
+            HttpProtocol.writeResponse(httpExchange, HttpStatusCode.SUCCESS,
                     ImageManipulation.copyMarkToImage(pathToFile, pathToImage));
         } else
-            ReadingAndWritingData.writeResponse(httpExchange, HttpStatusCode.SUCCESS,
+            HttpProtocol.writeResponse(httpExchange, HttpStatusCode.SUCCESS,
                     ReadingAndWritingData.readBytesFromPath(pathToFile));
     }
 }

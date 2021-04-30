@@ -32,12 +32,4 @@ public class Converting {
         }
         return new HashSet<>(lines);
     }
-
-    public static Path toAbsPath(String path) {
-        return Paths.get(path).toAbsolutePath();
-    }
-
-    public static String stringToAbsPathToString(String path) {
-        return toAbsPath(path).toString();
-    }
 }
