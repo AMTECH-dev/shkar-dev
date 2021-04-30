@@ -13,6 +13,7 @@ public class Main {
             server.createContext("/form", new FormHandler());
             server.createContext("/page", new PageHandler());
             server.createContext("/files", new FilesHandler());
+            server.createContext("/parser", new UrlHandler());
             server.start();
         } catch (IOException e) {
             e.printStackTrace();

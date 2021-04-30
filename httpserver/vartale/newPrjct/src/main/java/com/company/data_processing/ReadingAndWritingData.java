@@ -9,8 +9,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ReadingAndWritingData {
     private static final Logger logger = LogManager.getLogger(ReadingAndWritingData.class);
@@ -21,7 +20,7 @@ public class ReadingAndWritingData {
     public static void writeResponse(HttpExchange httpExchange, HttpStatusCode responseCode, byte[] data) {
         try {
             httpExchange.sendResponseHeaders(responseCode.getStatusCode(), data.length);
-            logger.info("Writing response...");
+            logger.info("Writing response... Data length = " + data.length);
 
             try (OutputStream os = httpExchange.getResponseBody()) {
                 os.write(data);
