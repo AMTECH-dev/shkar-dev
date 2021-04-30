@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class ReadingAndWritingData {
-    private static final Logger logger = LogManager.getLogger(ReadingAndWritingData.class);
+    private static final Logger LOGGER = LogManager.getLogger(ReadingAndWritingData.class);
 
     private ReadingAndWritingData() {
     }
@@ -20,26 +20,26 @@ public class ReadingAndWritingData {
     public static void writeResponse(HttpExchange httpExchange, HttpStatusCode responseCode, byte[] data) {
         try {
             httpExchange.sendResponseHeaders(responseCode.getStatusCode(), data.length);
-            logger.info("Writing response... Data length = " + data.length);
+            LOGGER.info("Writing response... Data length = " + data.length);
 
             try (OutputStream os = httpExchange.getResponseBody()) {
                 os.write(data);
-                logger.info("Writing data to OutputStream...");
+                LOGGER.info("Writing data to OutputStream...");
             } catch (IOException e) {
-                logger.error("I/O error occurs!" + e.getMessage());
+                LOGGER.error("I/O error occurs!" + e.getMessage());
             }
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
     }
 
     public static byte[] readBytesFromPath(String path) {
         byte[] data = new byte[]{};
         try {
-            logger.info("Reading data...");
+            LOGGER.info("Reading data...");
             data = Files.readAllBytes(Path.of(Paths.get(path).toUri()));
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
         return data;
     }
@@ -50,7 +50,7 @@ public class ReadingAndWritingData {
             fw.write(data);
             fw.close();
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -58,7 +58,7 @@ public class ReadingAndWritingData {
         StringBuilder sb = new StringBuilder();
         String data;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(exchange.getRequestBody()))) {
-            logger.info("Reading data...");
+            LOGGER.info("Reading data...");
             while ((data = br.readLine()) != null) {
                 sb.append(data);
             }

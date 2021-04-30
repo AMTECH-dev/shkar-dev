@@ -12,10 +12,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public class FormHandler implements HttpHandler {
-    private static final Logger logger = LogManager.getLogger(FormHandler.class);
+    private static final Logger LOGGER = LogManager.getLogger(FormHandler.class);
 
     @Override
     public void handle(HttpExchange httpExchange) {
@@ -25,24 +27,25 @@ public class FormHandler implements HttpHandler {
         String requestType = httpExchange.getRequestMethod();
 
         if (requestType.equalsIgnoreCase(HttpMethod.POST.getMethod())) {
-            final String name = "name";
-            final String gender = "gender";
 
             try {
                 String requestBody = ReadingAndWritingData.getRequestBody(httpExchange);
-                ReadingAndWritingData.writeResponse(httpExchange, HttpStatusCode.SUCCESS,
-                        requestBody.getBytes());
 
                 Map<String, String> options = ReadingAndWritingData.getRequestOptionsMap(requestBody);
-                if (!options.containsKey(name) || !options.containsKey(gender)) {
-                    logger.error("Options are empty!\t" + options);
-                }
-                String jsonWithOptions = Converting.convertMapToJSON(options);
-                ReadingAndWritingData.writeToFile("optionsJSON.txt", jsonWithOptions);
 
-                System.out.println(jsonWithOptions);
+                String jsonWithUserData = URLDecoder.decode(Converting.convertMapToJSON(options),
+                        StandardCharsets.UTF_8);
+                ReadingAndWritingData.writeToFile("optionsJSON.txt", jsonWithUserData);
+
+                String formattedUserData = jsonWithUserData.substring(1, jsonWithUserData.length() - 1)
+                        .replaceAll(",", "<br>")
+                        .replaceAll("\"", " ");
+
+                ReadingAndWritingData.writeResponse(httpExchange, HttpStatusCode.SUCCESS,
+                        formattedUserData.getBytes());
+
             } catch (IOException e) {
-                logger.error(e.getMessage());
+                LOGGER.error(e.getMessage());
             }
 
         } else if (requestType.equalsIgnoreCase(HttpMethod.GET.getMethod()))

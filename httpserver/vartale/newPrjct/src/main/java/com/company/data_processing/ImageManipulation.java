@@ -11,10 +11,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-public class ImageProcessing {
-    private static final Logger logger = LogManager.getLogger(ImageProcessing.class);
+public class ImageManipulation {
+    private static final Logger LOGGER = LogManager.getLogger(ImageManipulation.class);
 
-    private ImageProcessing() {
+    private ImageManipulation() {
     }
 
     public static byte[] copyMarkToImage(String pathToImage, String pathToMark) {
@@ -23,7 +23,7 @@ public class ImageProcessing {
         BufferedImage origImage = null;
         BufferedImage mark;
         try {
-            logger.info("Reading images...");
+            LOGGER.info("Reading images...");
             origImage = ImageIO.read(Paths.get(pathToImage).toFile());
             mark = ImageIO.read(Paths.get(pathToMark).toFile());
 
@@ -31,16 +31,16 @@ public class ImageProcessing {
             graphics.drawImage(mark, 0, 0, origImage.getWidth(), origImage.getHeight(), null);
             graphics.dispose();
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 
         try {
-            logger.info("Writing image to " + os.getClass());
+            LOGGER.info("Writing image to " + os.getClass());
             if (origImage != null) ImageIO.write(origImage, markFormat, os);
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
 
         return os.toByteArray();

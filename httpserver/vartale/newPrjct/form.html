@@ -1,11 +1,11 @@
 <html>
     <head>
-        <title>Тестовое задание клиент-сервер (GET/POST) на Java</title>
+        <title>Тестовое задание по HTTP</title>
 
         <style type="text/css">
         body {
-            font-family: Arial-Narrow, Arial, Verdana, sans-serif; /* Семейство шрифтов */
-            font-size: 22pt; /* Размер основного шрифта в пунктах  */
+            font-family: Verdana, Arial, Helvetica, sans-serif; /* Семейство шрифтов */
+            font-size: 12pt; /* Размер основного шрифта в пунктах  */
             background-color: #ffdead; /* Цвет фона веб-страницы */
             color: #8b4513; /* Цвет основного текста */
         }
@@ -13,90 +13,49 @@
         h1 {
             color: #8b4513;
         }
-
-        div {
-            width: 460px; /* Ширина слоя */
-            margin: 7px; /* Значение отступов */
-            padding: 10px; /* Поля вокруг текста */
-            border: 4px solid black; /* Параметры границы */
-            background: #deb887; /* Цвет фона */
-        }
-
-        select {
-            overflow-y: hidden;
-            color: #8b4513;
-        }
-
-        select > option:checked {
-            box-shadow: 0 0 10px 100px #ffdead inset;
-        }
-
-        #blockName {
-            width: 25%; /* Ширина первого слоя */
-            padding: 12px; /* Поля вокруг текста */
-            background: #deb887; /* Цвет фона */
-        }
-
-        #blockSex {
-            width: 25%; /* Ширина первого слоя */
-            padding: 12px; /* Поля вокруг текста */
-            background: #deb887; /* Цвет фона */
-        }
-
-        #blockSend {
-            width: 25%; /* Ширина первого слоя */
-            padding: 12px; /* Поля вокруг текста */
-            margin-top: 30px;
-            background: #deb887; /* Цвет фона */
-            height: 30px; /* Высота слоя */
-            display: inline-block; /* Строчно-блочный элем<<ент */
-        }
-
-        #btnSend {
-            width: 100%; /* Ширина первого слоя */
-            background: #ffdead; /* Цвет фона */
-            color: #8b4513;
-            display: inline-block; /* Строчно-блочный элемент */
-            font-family: Arial-Narrow, Verdana, sans-serif; /* Семейство шрифтов */
-            font-size: 18pt; /* Размер основного шрифта в пунктах  */
-        }
-
-        #userName {
-            background: #ffdead;
-        }
-
-        #sex {
-            background: #ffdead;
+        form {
+            background: #deb887;
         }
 
         </style>
     </head>
 
     <body>
-        <h1>Тестовое задание 26 апр. 2021 г.</h1>
+        <h1>Введите паспортные данные в форму:</h1>
 
         <form action="/form" method="post">
-            <!-- поле ввода имени: -->
-            <div class="blockName" id="blockName">
-                <label>Введите своё имя:</label>
-                <input type="text" class="colorText" id="userName" name="name" value="">
-            </div>
+            <!-- поле ввода данных: -->
+            <p><b>Имя:</b><br>
+                <input type="text" name="firstName" placeholder="Имя" pattern="[а-яА-Я-]+?" required>
+            </p>
+            <p><b>Отчество:</b><br>
+                <input type="text" name="middleName" placeholder="Отчество" pattern="[а-яА-Я-]+?" required>
+            </p>
+            <p><b>Фамилия:</b><br>
+                <input type="text" name="lastName" placeholder="Фамилия" pattern="[а-яА-Я-]+?" required>
+            </p>
+            <p><b>Пол:</b><br>
+                <input type="radio" name="gender" value="man">мужской<br>
+                <input type="radio" name="gender" value="woman">женский<br>
+            </p>
+            <p><b>Дата рождения:</b><br>
+                <input type="date" name="dateOfBirth" placeholder="Дата рождения" required>
+            </p>
+            <p><b>Номер паспорта:</b><br>
+                <input type="text" name="passportNumber" placeholder="Номер паспорта" pattern="\d{4}" required>
+            </p>
+            <p><b>Серия паспорта:</b><br>
+                <input type="text" name="passportSet" placeholder="Серия паспорта" pattern="\d{6}" required>
+            </p>
+            <p><b>Номер телефона:</b><br>
+                <input type="text" name="phoneNumber" placeholder="Номер телефона" pattern="\+?\d{7,11}" required>
+            </p>
+            <p><b>Электронная почта:</b><br>
+                <input type="email" name="email" placeholder="Электронная почта" pattern="\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6}">
+            </p>
 
-            <!-- выбор пола: -->
-            <div class="blockSex" id="blockSex">
-                <p>
-                    <select size="3" name="gender" id="sex">
-                        <option disabled>Выберите пол</option>
-                        <option selected value="male">Мужской</option>
-                        <option value="female">Женский</option>
-                    </select>
-                </p>
-            </div>
-
-            <!-- кнопка "Отправить": -->
-            <div class="blockSend" id="blockSend">
-                <input type="submit" value="Отправить" id="btnSend">
-            </div>
+            <p><input type="submit" value="Отправить">
+                <input type="reset" value="Очистить"></p>
         </form>
     </body>
 </html>
