@@ -2,6 +2,7 @@ package amtech.handlers;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -10,6 +11,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import amtech.logic.Responser;
+import amtech.registry.AnswerMessages;
 import amtech.registry.ContentTypes;
 import amtech.registry.QueryTypes;
 import amtech.registry.ReturnCodes;
@@ -39,6 +41,12 @@ public class RegFormHandler extends Responser implements HttpHandler {
                 sb.append("&<hr><h4><a href=\"page.html\">Continue</a>");
 
                 Map<String, String> userMap = getUserDataMap(sb.toString().split("&"));
+                if (userMap == null) {
+                    httpExchange.getResponseHeaders().add(ContentTypes.CONTENT_TYPE, ContentTypes.TEXT_HTML);
+                    writeResponse(httpExchange, HttpURLConnection.HTTP_NOT_ACCEPTABLE);
+                    return;
+                }
+
                 LOGGER.info("User name: " + userMap.get("userName"));
                 LOGGER.info("User sex: " + userMap.get("userSex"));
 
@@ -50,7 +58,7 @@ public class RegFormHandler extends Responser implements HttpHandler {
             } catch (Exception e) {
                 LOGGER.warning("RegForm exception: " + e.getMessage());
             	e.printStackTrace();
-                writeResponse(httpExchange, new byte[] {0}, ReturnCodes.BAD_REQUEST);
+                writeResponse(httpExchange, HttpURLConnection.HTTP_BAD_REQUEST);
             }
             
         } else if (requestType.equalsIgnoreCase(QueryTypes.GET)) {
@@ -62,7 +70,7 @@ public class RegFormHandler extends Responser implements HttpHandler {
             } catch (Exception e) {
                 LOGGER.warning("RegForm exception: " + e.getMessage());
                 e.printStackTrace();
-                writeResponse(httpExchange, new byte[] {0}, ReturnCodes.BAD_REQUEST);
+                writeResponse(httpExchange, HttpURLConnection.HTTP_NOT_FOUND);
             }
 
         }
@@ -75,10 +83,17 @@ public class RegFormHandler extends Responser implements HttpHandler {
 
     private Map<String, String> getUserDataMap(String[] splittedUserData) {
         LOGGER.info("Get user form data:");
+
+        String uName = splittedUserData[0].contains("userName=") ? splittedUserData[0].replace("userName=", "") : "";
+        String uSex = splittedUserData[1].contains("sex=") ? splittedUserData[1].replace("sex=", "") : "";
+        if (uName.isBlank() || uSex.isBlank()) {
+            return null;
+        }
+
         return new HashMap<>() {
             {
-                put("userName", splittedUserData[0].replace("input=", ""));
-                put("userSex", splittedUserData[1].replace("sex=", ""));
+                put("userName", uName);
+                put("userSex", uSex);
             }
         };
     }

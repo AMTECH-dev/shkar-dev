@@ -33,7 +33,7 @@ public class MyHandler implements HttpHandler {
             byte[] response = String.format(sb.toString()).getBytes();
             t.getResponseHeaders().add(HttpHeaders.CONTENT_TYPE.getName(), "text/html; charset=UTF-8");
             SendResponse.response(t, HttpCode.CORRECT.getNumber(), response);
-            WriteToFile.writeToFile(sb.toString());
+            WriteToFile.write(sb.toString());
         } else {
             logger.info(" GET method");
             String form;
@@ -46,6 +46,7 @@ public class MyHandler implements HttpHandler {
                 }
                 io.close();
             } catch (IOException e) {
+                logger.severe("Errors");
                 e.printStackTrace();
             }
             form = sb.toString();

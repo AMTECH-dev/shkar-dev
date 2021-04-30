@@ -31,6 +31,7 @@ public class HandlerTest implements HttpHandler {
             OutputStream os = t.getResponseBody();
             os.write(response);
             os.close();
+
         } else {
             String line;
             BufferedReader io = new BufferedReader(new FileReader("pages/test.html"));

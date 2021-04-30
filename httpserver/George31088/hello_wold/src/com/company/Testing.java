@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 public class Testing {
     public static final String DEFAULT_CONFIG = "log/logging.properties";
+
     public static Logger createLogger(String fileName) {
         Logger logger = Logger.getLogger("status");
         logger.addHandler(new ConsoleHandler());

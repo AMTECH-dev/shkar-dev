@@ -1,38 +1,37 @@
 * {
     color:red
-  }
+}
 
 body {
-        font-family: Arial-Narrow, Arial, Verdana, sans-serif; /* Семейство шрифтов */
-        font-size: 24pt; /* Размер основного шрифта в пунктах  */
-        background-color: #404045; /* Цвет фона веб-страницы */
-        color: #333; /* Цвет основного текста */
-    }
+    font-family: Arial-Narrow, Arial, Verdana, sans-serif; /* Семейство шрифтов */
+    font-size: 20pt; /* Размер основного шрифта в пунктах  */
+    background-color: #303035; /* Цвет фона веб-страницы */
+}
 
-    h1 {
-        color: #fff
-    }
+h1 {
+    color: #fff
+}
 
-    #blockBase {
-        width: 98%; /* Ширина слоя */
-        padding: 9px; /* Поля вокруг текста */
-        border: 3px solid black; /* Параметры границы */
-        background: #fc0; /* Цвет фона */
-        position: relative; /* absolute | fixed | relative | static | inherit */
-    }
 
-    #blockSend {
-        padding: 9px; /* Поля вокруг текста */
-        margin: 3px;
-        height: 20px; /* Высота слоя */
-    }
+#blockBase {
+    width: auto; /* Ширина слоя */
+    border: 3px solid black; /* Параметры границы */
+    background: #fc0; /* Цвет фона */
+}
 
-    #blockLink {
-<!--    padding: 9px; /* Поля вокруг текста */-->
-<!--    margin-top: 3px;-->
-        width: 100%; /* Ширина первого слоя */
-<!--        background: #ccc; /* Цвет фона */-->
-        display: block; /* Строчно-блочный элемент */
-        font-family: Arial-Narrow, Verdana, sans-serif; /* Семейство шрифтов */
-        font-size: 12pt; /* Размер основного шрифта в пунктах  */
-    }
+#blockLink {
+    margin: 0px;
+    padding: 0px;
+    
+    margin-left: 28%;
+    height: 200px;
+    padding-bottom: 9px;
+}
+
+#imLink {
+    float: left; /*Задаем обтекание*/
+    line-height: 16px;/*Высота строки +  верт. центрирования текста*/
+    font-size: 40px;
+    color: white;
+    margin-right: 10px;
+}
