@@ -11,18 +11,16 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import amtech.logic.Responser;
-import amtech.registry.AnswerMessages;
 import amtech.registry.ContentTypes;
 import amtech.registry.QueryTypes;
-import amtech.registry.ReturnCodes;
 import amtech.tools.LogConfigurator;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 
-public class RegFormHandler extends Responser implements HttpHandler {
-    private static final Logger LOGGER = LogConfigurator.getLogger(RegFormHandler.class);
+public class SeeCatHandler extends Responser implements HttpHandler {
+    private static final Logger LOGGER = LogConfigurator.getLogger(SeeCatHandler.class);
 
     @Override
     public void handle(HttpExchange httpExchange) {
@@ -32,13 +30,12 @@ public class RegFormHandler extends Responser implements HttpHandler {
         if (requestType.equalsIgnoreCase(QueryTypes.POST)) {
 
             try (BufferedReader br = new BufferedReader(new InputStreamReader(httpExchange.getRequestBody()))) {
-                LOGGER.info("Read a request from reg.html...");
+                LOGGER.info("Read a request from seecat.html...");
 
             	String data;
                 while ((data = br.readLine()) != null) {
                     sb.append(data);
                 }
-                sb.append("&<hr><h4><a href=\"page.html\">Continue</a>");
 
                 Map<String, String> userMap = getUserDataMap(sb.toString().split("&"));
                 if (userMap == null) {
@@ -47,11 +44,9 @@ public class RegFormHandler extends Responser implements HttpHandler {
                     return;
                 }
 
-                LOGGER.info("User name: " + userMap.get("userName"));
-                LOGGER.info("User sex: " + userMap.get("userSex"));
-
                 gsonizer(userMap);
 
+                sb.append("<hr><h4><a href=\"page.html\">Continue</a>");
                 httpExchange.getResponseHeaders().add(ContentTypes.CONTENT_TYPE, ContentTypes.TEXT_HTML);
                 writeResponse(httpExchange, sb.toString().getBytes());
 
@@ -62,17 +57,19 @@ public class RegFormHandler extends Responser implements HttpHandler {
             }
             
         } else if (requestType.equalsIgnoreCase(QueryTypes.GET)) {
+            giveThisPage(httpExchange);
+        }
+    }
 
-            try {
-                byte[] response = Files.readAllBytes(Path.of(Paths.get("./pages/reg.html").toUri()));
-                httpExchange.getResponseHeaders().add(ContentTypes.CONTENT_TYPE, ContentTypes.TEXT_HTML);
-                writeResponse(httpExchange, response);
-            } catch (Exception e) {
-                LOGGER.warning("RegForm exception: " + e.getMessage());
-                e.printStackTrace();
-                writeResponse(httpExchange, HttpURLConnection.HTTP_NOT_FOUND);
-            }
-
+    private void giveThisPage(HttpExchange httpExchange) {
+        try {
+            byte[] response = Files.readAllBytes(Path.of(Paths.get("./pages/seecat.html").toUri()));
+            httpExchange.getResponseHeaders().add(ContentTypes.CONTENT_TYPE, ContentTypes.TEXT_HTML);
+            writeResponse(httpExchange, response);
+        } catch (Exception e) {
+            LOGGER.warning("RegForm exception: " + e.getMessage());
+            e.printStackTrace();
+            writeResponse(httpExchange, HttpURLConnection.HTTP_NOT_FOUND);
         }
     }
 
@@ -84,17 +81,29 @@ public class RegFormHandler extends Responser implements HttpHandler {
     private Map<String, String> getUserDataMap(String[] splittedUserData) {
         LOGGER.info("Get user form data:");
 
-        String uName = splittedUserData[0].contains("userName=") ? splittedUserData[0].replace("userName=", "") : "";
-        String uSex = splittedUserData[1].contains("sex=") ? splittedUserData[1].replace("sex=", "") : "";
-        if (uName.isBlank() || uSex.isBlank()) {
-            return null;
-        }
+        boolean isDataCorrect = formDataChecker(splittedUserData);
 
-        return new HashMap<>() {
+        return isDataCorrect ? new HashMap<>() {
             {
                 put("userName", uName);
                 put("userSex", uSex);
+
             }
-        };
+        } : null;
+    }
+
+    private String uName, uSex;
+    private boolean formDataChecker(String[] splittedUserData) {
+        uName = splittedUserData[0].contains("userName=") ? splittedUserData[0].replace("userName=", "") : "";
+        uSex = splittedUserData[1].contains("sex=") ? splittedUserData[1].replace("sex=", "") : "";
+
+        LOGGER.info("User name: " + uName);
+        LOGGER.info("User sex: " + uSex);
+
+        if (uName.isBlank() || uSex.isBlank()) {
+            return false;
+        }
+
+        return true;
     }
 }

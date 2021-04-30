@@ -1,0 +1,158 @@
+<html lang="ru">
+
+    <head>
+        <meta charset="utf-8">
+        <link href="./files/passportStyle.css" rel="stylesheet" type="text/css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Ввод паспортных данных</title>
+    </head>
+
+
+    <body>
+        <div class="baseDiv">
+
+            <div class="upLabelDiv" align="center">
+                <label><h1>Заполните следующие поля паспортными данными:</h1></label>
+                <label><h6>(выделеные красным цветом поля обязательны к заполнению)</h6></label>
+            </div>
+
+            <div class="dataFormDiv">
+                <form name="passportForm" class="passportForm" id="passportForm" action="/passport" method="post" accept-charset="UTF-8">
+
+                    <!-- строка ФИО: -->
+                    <div class="FIOdiv">
+                        <div class="fio">
+                            <img src="./files/nameIcon.png" width="32" height="32" alt="nameIcon" align="top">
+                        </div>
+
+                        <div class="fio">
+                            <label>Фамилия Имя Отчество:</label>
+                        </div>
+
+                        <div class="fioInput" id="fioInput">
+                            <INPUT TYPE="text" name="fioField" id="fioField" placeholder="ФИО" pattern="[А-Яа-я]+ [А-Яа-я]+ [А-Яа-я]+" required>
+                        </div>
+                    </div>
+
+                    <!-- строка паспорт: -->
+                    <div class="PassportDiv">
+                        <div class="pass">
+                            <img src="./files/nameIcon.png" width="32" height="32" alt="nameIcon" align="top">
+                        </div>
+
+                        <div class="pass">
+                            <label>Серия и номер паспорта:</label>
+                        </div>
+
+                        <div class="passInput" id="passInput">
+                            <INPUT TYPE="tel" name="passSField" id="passSField" placeholder="СЕРИЯ" maxlength="4" required>
+                            <INPUT TYPE="tel" name="passField" id="passField" placeholder="НОМЕР" maxlength="6" required>
+                        </div>
+                    </div>
+
+                    <!-- Дата рождения: -->
+                    <div class="birthDateDiv">
+                        <div class="birth">
+                            <img src="./files/nameIcon.png" width="32" height="32" alt="nameIcon" align="top">
+                        </div>
+
+                        <div class="birth">
+                            <label>Дата вашего рождения:</label>
+                        </div>
+
+                        <div class="birthInput" id="birthInput">
+                            <INPUT TYPE="date" name="birthField" id="birthField" required>
+                        </div>
+                    </div>
+
+                    <!-- Адрес проживания: -->
+                    <div class="addressDiv">
+                        <div class="addr">
+                            <img src="./files/nameIcon.png" width="32" height="32" alt="nameIcon" align="top">
+                        </div>
+
+                        <div class="addr">
+                            <label>Адрес прописки:</label>
+                        </div>
+
+                        <div class="addrInput" id="addrInput">
+                            <INPUT TYPE="text" name="addrField" id="addrField" placeholder="Город, Улица, дом/корп/кв" required>
+                        </div>
+                    </div>
+
+                    <!-- строка Phone mobile: -->
+                    <div class="PhoneDiv">
+                        <div class="phone">
+                            <img src="./files/nameIcon.png" width="32" height="32" alt="nameIcon" align="top">
+                        </div>
+
+                        <div class="phone">
+                            <label>Номер телефона (сотовый):</label>
+                        </div>
+
+                        <div class="phoneInput" id="phoneInput">
+                            <label>+</label>
+                            <INPUT TYPE="number" name="phoneFieldPrefix" id="phoneFieldPrefix" value="7" required>
+                            <INPUT TYPE="tel" name="phoneFieldBody" id="phoneFieldBody" pattern="\([0-9]{3}\)(\s?)[0-9]{3}-?[0-9]{2}-?[0-9]{2}" maxlength="15" value="()" required>
+                            <small>Format: (111) 222-33-44</small>
+                        </div>
+                    </div>
+
+                    <!-- строка Phone home: -->
+                    <div class="PhoneHDiv">
+                        <div class="phoneH">
+                            <img src="./files/nameIcon.png" width="32" height="32" alt="nameIcon" align="top">
+                        </div>
+
+                        <div class="phoneH">
+                            <label>Номер телефона (домашний):</label>
+                        </div>
+
+                        <div class="phoneHInput" id="phoneHInput">
+                            <INPUT TYPE="tel" name="phoneHFieldBody" id="phoneHFieldBody" minlength="5" maxlength="8" placeholder="##-##-##">
+                        </div>
+                    </div>
+
+                    <!-- строка Mail: -->
+                    <div class="MailDiv">
+                        <div class="mail">
+                            <img src="./files/nameIcon.png" width="32" height="32" alt="nameIcon" align="top">
+                        </div>
+
+                        <div class="mail">
+                            <label>Адрес эл. почты:</label>
+                        </div>
+
+                        <div class="mailInput" id="mailInput">
+                            <INPUT TYPE="email" name="mailFieldBody" id="mailFieldBody" value="@">
+                        </div>
+                    </div>
+
+
+                    <!-- выбор пола: -->
+                    <DIV class="blockSex" id="blockSex">
+                        <div class="mail">
+                            <label>Укажите свой пол:</label>
+                        </div>
+
+                        <select size="" name="sex" id="sexSelector" required>
+                            <option value="male">Мужской</option>
+                            <option value="female">Женский</option>
+                        </select>
+                    </DIV>
+
+
+                    <!-- кнопка: -->
+                    <div class="submitDiv">
+                        <input type="submit" value="Отправить" id="btnReset">
+                        <input type="reset" value="Сбросить" id="btnSend">
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </body>
+
+</html>

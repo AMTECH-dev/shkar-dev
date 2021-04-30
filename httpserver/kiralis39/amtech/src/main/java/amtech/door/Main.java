@@ -8,10 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
 
-import amtech.handlers.HomePageHandler;
-import amtech.handlers.RegFormHandler;
-import amtech.handlers.ResourcesHandler;
-import amtech.handlers.URLParserHandler;
+import amtech.handlers.*;
 import amtech.registry.ConfigKeys;
 import amtech.registry.Configurations;
 import amtech.tools.LogConfigurator;
@@ -30,14 +27,17 @@ public class Main {
         runAccessCheck();
 
         LOGGER = LogConfigurator.getLogger(Main.class);
-        LOGGER.info("Logger Name: " + LOGGER.getName() + " is started succefull!");
+        LOGGER.info(LogConfigurator.ANSI_CYAN + "Logger Name: " + LOGGER.getName() + " is started succefull!" + LogConfigurator.ANSI_RESET);
 
         try {
             server = HttpServer.create(new InetSocketAddress(8000), 0);
-            server.createContext("/reg", new RegFormHandler());
-            server.createContext("/page", new HomePageHandler());
-            server.createContext("/parser", new URLParserHandler());
-            server.createContext("/", new ResourcesHandler());
+            server.createContext("/passport",   new PassportHandler());
+            server.createContext("/seecat",     new SeeCatHandler());
+            server.createContext("/page",       new HomePageHandler());
+            server.createContext("/parser",     new URLParserHandler());
+
+            server.createContext("/exit",       new MenuPageHandler());
+            server.createContext("/",           new ResourcesHandler());
             server.start();
         } catch (IOException e) {
             LOGGER.warning("Exception: " + e.getMessage());

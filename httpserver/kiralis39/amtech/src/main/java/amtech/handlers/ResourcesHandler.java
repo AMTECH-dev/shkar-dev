@@ -27,7 +27,7 @@ public class ResourcesHandler extends Responser implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) {
-        LOGGER.info("Clients reqested resource: " + httpExchange.getRequestURI().getPath());
+        LOGGER.fine(LogConfigurator.ANSI_PURPLE + "Clients reqested resource: " + httpExchange.getRequestURI().getPath() + LogConfigurator.ANSI_RESET);
 
         try {
 
@@ -66,7 +66,7 @@ public class ResourcesHandler extends Responser implements HttpHandler {
                 writeResponse(httpExchange, HttpURLConnection.HTTP_NOT_FOUND);
             }
         } else {
-            LOGGER.warning("Requared resource is a directory or absent?");
+            LOGGER.warning("Requared resource '" + requestData + "' is a directory or absent?");
             writeResponse(httpExchange, HttpURLConnection.HTTP_NO_CONTENT);
         }
     }
