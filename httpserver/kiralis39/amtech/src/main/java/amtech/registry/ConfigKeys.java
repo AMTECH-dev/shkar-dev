@@ -1,5 +1,6 @@
 package amtech.registry;
 
+
 public class ConfigKeys {
 
     public enum LOG{
@@ -7,6 +8,8 @@ public class ConfigKeys {
     }
 
     public enum GLOBAL{
-        ALLOW_START
+        ALLOW_START,
+        SERVER_PORT,
+        MIN_CASH_VALUE
     }
 }

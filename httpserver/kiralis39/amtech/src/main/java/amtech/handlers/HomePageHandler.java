@@ -26,7 +26,7 @@ public class HomePageHandler extends Responser implements HttpHandler {
             return;
         } else if (requestType.equalsIgnoreCase(QueryTypes.GET)) {
         	byte[] response = Files.readAllBytes(Path.of(Paths.get("./pages/page.html").toUri()));
-            httpExchange.getResponseHeaders().add(ContentTypes.CONTENT_TYPE, ContentTypes.TEXT_HTML);
+            httpExchange.getResponseHeaders().add(ContentTypes.CONTENT_TYPE, ContentTypes.HTML);
             writeResponse(httpExchange, response);
         }
     }

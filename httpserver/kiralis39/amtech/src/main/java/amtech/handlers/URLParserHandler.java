@@ -20,8 +20,6 @@ public class URLParserHandler extends Responser implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) {
-        String requestType = httpExchange.getRequestMethod();
-
         try {
             Set<String> urlData = new HashSet<>(Files.readAllLines(Paths.get("urls.txt")));
             StringBuilder sb = new StringBuilder();
@@ -43,7 +41,7 @@ public class URLParserHandler extends Responser implements HttpHandler {
             }
 
 
-            httpExchange.getResponseHeaders().add(ContentTypes.CONTENT_TYPE, ContentTypes.TEXT_HTML);
+            httpExchange.getResponseHeaders().add(ContentTypes.CONTENT_TYPE, ContentTypes.HTML);
             writeResponse(httpExchange, sb.toString().getBytes());
         } catch (Exception e) {
             LOGGER.severe("Exception: " + e.getMessage());

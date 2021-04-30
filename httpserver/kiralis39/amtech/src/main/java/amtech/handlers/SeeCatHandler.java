@@ -39,7 +39,7 @@ public class SeeCatHandler extends Responser implements HttpHandler {
 
                 Map<String, String> userMap = getUserDataMap(sb.toString().split("&"));
                 if (userMap == null) {
-                    httpExchange.getResponseHeaders().add(ContentTypes.CONTENT_TYPE, ContentTypes.TEXT_HTML);
+                    httpExchange.getResponseHeaders().add(ContentTypes.CONTENT_TYPE, ContentTypes.HTML);
                     writeResponse(httpExchange, HttpURLConnection.HTTP_NOT_ACCEPTABLE);
                     return;
                 }
@@ -47,7 +47,7 @@ public class SeeCatHandler extends Responser implements HttpHandler {
                 gsonizer(userMap);
 
                 sb.append("<hr><h4><a href=\"page.html\">Continue</a>");
-                httpExchange.getResponseHeaders().add(ContentTypes.CONTENT_TYPE, ContentTypes.TEXT_HTML);
+                httpExchange.getResponseHeaders().add(ContentTypes.CONTENT_TYPE, ContentTypes.HTML);
                 writeResponse(httpExchange, sb.toString().getBytes());
 
             } catch (Exception e) {
@@ -64,7 +64,7 @@ public class SeeCatHandler extends Responser implements HttpHandler {
     private void giveThisPage(HttpExchange httpExchange) {
         try {
             byte[] response = Files.readAllBytes(Path.of(Paths.get("./pages/seecat.html").toUri()));
-            httpExchange.getResponseHeaders().add(ContentTypes.CONTENT_TYPE, ContentTypes.TEXT_HTML);
+            httpExchange.getResponseHeaders().add(ContentTypes.CONTENT_TYPE, ContentTypes.HTML);
             writeResponse(httpExchange, response);
         } catch (Exception e) {
             LOGGER.warning("RegForm exception: " + e.getMessage());
@@ -78,7 +78,8 @@ public class SeeCatHandler extends Responser implements HttpHandler {
         System.out.println(gsonSerial);
     }
 
-    private Map<String, String> getUserDataMap(String[] splittedUserData) {
+    @SuppressWarnings("serial")
+	private Map<String, String> getUserDataMap(String[] splittedUserData) {
         LOGGER.info("Get user form data:");
 
         boolean isDataCorrect = formDataChecker(splittedUserData);
@@ -94,16 +95,20 @@ public class SeeCatHandler extends Responser implements HttpHandler {
 
     private String uName, uSex;
     private boolean formDataChecker(String[] splittedUserData) {
-        uName = splittedUserData[0].contains("userName=") ? splittedUserData[0].replace("userName=", "") : "";
-        uSex = splittedUserData[1].contains("sex=") ? splittedUserData[1].replace("sex=", "") : "";
-
-        LOGGER.info("User name: " + uName);
-        LOGGER.info("User sex: " + uSex);
-
-        if (uName.isBlank() || uSex.isBlank()) {
-            return false;
-        }
-
+    	try {
+    		uName = splittedUserData[0].contains("userName=") ? splittedUserData[0].replace("userName=", "") : "";
+	        uSex = splittedUserData[1].contains("sex=") ? splittedUserData[1].replace("sex=", "") : "";
+	
+	        LOGGER.info("User name: " + uName);
+	        LOGGER.info("User sex: " + uSex);
+	        
+	        if (uName.isBlank() || uSex.isBlank()) {
+	        	return false;
+	        }
+    	} catch (Exception e) {
+			return false;
+    	}
+    	
         return true;
     }
 }

@@ -30,7 +30,9 @@ public class Main {
         LOGGER.info(LogConfigurator.ANSI_CYAN + "Logger Name: " + LOGGER.getName() + " is started succefull!" + LogConfigurator.ANSI_RESET);
 
         try {
-            server = HttpServer.create(new InetSocketAddress(8000), 0);
+        	String port = Configurations.globalConfig.getProperty(ConfigKeys.GLOBAL.SERVER_PORT.name());
+
+            server = HttpServer.create(new InetSocketAddress(Integer.valueOf(port)), 0);
             server.createContext("/passport",   new PassportHandler());
             server.createContext("/seecat",     new SeeCatHandler());
             server.createContext("/page",       new HomePageHandler());
@@ -66,12 +68,15 @@ public class Main {
         try (InputStreamReader ISR = new InputStreamReader(new FileInputStream(needsFilesArray[0]), StandardCharsets.UTF_8)) {
             Configurations.globalConfig.load(ISR);
 
-            Configurations.globalConfig.putIfAbsent(ConfigKeys.GLOBAL.ALLOW_START.name(), "false");
             Configurations.globalConfig.putIfAbsent(ConfigKeys.LOG.LOG_PATH.name(), "./log/");
+            
+            Configurations.globalConfig.putIfAbsent(ConfigKeys.GLOBAL.ALLOW_START.name(), "true");            
+            Configurations.globalConfig.putIfAbsent(ConfigKeys.GLOBAL.SERVER_PORT.name(), "8000");
+            
+            Configurations.globalConfig.putIfAbsent(ConfigKeys.GLOBAL.MIN_CASH_VALUE.name(), "10");
 
             Configurations.globalConfig.store(new OutputStreamWriter(new FileOutputStream(needsFilesArray[0])), "updated");
         } catch (Exception ex) {
-            LOGGER.info("Проблема при чтении config.properties");
             ex.printStackTrace();
         }
     }
