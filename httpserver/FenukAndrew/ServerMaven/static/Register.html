@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <style>
+        td { border: solid 2px blue;}
+    </style>
+</head>
+<body>
+<form action="register" method="POST">
+    <fieldset>
+        <legend>ФИО</legend>
+        <div>
+            <label>Фамилия</label>
+            <input name="lastname"/>
+        </div>
+        <div>
+            <label>Имя</label>
+            <input name="firtsname"/>
+        </div>
+        <div>
+            <label>Отчество</label>
+            <input name="fathername"/>
+        </div>
+        <div>
+            <label>Пол</label>
+            <select id="sex">
+                <option value="unknown"></option>
+                <option value="male">Мужчина</option>
+                <option value="female">Женщина</option>
+            </select>
+        </div>
+        <div>
+            <label>Дата рождения</label>
+            <input type="date"/>
+        </div>
+        <div>
+            <label>Место рождения</label>
+            <input type="placedate"/>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Паспорт</legend>
+        <div>
+            <label>Серия</label>
+            <input name="serial"/>
+        </div>
+        <div>
+            <label>Номер</label>
+            <input name="number"/>
+        </div>
+        <div>
+            <label>Дата выдачи</label>
+            <input type="createdate"/>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Контакты</legend>
+        <div>
+            <label>email</label>
+            <input type="email" name="email" placeholder="" />
+        </div>
+        <div>
+            <label>Телефон</label>
+            <input type="tel" name="telephone" placeholder="" />
+        </div>
+    </fieldset>
+    <input type="submit" name="OK" />
+
+</form>
+<table border="1">
+    <tr><td bgcolor="#BBBBBB" >10</td></tr>
+    <tr><td>11</td></tr>
+    <tr><td bgcolor="#BBBBBB" >10</td></tr>
+    <tr><td>11</td></tr>
+    <tr><td bgcolor="#BBBBBB" >10</td></tr>
+    <tr><td>11</td></tr>
+</table>
+</body>
+</html>

@@ -18,6 +18,7 @@ class Main{
             HttpServer httpServer=HttpServer.create();//inet,0);
             httpServer.bind(inet,0);
             //httpServer.createContext("/test",new MyHandler());//DELETE
+            httpServer.createContext("/register",new RegisterHandler());
             httpServer.createContext("/urls",new UrlsHandler());
             httpServer.createContext("/",new FileHttpHandler());
             httpServer.setExecutor(null);
