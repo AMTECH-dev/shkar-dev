@@ -11,6 +11,9 @@ import java.util.logging.Logger;
 public class SendResponse {
     private static final Logger logger = LoggerFactory.createLogger();
 
+    public SendResponse() {
+    }
+
     public static OutputStream response(HttpExchange t, int numCode, byte[] response) {
         logger.info("Start response method, class SendResponse ");
         OutputStream os=null;

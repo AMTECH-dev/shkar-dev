@@ -1,25 +1,32 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <title>Title</title>
+    <title>Title</title>
 </head>
 <body>
 <form action="/test" method="POST">
-  <b><h1>Заполните форму</h1> </b> <br><br>
-  <h3>
-    Имя:<br>
-    <input type="text" name="firstname"><br>
-    Фамилия:<br>
-    <input type="text" name="lastname"><br>
-    Отчество:<br>
-    <input type="text" name="surname"><br>
-    Пол:<br>
-    <input type="radio" name="gender" value="male" checked> Мужчина<br>
-    <input type="radio" name="gender" value="female"> Женщина<br>
-    Возраст:<br>
-    <input type="number" name="age"><br>
-    <input type="submit" value="Подтвердить">
-  </h3>
+    <b><h1>Заполните форму</h1></b> <br><br>
+    <h3>
+        Имя:<br>
+        <input type="text" name="firstname"><br>
+        Фамилия:<br>
+        <input type="text" name="lastname"><br>
+        Дата рождения:<br>
+        <label for="date">Дата рождения: </label>
+        <input type="date" id="date" name="DateOfBirthday"/><br>
+        Пол:<br>
+        <input type="radio" name="gender" value="male" checked> Мужчина<br>
+        <input type="radio" name="gender" value="female"> Женщина<br>
+        Возраст:<br>
+        <input type="number" age="age"><br>
+        Номер паспорта:<br>
+        <input type="text" numberPassport="numberPassport"><br>
+        Номер телефона:<br>
+        <input type="tel" numberPhore="numberPhone"><br>
+        E-mail:<br>
+        <input type="email" email="email"><br>
+        <input type="submit" value="Подтвердить">
+    </h3>
 </form>
 </body>
 </html>
