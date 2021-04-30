@@ -26,14 +26,42 @@ h1 {
     width: auto; /* Ширина первого слоя */
     padding: 9px; /* Поля вокруг текста */
     background: #f80; /* Цвет фона */
+    display: block; /* Строчно-блочный элемент */
 }
+
+.wrap {
+   height: 128px;/*Задаем высоту обертки*/
+}
+ 
+.bblock {
+    float: left; /*Задаем обтекание*/
+    line-height: 64px;/*Высота строки +  верт. центрирования текста*/
+    font-size: 40px;
+    color: white;
+    margin-right: 10px;
+}
+
+/*#leftNameIcon {
+  /*position: relative; /* absolute | fixed | relative | static | inherit */
+  /* display: block; /* Строчно-блочный элемент */
+  /*background: #900; /* Цвет фона */
+  /* width: 128px;
+/*}
+
+/*#rightNameBlock {
+  /* position: relative; /* absolute | fixed | relative | static | inherit */
+  /* display: block; /* Строчно-блочный элемент */
+  /*background: #eee; /* Цвет фона */
+  /* width: auto;
+/*}*/
+
 
 #userName {
     background: #eee; /* Цвет фона */
     font-family: monospace, Helvetica, sans-serif; /* Семейство шрифтов */
     font-size: 18pt; /* Размер основного шрифта в пунктах  */
-    display: inline-block; /* Строчно-блочный элемент */
-    width: 25%; /* Ширина первого слоя */
+    display: inline; /* Строчно-блочный элемент */
+    width: 50%; /* Ширина первого слоя */
 }
 
 #blockSex {
@@ -53,12 +81,18 @@ h1 {
 }
 
 #btnSend {
-    width: 20%; /* Ширина первого слоя */
-    margin-left: 80%;
-    background: #b0b0b5; /* Цвет фона */
-    /*  display: inline; */
-    font-family: Helvetica, Verdana, sans-serif; /* Семейство шрифтов */
-    font-size: 16pt; /* Размер основного шрифта в пунктах  */
+    width: 30%; /* Ширина первого слоя */
+    margin-left: 70%;
+    background: #ffffff; /* Цвет фона */
+    font-size: 10pt; /* Размер основного шрифта в пунктах  */
+    color: white;    
+    padding: 10px 30px;    
+    border-radius: 20px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right, #333 0%, #666 51%, #999 100%);
+    background-size: 200% auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, .2);
+    transition: .6s;
 }
 
 #sexSelector {
