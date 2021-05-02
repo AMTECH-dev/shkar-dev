@@ -1,15 +1,17 @@
-package amtech.registry;
+package config;
 
 
 public class ConfigKeys {
 
+
     public enum LOG{
-        LOG_PATH
+        LOG_PATH,
+        PREFERRED_LOG_COUNT
     }
 
     public enum GLOBAL{
         ALLOW_START,
         SERVER_PORT,
-        MIN_CASH_VALUE
+        PREFERRED_CASH_VALUE
     }
 }

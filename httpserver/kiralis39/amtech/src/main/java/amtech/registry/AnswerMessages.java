@@ -9,4 +9,5 @@ public class AnswerMessages {
     public static String pageLoadErrorMessage = PREFIX + "<h2>Произошла ошибка при загрузке страницы.</h2><hr>Попробуйте позже, пожалуйста.";
     public static String notExistsErrorMessage = PREFIX + "<h2>Запрашиваемый ресурс не был найден.</h2><hr>Попробуйте позже, пожалуйста.";
     public static String resourceDeletedErrorMessage = PREFIX + "<h2>Произошла ошибка при загрузке ресурса.</h2><hr>Возможно, ресурс был удалён.";
+	public static String timeoutErrorMessage = PREFIX + "<h2>Соединение разорвано, предположительно по таймауту.</h2><hr>Проверьте соединение или обратитесь к администратору.";
 }

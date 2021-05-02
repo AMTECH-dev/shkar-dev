@@ -1,13 +1,15 @@
 package amtech.handlers;
 
 import amtech.logic.Responser;
-import amtech.registry.ConfigKeys;
-import amtech.registry.Configurations;
 import amtech.registry.ContentTypes;
 import amtech.registry.MediaTypes;
+import amtech.registry.QueryTypes;
 import amtech.registry.ReturnCodes;
-import amtech.tools.LogConfigurator;
 import amtech.tools.Watermark;
+import config.ConfigKeys;
+import config.Configurations;
+import config.LogConfigurator;
+
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -29,37 +31,55 @@ import java.util.logging.Logger;
 
 
 public class ResourcesHandler extends Responser implements HttpHandler {
-	private static final Logger LOGGER = LogConfigurator.getLogger(ResourcesHandler.class);
-    private static final Map<URI, byte[]> cash = new LinkedHashMap<URI, byte[]>(Integer.parseInt(Configurations.globalConfig.getProperty(ConfigKeys.GLOBAL.MIN_CASH_VALUE.name())), .75f, true);
+	private static final Logger LOGGER = LogConfigurator.getLogger();
+    private static final Map<URI, byte[]> cash = new LinkedHashMap<URI, byte[]>(Integer.parseInt(Configurations.globalConfig.getProperty(ConfigKeys.GLOBAL.PREFERRED_CASH_VALUE.name())), .75f, true);
     
     
     @Override
     public void handle(HttpExchange httpExchange) {
-        LOGGER.fine(LogConfigurator.ANSI_PURPLE + "Clients reqested resource: " + httpExchange.getRequestURI().getPath() + LogConfigurator.ANSI_RESET);
+        LOGGER.fine("Clients reqested resource: " + httpExchange.getRequestURI().getPath());
 
         if (cash.containsKey(httpExchange.getRequestURI())) {
+        	LOGGER.info(httpExchange.getRequestURI().getPath() + " exist into cash already, than get It from...");
         	writeResponse(httpExchange, cash.get(httpExchange.getRequestURI()));
         	return;
         }
         
-        try {
+        String requestType = httpExchange.getRequestMethod();
+        if (requestType.equalsIgnoreCase(QueryTypes.POST)) {
+        	postRequest(httpExchange);
+        } else if (requestType.equalsIgnoreCase(QueryTypes.GET)) {
+        	getRequest(httpExchange);
+        }
+    }
+    
+    @Override
+	public void postRequest(HttpExchange httpExchange) {
+    	LOGGER.info("This page not work for 'POST' now, than returned nothing...");
+        return;
+	}
 
-            if (httpExchange.getRequestURI().getPath().endsWith("." + MediaTypes.PNG)
-                    || httpExchange.getRequestURI().getPath().endsWith("." + MediaTypes.JPG)
-                    || httpExchange.getRequestURI().getPath().endsWith("." + MediaTypes.JPEG)) {
-                writeImageResponse(httpExchange);
+	@Override
+	public void getRequest(HttpExchange httpExchange) {
+		try {
+        	String[] sm = httpExchange.getRequestURI().getPath().split("\\.");
+        	if (sm.length > 1 && MediaTypes.mediaTypesArray.contains(sm[sm.length - 1])) {
+        		writeMediaResponse(httpExchange);
             } else {
                 writeDataResponse(httpExchange);
             }
 
-            debugCashMonitor();
+            if (isCashHasTooMuchMemory()) {
+            	cashTrim();
+            }
             
         } catch (Exception e) {
+        	e.printStackTrace();
             LOGGER.warning("Something wrong?.. Exc.: " + e.getMessage());
             writeResponse(httpExchange, ReturnCodes.UNDEFINED_PROBLEM);
         }
-
-    }
+	}
+    
 
 	private void writeDataResponse(HttpExchange httpExchange) {
         String requestData = "./" + httpExchange.getRequestURI().getPath();
@@ -74,7 +94,7 @@ public class ResourcesHandler extends Responser implements HttpHandler {
                 }
 
                 response = sb.toString().getBytes();
-                cash.put(httpExchange.getRequestURI(), response);
+                cashAdd(httpExchange.getRequestURI(), response);
                 writeResponse(httpExchange, response);
             } catch (IOException e) {
                 LOGGER.warning("Exception: " + e.getMessage());
@@ -87,9 +107,9 @@ public class ResourcesHandler extends Responser implements HttpHandler {
         }
     }
 
-    private void writeImageResponse(HttpExchange httpExchange) {
+    private void writeMediaResponse(HttpExchange httpExchange) {
         String requestData = "./" + httpExchange.getRequestURI().getPath();
-        LOGGER.info("Image requested: '" + requestData + "'.");
+        LOGGER.info("Media requested: '" + requestData + "'.");
 
         byte[] response;
 
@@ -108,8 +128,7 @@ public class ResourcesHandler extends Responser implements HttpHandler {
             }
 
             httpExchange.getResponseHeaders().add(ContentTypes.CONTENT_TYPE, ContentTypes.PNG);
-            
-            cash.put(httpExchange.getRequestURI(), response);
+            cashAdd(httpExchange.getRequestURI(), response);
             writeResponse(httpExchange, response);
         } catch (IOException e) {
             LOGGER.warning("May be a requared resource is a directory or absent? Exc.: " + e.getMessage());
@@ -118,12 +137,28 @@ public class ResourcesHandler extends Responser implements HttpHandler {
         }
     }
 
-    private void debugCashMonitor() {
-		System.out.println("Cash has now " + cash.size() + " elements:"); 
-		System.out.println(Arrays.asList(cash.keySet()));
-		System.out.println("Max elements is " + Configurations.globalConfig.getProperty(ConfigKeys.GLOBAL.MIN_CASH_VALUE.name()));
+
+
+	private boolean isCashHasTooMuchMemory() {
+		long memory = 0L;
 		
-		if (cash.size() > Integer.parseInt(Configurations.globalConfig.getProperty(ConfigKeys.GLOBAL.MIN_CASH_VALUE.name()))) {
+		for (byte[] byteArr : cash.values()) {
+			memory += byteArr.length;
+		}
+		
+		LOGGER.fine("Cash has now " + memory + " byte. Can used: " + ((long) (Runtime.getRuntime().maxMemory() * 0.2D)) + "byte.");
+		return memory > (long) (Runtime.getRuntime().maxMemory() * 0.2D);
+	}
+    
+	private void cashAdd(URI requestURI, byte[] response) {
+    	cash.put(requestURI, response);
+	}
+	
+    private void cashTrim() {
+    	LOGGER.info("Cash has now " + cash.size() + " elements: " + Arrays.asList(cash.keySet()));
+    	LOGGER.info("Max elements is " + Configurations.globalConfig.getProperty(ConfigKeys.GLOBAL.PREFERRED_CASH_VALUE.name()));
+		
+		if (cash.size() > Integer.parseInt(Configurations.globalConfig.getProperty(ConfigKeys.GLOBAL.PREFERRED_CASH_VALUE.name()))) {
 			cash.remove(cash.entrySet().toArray()[cash.size() - 1]);
 		}
 	}

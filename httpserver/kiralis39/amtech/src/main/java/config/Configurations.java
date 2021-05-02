@@ -1,4 +1,4 @@
-package amtech.registry;
+package config;
 
 import java.util.Properties;
 
