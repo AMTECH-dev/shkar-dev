@@ -9,45 +9,51 @@ import java.nio.file.Paths;
 import java.util.logging.Logger;
 
 import amtech.handlers.*;
-import amtech.registry.ConfigKeys;
-import amtech.registry.Configurations;
-import amtech.tools.LogConfigurator;
+import config.ConfigKeys;
+import config.Configurations;
+import config.LogConfigurator;
+
 import com.sun.net.httpserver.HttpServer;
+
 
 public class Main {
     private static HttpServer server;
     private static Logger LOGGER;
     private static File[] needsFilesArray;
 
+    
     public static void main(String[] args) {
         System.out.println(); // empty line into console
 
-        filesCheck();
+        primaryFilesExistsCheck();
         loadProps();
+        logsDirExistsCheck((String) Configurations.globalConfig.get(ConfigKeys.LOG.LOG_PATH.name()));
         runAccessCheck();
-
-        LOGGER = LogConfigurator.getLogger(Main.class);
-        LOGGER.info(LogConfigurator.ANSI_CYAN + "Logger Name: " + LOGGER.getName() + " is started succefull!" + LogConfigurator.ANSI_RESET);
+        logEnabledCorrectlyTest();
 
         try {
         	String port = Configurations.globalConfig.getProperty(ConfigKeys.GLOBAL.SERVER_PORT.name());
 
             server = HttpServer.create(new InetSocketAddress(Integer.valueOf(port)), 0);
-            server.createContext("/passport",   new PassportHandler());
+            
             server.createContext("/seecat",     new SeeCatHandler());
-            server.createContext("/page",       new HomePageHandler());
+            server.createContext("/catspage",   new CatsPageHandler());
+            
             server.createContext("/parser",     new URLParserHandler());
+            server.createContext("/passport",   new PassportHandler());
 
             server.createContext("/exit",       new MenuPageHandler());
             server.createContext("/",           new ResourcesHandler());
+            
             server.start();
-        } catch (IOException e) {
-            LOGGER.warning("Exception: " + e.getMessage());
+        } catch (Exception e) {
+            LOGGER.severe("SERVER START ERROR: " + e.getMessage());
             e.printStackTrace();
+            System.exit(124);
         }
     }
 
-    private static void filesCheck() {
+	private static void primaryFilesExistsCheck() {
         needsFilesArray = new File[] {
                 new File("config.cfg")
         };
@@ -69,11 +75,13 @@ public class Main {
             Configurations.globalConfig.load(ISR);
 
             Configurations.globalConfig.putIfAbsent(ConfigKeys.LOG.LOG_PATH.name(), "./log/");
+            Configurations.globalConfig.putIfAbsent(ConfigKeys.LOG.PREFERRED_LOG_COUNT.name(), "30");
+            
             
             Configurations.globalConfig.putIfAbsent(ConfigKeys.GLOBAL.ALLOW_START.name(), "true");            
             Configurations.globalConfig.putIfAbsent(ConfigKeys.GLOBAL.SERVER_PORT.name(), "8000");
             
-            Configurations.globalConfig.putIfAbsent(ConfigKeys.GLOBAL.MIN_CASH_VALUE.name(), "10");
+            Configurations.globalConfig.putIfAbsent(ConfigKeys.GLOBAL.PREFERRED_CASH_VALUE.name(), "10");
 
             Configurations.globalConfig.store(new OutputStreamWriter(new FileOutputStream(needsFilesArray[0])), "updated");
         } catch (Exception ex) {
@@ -81,9 +89,24 @@ public class Main {
         }
     }
 
-    private static void runAccessCheck() {
+    private static void logsDirExistsCheck(String logDirPath) {
+    	if (Files.notExists(Paths.get(logDirPath))) {
+    		try {
+				Files.createDirectory(Paths.get(logDirPath));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+    	}
+	}
+
+	private static void runAccessCheck() {
         if (Configurations.globalConfig.getOrDefault(ConfigKeys.GLOBAL.ALLOW_START.name(), "false").equals("false")) {
             System.exit(112);
         }
     }
+	
+	private static void logEnabledCorrectlyTest() {
+    	LOGGER = LogConfigurator.getLogger();
+        LOGGER.info("Logger '" + LOGGER.getName() + "' started succefull!");
+	}
 }

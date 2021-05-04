@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="httpserver/FenukAndrew/Server2/src"/>
+	<classpathentry kind="src" path="httpserver/FenukAndrew/ServerMaven/src/main/java"/>
+	<classpathentry kind="src" path="httpserver/George31088/hello_wold/src"/>
+	<classpathentry kind="src" path="httpserver/IgorK/hello_wold/src"/>
+	<classpathentry kind="src" path="httpserver/kiralis39/amtech/src/main/java"/>
+	<classpathentry kind="src" path="httpserver/vartale/newPrjct/src/main/java"/>
+	<classpathentry kind="src" path="httpserver/VladislavBakshanskij/simplehttpserver/src"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
