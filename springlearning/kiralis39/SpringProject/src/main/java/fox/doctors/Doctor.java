@@ -1,29 +1,41 @@
 package fox.doctors;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import fox.Pet;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+
+@Component("beanDoctor")
 public class Doctor {
-	private final String doctorName;
-	private final List<Pet> careesPetList = new ArrayList<Pet>();
-	
-	
-	public Doctor(String doctorName) {
-		this.doctorName = doctorName;
+	private final String name;
+	private Pet careesPet;
+	private static boolean isFree = true;
+
+	@Autowired
+	public Doctor(@Value("${doctor.defaultName}") String name) {
+		this.name = name;
 		
-		System.out.println("Income a new doctor '" + this.doctorName + "'.");
+		System.out.println("Income a new doctor '" + this.name + "'.");
 	}
 
 
-	public void addCaresPet(Pet pet) {
-		careesPetList.add(pet);
-		System.out.println("Doctor '" + doctorName + "' has cared on pet '" + pet.getName() + "' now.");
+	public void setCaresPet(Pet pet) {
+		setFree(false);
+		
+		careesPet = pet;
+		System.out.println("Doctor '" + name + "' has cared on pet '" + pet.getName() + "' now.");
+		
+		pet.setHealed(true);
+		setFree(true);
 	}
 
 
-	public String getName() {return this.doctorName;}
+	public String getName() {return this.name;}
 	
-	public Pet[] getCaresPetsList() {return careesPetList.toArray(new Pet[0]);}
+	public Pet getCaresPet() {return this.careesPet;}
+
+
+	public boolean isFree() {return isFree;}
+	public void setFree(boolean isFree) {Doctor.isFree = isFree;}
 }

@@ -8,4 +8,6 @@ public interface Pet {
 	public SEX getSex();
 	public float getAge();
 	public String getColor();
+	public boolean isHealed();
+	public void setHealed(boolean isHealed);
 }
