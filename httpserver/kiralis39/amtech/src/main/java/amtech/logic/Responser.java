@@ -2,18 +2,18 @@ package amtech.logic;
 
 import amtech.registry.AnswerMessages;
 import amtech.registry.ReturnCodes;
-import amtech.tools.LogConfigurator;
-import com.sun.net.httpserver.HttpExchange;
+import config.LogConfigurator;
 
-import java.io.IOException;
+import com.sun.net.httpserver.HttpExchange;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.util.logging.Logger;
 
 
-public class Responser {
-    private static final Logger LOGGER = LogConfigurator.getLogger(Responser.class);
+public abstract class Responser implements iHandler {
+    private static final Logger LOGGER = LogConfigurator.getLogger();
 
+    
     protected void writeResponse(HttpExchange httpExchange, int sendCode) {
         String message = "";
 
@@ -31,6 +31,8 @@ public class Responser {
                 break;
             case HttpURLConnection.HTTP_GONE: message = AnswerMessages.resourceDeletedErrorMessage;
                 break;
+            case HttpURLConnection.HTTP_CLIENT_TIMEOUT:  message = AnswerMessages.timeoutErrorMessage;
+            	break;
 
             default: message = AnswerMessages.undefinedErrorMessage;
         }
@@ -57,13 +59,50 @@ public class Responser {
             try (OutputStream os = httpExchange.getResponseBody()) {
                 os.write(writeData);
             } catch (Exception e) {
-                LOGGER.warning("Exception: " + e.getMessage());
+                LOGGER.warning("Exception: " + e.getMessage() + " > " + e.getCause());
                 e.printStackTrace();
             }
 
-        } catch (IOException e) {
-            LOGGER.warning("Exception: " + e.getMessage());
+        } catch (Exception e) {
+            LOGGER.warning("Exception: " + e.getMessage() + " > " + e.getCause());
             e.printStackTrace();
         }
     }
+
+	
+	@Override
+	public void headRequest(HttpExchange httpExchange) {
+		
+	}
+
+	@Override
+	public void putRequest(HttpExchange httpExchange) {
+		
+	}
+
+	@Override
+	public void deleteRequest(HttpExchange httpExchange) {
+		
+	}
+
+	
+	@Override
+	public void connectRequest(HttpExchange httpExchange) {
+		
+	}
+
+	@Override
+	public void optionsRequest(HttpExchange httpExchange) {
+		
+	}
+
+	@Override
+	public void traceRequest(HttpExchange httpExchange) {
+		
+	}
+
+	@Override
+	public void patchRequest(HttpExchange httpExchange) {
+		
+	}
 }

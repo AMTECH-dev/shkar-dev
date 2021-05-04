@@ -10,7 +10,8 @@ public class PassportChecker {
     private static String uName, uPasSeria, uPasNumber, uBirthDate, uAddress, uPhonePrefix, uPhoneMobile, uPhoneHome, uMail, uSex;
     private static HashMap<String, String> fDataMap;
 
-    public static HashMap<String, String> check(String passportFormData) {
+    @SuppressWarnings("serial")
+	public static HashMap<String, String> check(String passportFormData) {
         String[] formDataArray = passportFormData.split("&");
 
         for (int i = 0; i < formDataArray.length; i++) {
@@ -52,7 +53,7 @@ public class PassportChecker {
             };
 
             // 'for' (для отладки. Можно удалить)
-            for (Map.Entry uFormLine : fDataMap.entrySet()) {
+            for (Map.Entry<String, String> uFormLine : fDataMap.entrySet()) {
                 System.out.println(Arrays.asList(uFormLine));
             }
             // 'end for'

@@ -12,17 +12,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-enum HttpExchangeMethod{
-    GET("GET"),POST("POST");
-
-    private String method;
-    HttpExchangeMethod(String method) {
-        this.method=method;
-    }
-    @Override
-    public String toString() { return method;}
-}
-
 class FileHttpHandler implements HttpHandler {
 
     private static Logger log = Logger.getLogger(FileHttpHandler.class.getName());
@@ -32,9 +21,9 @@ class FileHttpHandler implements HttpHandler {
         String method = exchange.getRequestMethod();
         System.out.println("Method:" + method);
         log.finest("Method:" + method);
-        if (method.equalsIgnoreCase("GET")) {//HttpExchangeMethod.GET
+        if (method.equalsIgnoreCase(HttpMethod.GET)) {
             handleGet(exchange);
-        } else if (method.equalsIgnoreCase("POST")) {//HttpExchangeMethod.POST
+        } else if (method.equalsIgnoreCase(HttpMethod.POST)) {
             handlePost(exchange);
         }
     }
@@ -42,7 +31,7 @@ class FileHttpHandler implements HttpHandler {
     final static String[] fields=new String[]{"name","lastname","age","login","password"};
 
     private void handlePost(HttpExchange exchange) {
-        Map<String, String> params = Utils.getParams(Utils.getMapResponseBody(exchange.getRequestBody()));
+        Map<String, String> params = Utils.getParams(Utils.getResponseBody(exchange.getRequestBody()));
         Set<String> requestFields=new HashSet<String>();
         for(String field : fields) {
             if(!params.containsKey(field)) {
@@ -53,11 +42,11 @@ class FileHttpHandler implements HttpHandler {
         if(!requestFields.isEmpty()) {
             String message="<html><body><div style=\"background-color: green;height: 300px;width: 300px;\">Not found next fields:"+requestFields.toString()+"</div></body></html>";
             byte[] data=message.getBytes(StandardCharsets.UTF_8);
-            Utils.httpReturnWithBody(exchange,HttpCodeError.BAD_REQUEST,"text/html; charset=utf-8", data);
+            Utils.sendResponseWithBody(exchange, HttpCode.BAD_REQUEST,"text/html; charset=utf-8", data);
         } else {
-            String gsonStr = Utils.getGson(params);
+            String gsonStr = Utils.toJSON(params);
             byte[] gsonB = gsonStr.getBytes(StandardCharsets.UTF_8);
-            Utils.httpReturnWithBody(exchange,HttpCodeError.OK,"application/json; charset=utf-8", gsonB);
+            Utils.sendResponseWithBody(exchange, HttpCode.OK,"application/json; charset=utf-8", gsonB);
         }
     }
 
@@ -75,16 +64,14 @@ class FileHttpHandler implements HttpHandler {
             System.out.println("Size:" + sizeFile);
         } catch (Exception ex) {
             ex.printStackTrace();
-            Utils.httpReturnWithoutBody(exchange,HttpCodeError.NOT_FOUND);
+            Utils.sendResponseWithoutBody(exchange, HttpCode.NOT_FOUND);
             log.log(Level.WARNING,"Not found",ex);
+            return;
         }
 
-        String extension = ContentType.getExtension(fileName);
+        String extension = Utils.getExtension(fileName);
 
-        Map<String, String> params = Utils.getParams(Utils.getMapResponseBody(exchange.getRequestBody()));
-        String gsonStr = Utils.getGson(params);
-
-        byte[] buffer = null;
+        byte[] buffer;
         String ext = extension.substring(1).toLowerCase();
         if (imageFileNames.contains(ext)) {
             buffer = ProcessImage.process(localName, ext);
@@ -93,7 +80,6 @@ class FileHttpHandler implements HttpHandler {
         }
 
         String content = ContentType.getContentType(extension);
-        Utils.httpReturnWithBody(exchange,HttpCodeError.OK, content, buffer);
+        Utils.sendResponseWithBody(exchange, HttpCode.OK, content, buffer);
     }
-
 }

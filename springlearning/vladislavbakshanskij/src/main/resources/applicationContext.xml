@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+    <!-- VIRUS -->
+    <bean id="cold" class="com.company.with_spring.models.virus.Cold">
+        <property name="damage" value="3"/>
+    </bean>
+    <bean id="plague" class="com.company.with_spring.models.virus.Plague">
+        <property name="damage" value="6"/>
+    </bean>
+    <!-- /VIRUS -->
+
+    <!-- PETS -->
+    <bean name="dog" class="com.company.with_spring.models.pets.Dog">
+        <property name="name" value="OLEG"/>
+        <constructor-arg name="virus" ref="cold"/>
+    </bean>
+    <bean name="cat" class="com.company.with_spring.models.pets.Cat">
+        <property name="name" value="OLEG"/>
+        <constructor-arg name="virus" ref="plague"/>
+    </bean>
+    <bean name="nakedMoleRat" class="com.company.with_spring.models.pets.NakedMoleRat">
+        <property name="name" value="ШНЯГА"/>
+    </bean>
+    <bean name="parrot" class="com.company.with_spring.models.pets.Parrot">
+        <property name="name" value="OLEG"/>
+        <constructor-arg name="virus" ref="plague"/>
+    </bean>
+    <!-- /PETS -->
+
+    <!-- OWNERS -->
+    <bean id="vlad" class="com.company.with_spring.models.persons.CatOwner">
+        <constructor-arg name="pets">
+            <list>
+                <ref bean="cat"/>
+                <ref bean="cat"/>
+                <ref bean="dog"/>
+            </list>
+        </constructor-arg>
+    </bean>
+    <bean id="viktor" class="com.company.with_spring.models.persons.CatOwner">
+        <constructor-arg name="pets">
+            <list>
+                <ref bean="cat"/>
+                <ref bean="cat"/>
+                <ref bean="cat"/>
+            </list>
+        </constructor-arg>
+    </bean>
+    <bean id="sergey" class="com.company.with_spring.models.persons.Owner">
+        <constructor-arg name="pets">
+            <list>
+                <ref bean="cat"/>
+                <ref bean="parrot"/>
+                <ref bean="nakedMoleRat"/>
+                <ref bean="dog"/>
+            </list>
+        </constructor-arg>
+    </bean>
+    <!-- /OWNERS -->
+
+    <!-- DOCTORS -->
+    <bean id="universal" class="com.company.with_spring.models.doctors.UniversalDoctor" />
+    <bean id="traditional" class="com.company.with_spring.models.doctors.TraditionalDoctor" />
+    <!-- /DOCTORS -->
+
+    <bean id="clinic" class="com.company.with_spring.models.Clinic">
+        <property name="doctors">
+            <list>
+                <ref bean="universal"/>
+                <ref bean="traditional"/>
+            </list>
+        </property>
+    </bean>
+</beans>
