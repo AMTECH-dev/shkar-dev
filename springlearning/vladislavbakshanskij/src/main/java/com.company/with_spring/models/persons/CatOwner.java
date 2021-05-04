@@ -10,7 +10,7 @@ public class CatOwner implements Person {
 
     public CatOwner(List<Pet> pets) {
         boolean isInit = true;
-        for (Pet pe t : pets) {
+        for (Pet pet : pets) {
             if (!(pet instanceof Cat)) {
                 System.err.println("Я ЛЮБЛЮ ТОЛЬКО КОШЕК");
                 isInit = false;
