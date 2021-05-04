@@ -11,39 +11,39 @@
 
 import clients.Owner;
 import clients.pets.Pet;
-import clients.pets.home_pets.Cat;
-import clients.pets.home_pets.Dog;
-import clients.pets.home_pets.Snake;
+import clients.pets.home_pets.*;
 import clinic.administration.Office;
 import illnesses.Diagnose;
 
 public class Main {
     public static void main(String[] args) {
         Office clinic = new Office();
-        clinic.getSlogan();
 
         Pet kitty = new Cat("John", 3, Diagnose.NEED_VACCINATION);
         Pet doggy = new Dog("Fluffy", 24, Diagnose.VIRUS);
         Owner owner1 = new Owner("William Shakespeare", "12.04.1587");
         owner1.addPet(kitty);
         owner1.addPet(doggy);
-        Office.addOwnerToTheBase(owner1);
+        clinic.addOwnerToTheBase(owner1);
 
-        System.out.println("Список питомцев " + owner1);
+        System.out.println(owner1 + "'s pets:");
         System.out.println("\n" + owner1.getPets());
 
         Pet snaky = new Snake("Bold Head", 12, Diagnose.FRACTURE);
         Owner owner2 = new Owner("Kate Smith", "12.32.1976");
         owner2.addPet(snaky);
-        Office.addOwnerToTheBase(owner2);
+        clinic.addOwnerToTheBase(owner2);
 
-        System.out.println("Клиенты клиники: ");
-        System.out.println("\n" + Office.getClientBase() + "\n");
+        System.out.println("Clinic clients: ");
+        System.out.println("\n" + clinic.getClientBase() + "\n");
 
-        clinic.getDoctors().get(0).takeCare(kitty);
-        clinic.getDoctors().get(1).takeCare(doggy);
-        clinic.getDoctors().get(2).takeCare(doggy);
+        clinic.getTherapist().takeCare(kitty);
 
-        clinic.getDoctors().get(2).takeCare(snaky);
+        doggy.isSick();
+        clinic.getSurgeon().takeCare(doggy);
+        doggy.isSick();
+        clinic.getGroomer().takeCare(doggy);
+
+        clinic.getGroomer().takeCare(snaky);
     }
 }

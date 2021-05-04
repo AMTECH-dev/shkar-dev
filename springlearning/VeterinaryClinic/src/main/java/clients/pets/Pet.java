@@ -15,8 +15,8 @@ public abstract class Pet {
 
     public boolean isSick() {
         if (diagnose.equals(Diagnose.NONE))
-            System.out.println("Pet is healthy!");
-        else System.out.println("Pet is sick!");
+            System.out.println(this.name + " is healthy!");
+        else System.out.println(this.name + " is sick!");
         return diagnose != null;
     }
 

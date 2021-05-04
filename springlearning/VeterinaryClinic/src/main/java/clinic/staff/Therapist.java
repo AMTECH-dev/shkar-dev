@@ -5,10 +5,6 @@ import clinic.cure_methods.*;
 import illnesses.Diagnose;
 
 public class Therapist extends Healing {
-    @Override
-    public String toString() {
-        return "Therapist";
-    }
 
     @Override
     public void takeCare(Pet pet) {
@@ -35,6 +31,12 @@ public class Therapist extends Healing {
                 Healing.makeFullCheck(pet);
                 break;
         }
+
         pet.setDiagnose(Diagnose.NONE);
+    }
+
+    @Override
+    public String toString() {
+        return "Therapist";
     }
 }

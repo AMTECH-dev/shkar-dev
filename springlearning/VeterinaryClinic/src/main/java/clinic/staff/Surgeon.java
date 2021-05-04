@@ -8,11 +8,6 @@ import illnesses.Diagnose;
 
 public class Surgeon implements MedicalService {
     @Override
-    public String toString() {
-        return "Surgeon";
-    }
-
-    @Override
     public void takeCare(Pet pet) {
         Diagnose illness = pet.getDiagnose();
 
@@ -40,5 +35,10 @@ public class Surgeon implements MedicalService {
     private static void doOperation(Pet pet) {
         Surgery.giveNarcosis(pet);
         Surgery.operate(pet);
+    }
+
+    @Override
+    public String toString() {
+        return "Surgeon";
     }
 }

@@ -20,11 +20,10 @@ public class Groomer implements MedicalService {
                 System.out.println("Groomer can't do that!");
                 break;
 
-            case NONE:
+            default:
                 Healing.groom(pet);
                 break;
         }
-        Healing.groom(pet);
     }
 
     @Override
