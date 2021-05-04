@@ -4,9 +4,13 @@ import com.company.with_spring.models.persons.Person;
 import com.company.with_spring.models.pets.NakedMoleRat;
 import com.company.with_spring.models.pets.Parrot;
 import com.company.with_spring.models.pets.Pet;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import java.util.Random;
 
+@Component
 public class TraditionalDoctor implements Doctor {
     @Override
     public boolean healAllPets(Person p) {

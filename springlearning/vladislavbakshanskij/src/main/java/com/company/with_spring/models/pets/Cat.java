@@ -1,13 +1,16 @@
 package com.company.with_spring.models.pets;
 
 import com.company.with_spring.models.virus.Virus;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
-public class Dog implements Pet {
-    private  String name;
+@Component
+public class Cat implements Pet {
+    private String name;
     private final Virus virus;
 
-    public Dog(Virus virus) {
-        System.out.println("Dog is created");
+    public Cat(@Qualifier("cold") Virus virus) {
+        System.out.println("Cat is created");
         this.virus = virus;
     }
 

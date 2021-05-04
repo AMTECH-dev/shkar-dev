@@ -1,14 +1,14 @@
 package com.company.with_spring.models.pets;
 
 import com.company.with_spring.models.virus.Virus;
+import org.springframework.stereotype.Component;
 
-public class Parrot implements Pet {
+@Component
+public class NakedMoleRat implements Pet {
     private String name;
-    private final Virus virus;
 
-    public Parrot(Virus virus) {
-        System.out.println("Parrot is created");
-        this.virus = virus;
+    public NakedMoleRat() {
+        System.out.println("NakedMoleRat is created");
     }
 
     public void setName(String name) {
@@ -22,6 +22,6 @@ public class Parrot implements Pet {
 
     @Override
     public Virus getVirus() {
-        return virus;
+        return null;
     }
 }

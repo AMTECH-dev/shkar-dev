@@ -1,17 +1,23 @@
 package com.company.with_spring.models.virus;
 
 import com.company.with_spring.models.pets.Pet;
+import org.springframework.stereotype.Component;
 
-public class Plague implements Virus {
-    private int damage;
+@Component
+public class Cold implements Virus {
+    private float damage;
 
-    public void setDamage(int damage) {
+    public Cold() {
+        System.out.println("Cold is created");
+    }
+
+    public void setDamage(float damage) {
         this.damage = damage;
     }
 
     @Override
     public VirusType getType() {
-        return VirusType.PLAGUE;
+        return VirusType.FLU;
     }
 
     @Override

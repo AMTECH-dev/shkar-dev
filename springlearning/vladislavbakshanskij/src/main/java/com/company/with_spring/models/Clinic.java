@@ -3,11 +3,14 @@ package com.company.with_spring.models;
 import com.company.with_spring.models.doctors.Doctor;
 import com.company.with_spring.models.persons.Person;
 import com.company.with_spring.models.pets.Pet;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+@Component
 public class Clinic {
     private List<Doctor> doctors;
 
@@ -15,6 +18,7 @@ public class Clinic {
         System.out.println("Clinic is created");
     }
 
+    @Autowired
     public void setDoctors(List<Doctor> doctors) {
         this.doctors = doctors;
     }

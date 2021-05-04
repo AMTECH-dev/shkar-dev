@@ -1,10 +1,8 @@
-package com.company.with_spring;
+package com.company.with_spring.xml;
 
 import com.company.with_spring.models.Clinic;
 import com.company.with_spring.models.persons.Person;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {

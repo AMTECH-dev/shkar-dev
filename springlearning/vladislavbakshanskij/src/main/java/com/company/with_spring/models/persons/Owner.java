@@ -1,16 +1,15 @@
 package com.company.with_spring.models.persons;
 
 import com.company.with_spring.models.pets.Pet;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class Owner implements Person {
+    @Autowired
     private List<Pet> pets;
-
-    public Owner(List<Pet> pets) {
-        System.out.println("Owner is created");
-        this.pets = pets;
-    }
 
     @Override
     public List<Pet> getPets() {
