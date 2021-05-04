@@ -36,7 +36,7 @@
 
     <!-- OWNERS -->
     <bean id="vlad" class="com.company.with_spring.models.persons.CatOwner">
-        <constructor-arg name="cats">
+        <constructor-arg name="pets">
             <list>
                 <ref bean="cat"/>
                 <ref bean="cat"/>
@@ -45,7 +45,7 @@
         </constructor-arg>
     </bean>
     <bean id="viktor" class="com.company.with_spring.models.persons.CatOwner">
-        <constructor-arg name="cats">
+        <constructor-arg name="pets">
             <list>
                 <ref bean="cat"/>
                 <ref bean="cat"/>
