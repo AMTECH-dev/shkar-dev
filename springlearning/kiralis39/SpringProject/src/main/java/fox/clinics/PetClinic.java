@@ -7,7 +7,7 @@ import fox.doctors.Doctor;
 
 
 public class PetClinic {
-	private final String clinicName;
+	private String clinicName;
 	private final List<Doctor> doctors = new ArrayList<Doctor>();
 	
 	
@@ -29,4 +29,7 @@ public class PetClinic {
 	}
 	
 	public Doctor[] getListOfDoctors() {return doctors.toArray(new Doctor[0]);}
+
+
+	public void setName(String clinicName) {this.clinicName = clinicName;}
 }
