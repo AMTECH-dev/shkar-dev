@@ -7,6 +7,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +29,7 @@ public abstract class OurHttpHandler implements HttpHandler {
             StringBuilder sb = new StringBuilder();
             String bodyRequestPart;
             while ((bodyRequestPart = br.readLine()) != null) {
-                sb.append(bodyRequestPart);
+                sb.append(URLDecoder.decode(bodyRequestPart, StandardCharsets.UTF_8));
             }
             return sb.toString();
         }
@@ -44,5 +46,9 @@ public abstract class OurHttpHandler implements HttpHandler {
             }
         }
         return parameters;
+    }
+
+    protected Map<String, String> getRequestBodyFromExchange(HttpExchange exchange) throws IOException {
+        return getQueryParams(getRequestBody(exchange));
     }
 }

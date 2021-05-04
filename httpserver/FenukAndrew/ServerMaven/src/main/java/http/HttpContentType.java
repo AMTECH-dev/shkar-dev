@@ -1,10 +1,12 @@
 import java.util.HashMap;
 import java.util.Map;
 
+// TODO DELETE THIS
 //https://developer.mozilla.org/ru/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 class ContentType {
     private static Map<String, String> contentTypes = new HashMap<String, String>();
 
+    // TODO ??
     static {
         contentTypes.put(".ico", "image/vnd.microsoft.icon");
         contentTypes.put(".bmp", "image/bmp");
