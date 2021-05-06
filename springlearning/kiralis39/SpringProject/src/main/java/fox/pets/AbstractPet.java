@@ -1,6 +1,8 @@
 package fox.pets;
 
 import fox.Pet;
+import fox.gui.MonitorFrame;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -11,6 +13,7 @@ public class AbstractPet implements Pet {
 	private SEX sex;
 	private String name;
 	private float age;
+	private int hp = 50;
 	private String color;
 	private boolean isHealed;
 
@@ -21,7 +24,7 @@ public class AbstractPet implements Pet {
 		this.age = age;
 		this.color = color;
 		
-		System.out.println("A new pet income! It`s a " + getClass().getSimpleName() + " named '" + name + "' (" + age + " y.o.; " + sex.name() + "; " + color + ").");
+		System.out.println("A new pet available! It`s a " + getClass().getSimpleName() + " named '" + name + "' (" + age + " y.o.; " + sex.name() + "; " + color + ").");
 	}
 
 
@@ -38,5 +41,25 @@ public class AbstractPet implements Pet {
 	public void setColor(String color) {this.color = color;}
 	
 	public boolean isHealed() {return this.isHealed;}
-	public void setHealed(boolean isHealed) {this.isHealed = isHealed;}
+	public void setHealed(boolean isHealed) {
+		this.isHealed = isHealed;
+
+		if (this.isHealed) {
+			System.out.println("The pet '" + getName() + "' is healed and happy now! =^_^=");
+			MonitorFrame.addHealedPetsCollection();
+		} else {
+			System.out.println("The pet '" + getName() + "' not healed yet! Return later.");
+
+		}
+	}
+	
+	public int getHP() {return hp;}
+	public void setHP(int hp) {this.hp = hp;}
+	
+	@Override
+	public String toString() {
+		return "Name: " + name + "; age: " + age + "; sex: " + sex + "; color: " + color;		
+	}
+
+
 }
