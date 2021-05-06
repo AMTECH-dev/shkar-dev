@@ -23,6 +23,7 @@ public class AbstractPet implements Pet {
 		this.name = name;
 		this.age = age;
 		this.color = color;
+		this.isHealed = false;
 		
 		System.out.println("A new pet available! It`s a " + getClass().getSimpleName() + " named '" + name + "' (" + age + " y.o.; " + sex.name() + "; " + color + ").");
 	}
@@ -46,6 +47,7 @@ public class AbstractPet implements Pet {
 
 		if (this.isHealed) {
 			System.out.println("The pet '" + getName() + "' is healed and happy now! =^_^=");
+			MonitorFrame.setProgressbarText("Accomplished!");
 			MonitorFrame.addHealedPetsCollection();
 		} else {
 			System.out.println("The pet '" + getName() + "' not healed yet! Return later.");

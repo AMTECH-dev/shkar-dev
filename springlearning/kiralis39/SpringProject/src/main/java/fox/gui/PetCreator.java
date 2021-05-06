@@ -162,7 +162,7 @@ public class PetCreator extends JDialog {
 															} catch (Exception e) {e.printStackTrace(); pet.setHP(50);}
 															pet.setSex((SEX) sexCBox.getSelectedItem());
 															pet.setColor(colorField.getText());
-															pet.setHealed(false);
+//															pet.setHealed(false);
 															
 															dispose();
 														}

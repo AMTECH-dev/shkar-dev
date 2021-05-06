@@ -44,7 +44,7 @@ public class PetClinic {
 		System.out.println("Let`s try to heal the pets: '" + Arrays.asList(pets) + "'...");		
 		
 		for (Pet pet : pets) {
-			MonitorFrame.setHealProgressValue(0);
+			MonitorFrame.setHealProgressValue(0, pet.getName());
 			
 			new Thread(new Runnable() {
 				@Override
