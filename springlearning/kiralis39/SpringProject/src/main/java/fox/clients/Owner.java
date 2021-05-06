@@ -1,11 +1,9 @@
 package fox.clients;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import fox.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -21,8 +19,7 @@ public class Owner {
 		this.name = name;
 		this.pets = pets;
 		
-		System.out.println("Incoming pets owner '" + name + "' has pets: " + 
-				pets.stream().map(Pet::getName).collect(Collectors.joining(",")) + ".");
+//		System.out.println("Incoming pets owner '" + name + "' has pets: " + pets.stream().map(Pet::getName).collect(Collectors.joining(",")) + ".");
 	}
 
 

@@ -1,6 +1,8 @@
 package fox.doctors;
 
 import fox.Pet;
+import fox.gui.MonitorFrame;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -9,32 +11,51 @@ import org.springframework.stereotype.Component;
 @Component("beanDoctor")
 public class Doctor {
 	private final String name;
-	private Pet careesPet;
 	private static boolean isFree = true;
 
+	
 	@Autowired
 	public Doctor(@Value("${doctor.defaultName}") String name) {
 		this.name = name;
-		
-		System.out.println("Income a new doctor '" + this.name + "'.");
 	}
 
-
-	public void setCaresPet(Pet pet) {
-		setFree(false);
+	public synchronized void setCaresPet(Pet pet) {
+		System.out.println("Pet '" + pet.getName() + "' arrived to dr." + getName());
 		
-		careesPet = pet;
-		System.out.println("Doctor '" + name + "' has cared on pet '" + pet.getName() + "' now.");
-		
-		pet.setHealed(true);
-		setFree(true);
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				setFree(false);
+				Pet currentPet = pet;
+				System.out.println("Doctor '" + name + "' has cared on pet '" + currentPet.getName() + "' now.");
+				
+				while (!currentPet.isHealed()) {
+					
+					if (currentPet.getHP() >= 100) {
+						currentPet.setHP(100);
+						currentPet.setHealed(true);		
+					} else {			
+						currentPet.setHP(currentPet.getHP() + 10);
+						MonitorFrame.setHealProgressValue(currentPet.getHP());
+					}
+					
+					try {Thread.sleep(250);
+					} catch (Exception e) {
+						currentPet.setHealed(false);
+						setFree(true);
+						MonitorFrame.addFailedPetsCollection();
+						System.out.println("Doctor '" + getName() + "' has important stuff. He needs brake. Sorry.");
+						Thread.currentThread().interrupt();
+						e.printStackTrace();
+					}
+				}
+				
+				setFree(true);
+			}
+		}).start();		
 	}
-
 
 	public String getName() {return this.name;}
-	
-	public Pet getCaresPet() {return this.careesPet;}
-
 
 	public boolean isFree() {return isFree;}
 	public void setFree(boolean isFree) {Doctor.isFree = isFree;}

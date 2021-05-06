@@ -1,34 +1,27 @@
 package fox.door;
 
-import fox.pets.Cat;
-import fox.pets.Dog;
-import fox.pets.Fox;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.PrintStream;
 
-import fox.Pet;
-import fox.clinics.PetClinic;
+import fox.gui.MonitorFrame;
 
 
 public class MainClass {
-	private String clinicName;
-
+	private static MonitorFrame monitor;
+	
+	
 	public static void main(String[] args) {
 		System.out.println("Launch the programm!");
 
-		springCreate();
-	}
-
-	static void springCreate() {
-		try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("appCont.xml")) {
-			context
-				.getBean(PetClinic.class)
-				.work(
-					context.getBean(Cat.class),
-					context.getBean(Dog.class),
-					context.getBean(Fox.class));
-		} catch (Exception e) {
+		try {
+			new DataBase();
+			monitor = new MonitorFrame(); // open monitor frame
+			new SpringEngine(); // create the Spring-context
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
 }
