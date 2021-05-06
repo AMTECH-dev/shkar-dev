@@ -18,7 +18,7 @@ public abstract class Pet {
         if (diagnose.equals(Diagnose.NONE))
             System.out.println(this.name + " is healthy!");
         else System.out.println(this.name + " is sick!");
-        return diagnose != null;
+        return !diagnose.equals(Diagnose.NONE);
     }
 
     public void setDiagnose(Diagnose diagnose) {

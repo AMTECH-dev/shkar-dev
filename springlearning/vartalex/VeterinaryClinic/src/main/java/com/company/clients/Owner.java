@@ -10,21 +10,20 @@ import java.util.ArrayList;
 @Component
 public class Owner {
     String name;
-    String dateOfBirth;
     ArrayList<Pet> pets;
 
     @Autowired
-    public Owner(@Value("${owner.defaultName}") String name,
-                 @Value("${owner.defaultDateOfBirth}") String dateOfBirth) {
+    public Owner(@Value("${owner.defaultName}") String name) {
         this.name = name;
-        this.dateOfBirth = dateOfBirth;
         pets = new ArrayList<>();
         System.out.println("Owner " + name + " appear!");
     }
 
-    public void addPet(Pet pet) {
-        pets.add(pet);
-        System.out.printf("Pet %s added to %s.\n", pet, name);
+    public void addPet(Pet ... ownerPets) {
+        for (Pet pet : ownerPets) {
+            pets.add(pet);
+            System.out.printf("Pet %s added to %s.\n", pet, name);
+        }
     }
 
     public ArrayList<Pet> getPets() {
@@ -35,7 +34,6 @@ public class Owner {
     public String toString() {
         return "Owner {" +
                 "name = '" + name + '\'' +
-                ", dateOfBirth = '" + dateOfBirth + '\'' +
                 '}';
     }
 }

@@ -3,7 +3,7 @@ package com.company;
 import com.company.clients.Owner;
 import com.company.clients.pets.Pet;
 import com.company.clients.pets.home_pets.*;
-import com.company.clinic.administration.Office;
+import com.company.clinic.Office;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Main {
@@ -18,49 +18,49 @@ public class Main {
         Pet dog = context.getBean(Dog.class);
 
         Owner owner = context.getBean(Owner.class);
-        owner.addPet(cat);
-        owner.addPet(dog);
+        owner.addPet(cat, dog);
 
-        clinic.addOwnerToTheBase(owner);
+        clinic.addOwnersToTheBase(owner);
 
-        clinic.getTherapist().takeCare(cat);
+        clinic.takeCare(cat);
 
         cat.isSick();
         dog.isSick();
-        clinic.getSurgeon().takeCare(dog);
+        clinic.takeCare(dog);
         dog.isSick();
-        clinic.getTherapist().takeCare(dog);
-        clinic.getGroomer().takeCare(dog);
+        clinic.takeCare(dog);
 
         context.close();
 
-//        Office com.company.clinic = new Office();
-//
-//        Pet kitty = new Cat("John", 3, Diagnose.NEED_VACCINATION);
-//        Pet doggy = new Dog("Fluffy", 24, Diagnose.VIRUS);
-//        Owner owner1 = new Owner("William Shakespeare", "12.04.1587");
-//        owner1.addPet(kitty);
-//        owner1.addPet(doggy);
-//        com.company.clinic.addOwnerToTheBase(owner1);
-//
-//        System.out.println(owner1 + "'s pets:");
-//        System.out.println("\n" + owner1.getPets());
-//
-//        Pet snaky = new Snake("Bold Head", 12, Diagnose.FRACTURE);
-//        Owner owner2 = new Owner("Kate Smith", "12.32.1976");
-//        owner2.addPet(snaky);
-//        com.company.clinic.addOwnerToTheBase(owner2);
-//
-//        System.out.println("Clinic com.company.clients: ");
-//        System.out.println("\n" + com.company.clinic.getClientBase() + "\n");
-//
-//        com.company.clinic.getTherapist().takeCare(kitty);
-//
-//        doggy.isSick();
-//        com.company.clinic.getSurgeon().takeCare(doggy);
-//        doggy.isSick();
-//        com.company.clinic.getGroomer().takeCare(doggy);
-//
-//        com.company.clinic.getGroomer().takeCare(snaky);
+        // без ioc, di
+/*
+        Office clinic = new Office();
+
+        Pet kitty = new Cat("John", 3, Diagnose.NEED_VACCINATION);
+        Pet doggy = new Dog("Fluffy", 24, Diagnose.VIRUS);
+        Owner owner1 = new Owner("William Shakespeare");
+        owner1.addPet(kitty);
+        owner1.addPet(doggy);
+
+        System.out.println(owner1 + "'s pets:");
+        System.out.println("\n" + owner1.getPets());
+
+        Pet snaky = new Snake("Bold Head", 12, Diagnose.FRACTURE);
+        Owner owner2 = new Owner("Kate Smith");
+        owner2.addPet(snaky);
+        clinic.addOwnerToTheBase(owner1, owner2);
+
+        System.out.println("Clinic clients: ");
+        System.out.println("\n" + clinic.getClientBase() + "\n");
+
+        clinic.takeCare(kitty);
+
+        doggy.isSick();
+        clinic.takeCare(doggy);
+        doggy.isSick();
+        clinic.takeCare(doggy);
+
+        clinic.takeCare(snaky);
+ */
     }
 }
