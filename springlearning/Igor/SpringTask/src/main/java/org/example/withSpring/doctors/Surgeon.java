@@ -1,4 +1,4 @@
-package org.example.WithSpring.doctors;
+package org.example.withSpring.doctors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

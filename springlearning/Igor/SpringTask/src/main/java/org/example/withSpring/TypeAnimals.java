@@ -1,4 +1,4 @@
-package org.example.WithSpring;
+package org.example.withSpring;
 
 public enum TypeAnimals {
     DOG,

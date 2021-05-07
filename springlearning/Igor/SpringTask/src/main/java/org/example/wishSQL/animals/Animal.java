@@ -1,4 +1,4 @@
-package org.example.WithSpring.animals;
+package org.example.wishSQL.animals;
 
 
 abstract public class Animal {

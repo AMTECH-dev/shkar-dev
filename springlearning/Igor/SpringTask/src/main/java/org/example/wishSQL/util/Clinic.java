@@ -1,10 +1,9 @@
-package org.example.WithSpring.util;
-
-import org.example.WithSpring.doctors.Doctor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+package org.example.wishSQL.util;
 
 import java.util.List;
+import org.example.wishSQL.doctors.Doctor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public class Clinic {

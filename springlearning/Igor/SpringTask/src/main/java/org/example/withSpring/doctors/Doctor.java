@@ -1,7 +1,7 @@
-package org.example.WithSpring.doctors;
+package org.example.withSpring.doctors;
 
 
-import org.example.WithSpring.util.Inspection;
+import org.example.withSpring.util.Inspection;
 
 abstract public class Doctor implements Inspection {
 

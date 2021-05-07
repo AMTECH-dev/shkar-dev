@@ -1,4 +1,4 @@
-package org.example.WithSpring.animals;
+package org.example.withSpring.animals;
 
 public interface Pet {
     default void say() {

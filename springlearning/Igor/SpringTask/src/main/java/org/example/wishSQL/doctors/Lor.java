@@ -1,4 +1,4 @@
-package org.example.WithSpring.doctors;
+package org.example.wishSQL.doctors;
 
 
 import org.springframework.beans.factory.annotation.Value;

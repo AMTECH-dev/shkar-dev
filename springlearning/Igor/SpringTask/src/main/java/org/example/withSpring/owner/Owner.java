@@ -1,8 +1,7 @@
-package org.example.WithSpring.owner;
+package org.example.withSpring.owner;
 
-import org.example.WithSpring.animals.Animal;
+import org.example.withSpring.animals.Animal;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package org.example.WithSpring.util;
+package org.example.wishSQL.util;
 
 import java.util.Random;
 
