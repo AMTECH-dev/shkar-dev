@@ -1,20 +1,30 @@
 package fox.doctors;
 
 import fox.Pet;
+import fox.SEX;
 import fox.gui.MonitorFrame;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.Entity;
 
-@Component("beanDoctor")
+
+@Component
+@Entity
 public class Doctor {
-	private final String name;
+	private int id;
+	private String name;
+	private int age;
+	private String address;
+	private long phone;
+	private SEX sex;
+
 	private static boolean isFree = true;
 
-	
-	@Autowired
+
+	public Doctor() {}
+
 	public Doctor(@Value("${doctor.defaultName}") String name) {
 		this.name = name;
 	}
@@ -33,8 +43,9 @@ public class Doctor {
 					
 					if (currentPet.getHP() >= 100) {
 						currentPet.setHP(100);
-						currentPet.setHealed(true);		
-					} else {			
+						System.out.println("Doctor '" + name + "' ends work on pet '" + currentPet + "'!");
+						currentPet.setHealed(true);
+					} else {
 						currentPet.setHP(currentPet.getHP() + 10);
 						MonitorFrame.setHealProgressValue(currentPet.getHP(), currentPet.getName());
 					}

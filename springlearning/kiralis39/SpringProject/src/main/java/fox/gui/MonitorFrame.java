@@ -1,14 +1,6 @@
 package fox.gui;
 
-
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -16,7 +8,7 @@ import java.io.InputStreamReader;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintStream;
-import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -31,32 +23,28 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
+import javax.swing.text.*;
 
 import fox.Pet;
-import fox.annotations.Spring;
 import fox.clinics.PetClinic;
+import fox.door.DataBase;
 import fox.door.SpringEngine;
 
 
-@SuppressWarnings("serial")
 public class MonitorFrame<T> extends JFrame {
 	private JScrollPane scrollPane;
-	private JPanel midPane;
+	private JPanel midPane, downLabelTextPane, leftClinicsPane;
 	private MonitorFrame monitor; 
 	private JTextPane outputArea;
 
 	private static JProgressBar healProgress;
 	private static JLabel healedPets, failedPets;
+
+	private String progressLabel = "Heal progress:";
+
+	private Font progressLabelFont = new Font("Arial Narrow", Font.BOLD, 12);
 	
-	private SimpleAttributeSet filler = new SimpleAttributeSet();
-	SimpleAttributeSet attributeSet = new SimpleAttributeSet();
-	
-	
+	// GUI:
 	public MonitorFrame() {
 		tuneUI();
 		
@@ -65,7 +53,7 @@ public class MonitorFrame<T> extends JFrame {
         setTitle("Monitor frame:");
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setMinimumSize(new Dimension(500, 300));
-        setPreferredSize(new Dimension(550, 500));
+        setPreferredSize(new Dimension(750, 500));
         
         JPanel basePane = new JPanel(new BorderLayout(3,3)) {
         	{
@@ -111,7 +99,13 @@ public class MonitorFrame<T> extends JFrame {
         				add(upFailedInfoPane);
         			}
         		};
-        		
+
+        		leftClinicsPane = new JPanel(new GridLayout(0,1,3,3)) {
+					{
+
+					}
+				};
+
         		midPane = new JPanel(new BorderLayout(3,3)) {
         			{
         				setBackground(Color.black);
@@ -121,7 +115,6 @@ public class MonitorFrame<T> extends JFrame {
     			        outputArea = new JTextPane() {
         					{
         						setBackground(Color.BLACK);
-        						setForeground(Color.GREEN);
         						setEditable(false);
         					}
         				};
@@ -142,7 +135,23 @@ public class MonitorFrame<T> extends JFrame {
         			{
         				setBorder(new EmptyBorder(3, 3, 1, 3));
         				setBackground(Color.GRAY);
-        				
+
+						JButton clinicBut = new JButton("ADD CLINIC") {
+							{
+								setFocusPainted(false);
+								setBackground(Color.DARK_GRAY);
+								setForeground(Color.WHITE);
+
+								addActionListener(new ActionListener() {
+									@Override public void actionPerformed(ActionEvent arg0) {
+										healProgress.setIndeterminate(true);
+										addNewClinic();
+										healProgress.setIndeterminate(false);
+									}
+								});
+							}
+						};
+
         				JButton petBut = new JButton("ADD PET") {
         					{
         						setFocusPainted(false);
@@ -191,28 +200,26 @@ public class MonitorFrame<T> extends JFrame {
         							}
         						};
 
-        						JPanel downLabelTextPane = new JPanel(new BorderLayout(3,3)) {
+        						downLabelTextPane = new JPanel(new BorderLayout(3,3)) {
         							@Override
         							public void paint(Graphics g) {
         								super.paint(g);
         								
         								Graphics2D g2D = (Graphics2D) g;
-        								
-        								g2D.setFont(new Font("Arial Narrow", Font.BOLD, 16));
+
+        								g2D.setFont(progressLabelFont);
         								g2D.setColor(Color.BLACK);
-        								g2D.drawString("Heal progress:", 19, 21);
+        								g2D.drawString(progressLabel, 22, 21);
         								g2D.setColor(Color.GREEN);
-        								g2D.drawString("Heal progress:", 20, 20);
+        								g2D.drawString(progressLabel, 23, 20);
         							}
         							
 									{
 										setOpaque(false);
-										setPreferredSize(new Dimension(110, 30));
 
 										add(new JLabel("\u2665") {
 												{
 													setForeground(Color.RED);
-													System.out.println(Arrays.asList(GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts()));
 													setFont(new Font("cl-unicode", Font.PLAIN, 24));
 												}
 											}, BorderLayout.WEST);
@@ -223,7 +230,8 @@ public class MonitorFrame<T> extends JFrame {
         						add(healProgress, BorderLayout.CENTER);
         					}
         				};
-        				
+
+        				add(clinicBut, BorderLayout.WEST);
         				add(petBut, BorderLayout.CENTER);
         				add(exitBut, BorderLayout.EAST);
         				add(healProgressPane, BorderLayout.SOUTH);
@@ -231,6 +239,7 @@ public class MonitorFrame<T> extends JFrame {
         		};
         		
         		add(upInfoPane, BorderLayout.NORTH);
+				add(leftClinicsPane, BorderLayout.WEST);
         		add(midPane, BorderLayout.CENTER);
         		add(downButPane, BorderLayout.SOUTH);
         	}
@@ -242,152 +251,45 @@ public class MonitorFrame<T> extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
 
-		monitor.revalidate();
 		launchMonitorConsoleThread();
-		outputAreaStyler();
-    }
 
-	public void outputAreaStyler() {
-		new Thread(new Runnable() {			
-			@Override
-			public void run() {
-				long was = System.currentTimeMillis();
-				
-				while (System.currentTimeMillis() - was < 3_000) {Thread.yield();}
-				
-				// Создание стилей
-			    Style normal = outputArea.addStyle("normal", null);
-		        StyleConstants.setFontFamily(normal, "Times New Roman"); 
-		        StyleConstants.setFontSize(normal, 16);
-		        StyleConstants.setForeground(normal, Color.GREEN);
-		        
-		        // Наследуем свойстdо FontFamily
-		        Style heading = outputArea.addStyle("heading", normal);
-		        StyleConstants.setFontSize(heading, 24);
-		        StyleConstants.setBold(heading, true);
-		        StyleConstants.setForeground(heading, Color.ORANGE);
-				
-//		        JCheckBox check = new JCheckBox("JCheckBox");
-//		        check.setFont(new Font(FONT_style, Font.ITALIC, 16));
-//		        check.setOpaque(false);
-//		        outputArea.insertComponent(check);
+		downLabelTextPane.setPreferredSize(new Dimension((int) downLabelTextPane.getGraphics().getFontMetrics(progressLabelFont).getStringBounds(progressLabel, downLabelTextPane.getGraphics()).getWidth() + 20, 30));
+		downLabelTextPane.revalidate();
 
-//		        JRadioButton radio = new JRadioButton("JRadioButton");
-//		        radio.setFont(new Font(FONT_style, Font.ITALIC, 16));
-//		        radio.setOpaque(false);
-//		        radio.setSelected(true);
-//		        outputArea.insertComponent(radio);
+		updateData();
+	}
 
-		        StyleConstants.setForeground(filler, Color.YELLOW);
-		        StyleConstants.setBackground(filler, Color.BLACK);
-			}
-		}).start();
+	private void updateData() {
+		List<PetClinic> clinics = DataBase.getClinics();
+		for(PetClinic pc : clinics) {
+			System.out.println("Finded the clinic '" + pc.getName() + "' into DB.");
+			leftClinicsPane.add(new JLabel(pc.getName()));
+		}
 	}
 
 	private void tuneUI() {
-		try {UIManager.setLookAndFeel(new NimbusLookAndFeel());
+		try {
+			UIManager.setLookAndFeel(new NimbusLookAndFeel());
+			UIManager.getLookAndFeelDefaults().put("TextPane[Enabled].backgroundPainter", new Painter<T>() {
+				@Override
+				public void paint(Graphics2D g, T object, int width, int height) {
+					g.setColor(Color.GREEN);
+					g.fillRect(0, 0, 3, 3);
+				}
+			});
 		} catch (Exception e) {
-			try {UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			try {UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 			} catch (Exception e2) {
 				try {UIManager.setLookAndFeel("com.jgoodies.plaf.plastic.PlasticXPLookAndFeel");
 				} catch (Exception e3) {
-					try {UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+					try {UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 					} catch (Exception e4) {System.out.println("Couldn't get specified look and feel, for some reason.");}
 				}
 			}
 		}
-		
-
-		UIManager.getLookAndFeelDefaults().put("TextPane[Enabled].backgroundPainter", new Painter<T>() {
-			@Override
-			public void paint(Graphics2D g, T object, int width, int height) {
-				g.setColor(Color.GREEN);
-				g.fillRect(0, 0, 3, 3);
-			}
-		});
-		
-//		UIManager.getLookAndFeelDefaults().put("TextPane.background", Color.MAGENTA);
-//		UIManager.getLookAndFeelDefaults().put("TextPane.disabled", Color.MAGENTA);
-//		UIManager.getLookAndFeelDefaults().put("TextPane.disabledText", Color.MAGENTA);
-//		UIManager.getLookAndFeelDefaults().put("TextPane.foreground", Color.MAGENTA);
-//		UIManager.getLookAndFeelDefaults().put("TextPane.opaque", false);
-//		UIManager.getLookAndFeelDefaults().put("TextPane[Disabled].backgroundPainter", Color.MAGENTA);
-//		UIManager.getLookAndFeelDefaults().put("TextPane[Disabled].textForeground", Color.MAGENTA);
-//		UIManager.getLookAndFeelDefaults().put("TextPane[Selected].backgroundPainter", Color.MAGENTA);
-//		UIManager.getLookAndFeelDefaults().put("TextPane[Selected].textForeground", Color.MAGENTA);
-		
-//		UIManager.getLookAndFeelDefaults().put("TextPane.background", Color.RED);
-		 
-//		TextArea.background	#d6d9df (214,217,223)
-//		TextArea.disabled	#d6d9df (214,217,223)	 
-//		TextArea.disabledText	#8e8f91 (142,143,145)	  	 
-//		TextArea.font	Font SansSerif 12	Font SansSerif 12 
-//		TextArea.foreground	#000000 (0,0,0)	 	 
-//		TextArea[Disabled].backgroundPainter	Painter	Painter
-//		TextArea[Disabled].textForeground	#8e8f91 (142,143,145)
-//		TextArea[Enabled].backgroundPainter	Painter	Painter
-//		TextArea[Focused+NotInScrollPane].borderPainter	Painter	Painter
-//		TextArea[Selected].backgroundPainter	Painter	Painter
-//		TextArea[Selected].textForeground
-//		
-//		Panel.background	#d6d9df (214,217,223)
-//		Panel.disabled	#d6d9df (214,217,223)	 
-//		Panel.disabledText	#000000 (0,0,0)	 
-//		Panel.font	Font SansSerif 12	Font SansSerif 12 
-//		Panel.foreground	#000000 (0,0,0)
-//		
-//		EditorPane.background	#d6d9df (214,217,223)
-//		EditorPane.disabled	#d6d9df (214,217,223)	 
-//		EditorPane.disabledText	#8e8f91 (142,143,145)	 	 	 
-//		EditorPane.font	Font SansSerif 12	Font SansSerif 12 
-//		EditorPane.foreground	#000000 (0,0,0)	 	 
-//		EditorPane[Disabled].backgroundPainter	Painter	Painter
-//		EditorPane[Disabled].textForeground	#8e8f91 (142,143,145)	 
-//		EditorPane[Enabled].backgroundPainter	Painter	Painter
-//		EditorPane[Selected].backgroundPainter	Painter	Painter
-//		EditorPane[Selected].textForeground	#f
-//		 	 
-//		ScrollPane.background	#d6d9df (214,217,223)
-//		ScrollPane.disabled	#d6d9df (214,217,223)	 
-//		ScrollPane.disabledText	#000000 (0,0,0)	 
-//		ScrollPane.font	Font SansSerif 12	Font SansSerif 12 
-//		ScrollPane.foreground	#000000 (0,0,0)	 
-//		ScrollPane[Enabled+Focused].borderPainter	Painter	Painter
-//		ScrollPane[Enabled].borderPainter
-//		
-//		Viewport.background	#d6d9df (214,217,223)
-//		Viewport.disabled	#d6d9df (214,217,223)	 
-//		Viewport.disabledText	#000000 (0,0,0)	 
-//		Viewport.font	Font SansSerif 12	Font SansSerif 12 
-//		Viewport.foreground	#000000 (0,0,0)
-//		
-//		ProgressBar.Indeterminate	Indeterminate 
-//		ProgressBar.background	#d6d9df (214,217,223)
-//		ProgressBar.disabled	#d6d9df (214,217,223)	 
-//		ProgressBar.disabledText	#8e8f91 (142,143,145)	 
-//		ProgressBar.font	Font SansSerif 12	Font SansSerif 12 
-//		ProgressBar.foreground	#000000 (0,0,0)	 
-//		ProgressBar.horizontalSize	Dimension (150,19)	Dimension (150,19)
-//		ProgressBar.tileWhenIndeterminate	true//		
-//		ProgressBar[Disabled+Finished].foregroundPainter	Painter	Painter
-//		ProgressBar[Disabled+Indeterminate].foregroundPainter	Painter	Painter
-//		ProgressBar[Disabled+Indeterminate].progressPadding	3	 
-//		ProgressBar[Disabled].backgroundPainter	Painter	Painter
-//		ProgressBar[Disabled].foregroundPainter	Painter	Painter
-//		ProgressBar[Disabled].textForeground	#8e8f91 (142,143,145)	
 	}
 
-	@Spring
-    private void addNewPet(Pet pet) {
-    	if (pet == null) {
-    		healProgress.setValue(100);
-			System.out.println("We have a ghost? Its a revenge!!!");
-			return;
-		}
-
-		SpringEngine.getContext().getBean(PetClinic.class).work(pet);
-	}
-
+	// OUT THREAD:
 	private void launchMonitorConsoleThread() {
 		new Thread(new Runnable() {
 			@Override
@@ -424,29 +326,75 @@ public class MonitorFrame<T> extends JFrame {
 		}) {{setDaemon(true);}}.start();
 	}
 
-    private void endWorkEndExit(int errCode) {
-    	System.out.println("Clinic system is shutting down with code #" + errCode);
-		SpringEngine.closeContext();
-		System.exit(errCode);
-	}
-
 	public void appendOut(String line) {
-		outputArea.setText(outputArea.getText() + line);
-//		StyledDocument doc = (StyledDocument)outputArea.getDocument();
-//		Style style = doc.addStyle("StyleName", null);
-//		StyleConstants.setBackground(style, Color.blue);
-//		try {
-//			doc.insertString(doc.getLength(), line, null);
-//			doc.insertString(doc.getLength(), line, style);
-//		} catch (BadLocationException e) {e.printStackTrace();}
-		
-//		outputArea.getStyledDocument().setCharacterAttributes(0, outputArea.getStyledDocument().getLength(), filler, true);
+		StyledDocument doc = (StyledDocument) outputArea.getDocument();
+
+		Style normal = outputArea.addStyle("normal", null);
+		StyleConstants.setFontFamily(normal, "Dialog");
+		StyleConstants.setFontSize(normal, 12);
+		StyleConstants.setForeground(normal, Color.WHITE);
+		StyleConstants.setBold(normal, false);
+
+		Style red = outputArea.addStyle("red", normal);
+		StyleConstants.setFontSize(red, 14);
+		StyleConstants.setForeground(red, Color.RED);
+		StyleConstants.setBold(red, true);
+
+		Style green = outputArea.addStyle("green", null);
+		StyleConstants.setFontFamily(normal, "Arial Narrow");
+		StyleConstants.setFontSize(green, 14);
+		StyleConstants.setForeground(green, Color.GREEN);
+		StyleConstants.setBold(green, true);
+
+		Style cyan = outputArea.addStyle("cyan", null);
+		StyleConstants.setFontSize(cyan, 12);
+		StyleConstants.setForeground(cyan, Color.CYAN);
+		StyleConstants.setBold(cyan, true);
+
+		Style orange = outputArea.addStyle("orange", null);
+		StyleConstants.setFontSize(orange, 12);
+		StyleConstants.setForeground(orange, Color.ORANGE);
+		StyleConstants.setBold(orange, false);
+
+		try {
+			if (line.contains("=^_^=")) {
+				doc.insertString(doc.getLength(), line, green);
+			} else if (line.contains("created new")) {
+				doc.insertString(doc.getLength(), line, cyan);
+			} else if (line.contains("pet income")) {
+				doc.insertString(doc.getLength(), line, orange);
+			} else {
+				doc.insertString(doc.getLength(), line, normal);
+			}
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
+
 		outputArea.setCaretPosition(outputArea.getStyledDocument().getLength());
-		
+
+
+//		SimpleAttributeSet filler = new SimpleAttributeSet();
+//		StyleConstants.setForeground(filler, Color.YELLOW);
+//		StyleConstants.setBackground(filler, Color.BLACK);
+//		outputArea.getStyledDocument().setCharacterAttributes(0, outputArea.getStyledDocument().getLength(), filler, true);
+
 //		StyleConstants.setBackground(attributeSet, Color.MAGENTA);
 //		outputArea.setCharacterAttributes(attributeSet, true);
+
+
+//		JCheckBox check = new JCheckBox("JCheckBox");
+//		check.setFont(new Font(FONT_style, Font.ITALIC, 16));
+//		check.setOpaque(false);
+//		outputArea.insertComponent(check);
+
+//		JRadioButton radio = new JRadioButton("JRadioButton");
+//		radio.setFont(new Font(FONT_style, Font.ITALIC, 16));
+//		radio.setOpaque(false);
+//		radio.setSelected(true);
+//		outputArea.insertComponent(radio);
 	}
 
+	// DOWN PROGRESS BAR:
 	public static void setHealProgressValue(int value, String label) {
 		healProgress.setValue(value);
 		setProgressbarText("Healed " + label + " (" + healProgress.getValue() + "%)");
@@ -462,5 +410,35 @@ public class MonitorFrame<T> extends JFrame {
 	
 	public static void addFailedPetsCollection() {
 		failedPets.setText(String.valueOf(Integer.parseInt(failedPets.getText()) + 1));
+	}
+
+	// FRAME LOGIC:
+	private void addNewClinic() {
+		String name = JOptionPane.showInputDialog(MonitorFrame.this, "Название клиники:");
+		PetClinic clinic = DataBase.addClinic(new PetClinic(name, null, 2990345L, null, "my comment", null));
+
+		if (clinic != null) {
+			System.out.println("Was created new clinic '" + clinic.getName() + "'.");
+		}
+	}
+
+	private void addNewPet(Pet pet) {
+		if (pet == null) {
+			healProgress.setValue(100);
+			System.out.println("We have a ghost? Its a revenge!!!");
+			return;
+		}
+		System.out.println("New pet income:\n" + pet.toString());
+		SpringEngine.getContext().getBean(PetClinic.class).work(pet);
+	}
+
+	// EXIT:
+	private void endWorkEndExit(int errCode) {
+//		DataBase.clearDB();
+		healProgress.setIndeterminate(true);
+		healProgress.setString("Closing the Clinics... wait please...");
+		SpringEngine.getContext().close();
+		System.out.println("Clinic system is shutting down with code #" + errCode);
+		System.exit(errCode);
 	}
 }

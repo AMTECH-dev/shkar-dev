@@ -26,14 +26,13 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import fox.Pet;
-import fox.Pet.SEX;
+import fox.SEX;
 import fox.door.SpringEngine;
 import fox.pets.Cat;
 import fox.pets.Dog;
 import fox.pets.Fox;
 
 
-@SuppressWarnings("serial")
 public class PetCreator extends JDialog {
 	private Pet pet;
 	
@@ -213,11 +212,5 @@ public class PetCreator extends JDialog {
 		setVisible(true);
 	}
 	
-	public Pet get() {
-		if (pet != null) {
-			System.out.println("The clinic has new pet: " + pet.toString());
-		}
-		
-		return pet;
-	}
+	public Pet get() {return pet;}
 }

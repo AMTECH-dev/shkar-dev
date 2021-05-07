@@ -1,25 +1,20 @@
 package fox.door;
 
-import fox.annotations.Spring;
-
+import fox.settings.SpringConfigClass;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 public class SpringEngine {
-    private static ClassPathXmlApplicationContext context;
+    private static AnnotationConfigApplicationContext context;
 
-    @Spring
     public SpringEngine() {
-        context = new ClassPathXmlApplicationContext("appCont.xml");
-
+        context = new AnnotationConfigApplicationContext(SpringConfigClass.class);
     }
 
-    public static AbstractApplicationContext getContext() {
+    public static AnnotationConfigApplicationContext getContext() {
         return context;
-    }
-
-    public static void closeContext() {
-        if (context != null) {context.close();}
     }
 }
