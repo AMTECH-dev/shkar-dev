@@ -4,7 +4,11 @@ import com.company.clients.Owner;
 import com.company.clients.pets.Pet;
 import com.company.clients.pets.home_pets.*;
 import com.company.clinic.Office;
-import com.company.db.SQL;
+import com.company.entities.Owners;
+import com.company.entities.Pets;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Main {
@@ -15,10 +19,30 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Program launched!");
 
-        createContext();
+//        createContext();
 
-        String SQLQuery = "SELECT * FROM Pets where owner_id = 111";
-        SQL.connectToBase(URL, USER, PASS, SQLQuery);
+        SessionFactory factory = new Configuration()
+                .configure("hibernate.cfg.xml")
+                .addAnnotatedClass(Owners.class)
+                .addAnnotatedClass(Pets.class)
+                .buildSessionFactory();
+
+        try {
+            Pets pets = new Pets("Scientist", 6, "none", 1, "Cat");
+
+            Session session = factory.openSession();
+            session.beginTransaction();
+            session.save(pets);
+            session.getTransaction().commit();
+            session.close();
+        }
+        finally {
+            factory.close();
+        }
+
+
+//        String SQLQuery = "SELECT * FROM Pets where owner_id = 111";
+//        SQL.connectToBase(URL, USER, PASS, SQLQuery);
 
 // без ioc, di
 
