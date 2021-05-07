@@ -1,33 +1,35 @@
 package fox.pets;
 
 import fox.Pet;
+import fox.SEX;
 import fox.gui.MonitorFrame;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
-
-@Component("beanPet")
-public class AbstractPet implements Pet {
-	private SEX sex;
+public class AbstractPet<Owner> implements Pet {
+	private int id;
 	private String name;
 	private float age;
-	private int hp = 50;
+	private SEX sex;
 	private String color;
+	private String comment;
+	private Owner owner;
+
+	private int hp = 50;
 	private boolean isHealed;
 
-	@Autowired
-	public AbstractPet(@Value("${pet.defaultName}") String name, @Value("${pet.defaultAge}") float age, @Value("${pet.defaultSex}") SEX sex, @Value("${pet.defaultColor}") String color) {
+	public AbstractPet() {
+		this("noname pet", 1, SEX.MALE, "Iro-iro");
+	}
+
+	public AbstractPet(String name, float age, SEX sex, String color) {
 		this.sex = sex;
 		this.name = name;
 		this.age = age;
 		this.color = color;
 		this.isHealed = false;
 		
-		System.out.println("A new pet available! It`s a " + getClass().getSimpleName() + " named '" + name + "' (" + age + " y.o.; " + sex.name() + "; " + color + ").");
+		System.out.println("A new pet available!\nIt`s a " + getClass().getSimpleName() + " named '" + name + "' (" + age + " y.o.; " + sex.name() + "; " + color + ").");
 	}
-
 
 	public SEX getSex() {return sex;}
 	public void setSex(SEX sex) {this.sex = sex;}
@@ -62,6 +64,4 @@ public class AbstractPet implements Pet {
 	public String toString() {
 		return "Name: " + name + "; age: " + age + "; sex: " + sex + "; color: " + color;		
 	}
-
-
 }

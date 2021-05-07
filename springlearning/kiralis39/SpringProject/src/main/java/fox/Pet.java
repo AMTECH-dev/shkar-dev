@@ -2,8 +2,6 @@ package fox;
 
 
 public interface Pet {
-	public enum SEX {MALE, FEMA}
-
 	public String getName();
 	public void setName(String value);
 	
