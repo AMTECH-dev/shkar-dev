@@ -4,35 +4,24 @@ import com.company.clients.Owner;
 import com.company.clients.pets.Pet;
 import com.company.clients.pets.home_pets.*;
 import com.company.clinic.Office;
+import com.company.db.SQL;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Main {
+    private static final String URL = "jdbc:postgresql://localhost:5432/clinic_base";
+    private static final String USER = "postgres";
+    private static final String PASS = "postgres";
+
     public static void main(String[] args) {
         System.out.println("Program launched!");
 
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("app.xml");
+        createContext();
 
-        Office clinic = context.getBean(Office.class);
+        String SQLQuery = "SELECT * FROM Pets where owner_id = 111";
+        SQL.connectToBase(URL, USER, PASS, SQLQuery);
 
-        Pet cat = context.getBean(Cat.class);
-        Pet dog = context.getBean(Dog.class);
+// без ioc, di
 
-        Owner owner = context.getBean(Owner.class);
-        owner.addPet(cat, dog);
-
-        clinic.addOwnersToTheBase(owner);
-
-        clinic.takeCare(cat);
-
-        cat.isSick();
-        dog.isSick();
-        clinic.takeCare(dog);
-        dog.isSick();
-        clinic.takeCare(dog);
-
-        context.close();
-
-        // без ioc, di
 /*
         Office clinic = new Office();
 
@@ -62,5 +51,29 @@ public class Main {
 
         clinic.takeCare(snaky);
  */
+    }
+
+    private static void createContext() {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("app.xml");
+
+        Office clinic = context.getBean(Office.class);
+
+        Pet cat = context.getBean(Cat.class);
+        Pet dog = context.getBean(Dog.class);
+
+        Owner owner = context.getBean(Owner.class);
+        owner.addPet(cat, dog);
+
+        clinic.addOwnersToTheBase(owner);
+
+        clinic.takeCare(cat);
+
+        cat.isSick();
+        dog.isSick();
+        clinic.takeCare(dog);
+        dog.isSick();
+        clinic.takeCare(dog);
+
+        context.close();
     }
 }
