@@ -1,6 +1,7 @@
 package fox.door;
 
 import fox.annotations.Spring;
+
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -11,6 +12,7 @@ public class SpringEngine {
     @Spring
     public SpringEngine() {
         context = new ClassPathXmlApplicationContext("appCont.xml");
+
     }
 
     public static AbstractApplicationContext getContext() {

@@ -36,10 +36,10 @@ public class Doctor {
 						currentPet.setHealed(true);		
 					} else {			
 						currentPet.setHP(currentPet.getHP() + 10);
-						MonitorFrame.setHealProgressValue(currentPet.getHP());
+						MonitorFrame.setHealProgressValue(currentPet.getHP(), currentPet.getName());
 					}
 					
-					try {Thread.sleep(250);
+					try {Thread.sleep(1000);
 					} catch (Exception e) {
 						currentPet.setHealed(false);
 						setFree(true);
