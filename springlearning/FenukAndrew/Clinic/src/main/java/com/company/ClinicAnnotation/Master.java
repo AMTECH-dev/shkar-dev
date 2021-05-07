@@ -1,6 +1,7 @@
 package com.company.ClinicAnnotation;
 
 import com.company.Clinic.Animals.Pet;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -23,13 +24,19 @@ public class Master {
         this("",new ArrayList<Pet>());
     }
 
-    public Master(String name, Pet pet) {
+    public Master(String name, @Qualifier("cat") Pet pet) {
         this(name, Arrays.asList(pet));
     }
 
     public void setName(String name) {
         this.name=name;
         System.out.println("Master set name:"+name);
+    }
+
+    @Autowired
+    @Qualifier("cat")
+    public void setPet(Pet pet) {
+        this.pets.add(pet);
     }
 
     @Override
