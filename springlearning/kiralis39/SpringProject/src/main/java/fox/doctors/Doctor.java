@@ -4,20 +4,36 @@ import fox.Pet;
 import fox.SEX;
 import fox.gui.MonitorFrame;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 
-@Component
 @Entity
 public class Doctor {
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
+	@Column(name = "name")
 	private String name;
+	
+	@Column(name = "age")
 	private int age;
+	
+	@Column(name = "address")
 	private String address;
+	
+	@Column(name = "phone")
 	private long phone;
+	
+	@Column(name = "sex")
+	@Enumerated(EnumType.STRING)
 	private SEX sex;
 
 	private static boolean isFree = true;
@@ -25,8 +41,12 @@ public class Doctor {
 
 	public Doctor() {}
 
-	public Doctor(@Value("${doctor.defaultName}") String name) {
+	public Doctor(String name, int age, String address, long phone, SEX sex) {
 		this.name = name;
+		this.age = age;
+		this.address = address;
+		this.phone = phone;
+		this.sex = sex;
 	}
 
 	public synchronized void setCaresPet(Pet pet) {
@@ -70,4 +90,9 @@ public class Doctor {
 
 	public boolean isFree() {return isFree;}
 	public void setFree(boolean isFree) {Doctor.isFree = isFree;}
+	
+	@Override
+	public String toString() {
+		return super.toString();
+	}
 }

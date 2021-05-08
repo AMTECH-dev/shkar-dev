@@ -1,17 +1,13 @@
 package fox.settings;
 
-import fox.clinics.PetClinic;
-import fox.door.DataBase;
-import fox.pets.AbstractPet;
-import fox.pets.Cat;
-import fox.pets.Dog;
-import fox.pets.Fox;
+import java.sql.Connection;
+import java.sql.DriverManager;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import fox.door.DataBase;
+
 
 @Configuration
 @ComponentScan("fox")

@@ -31,10 +31,9 @@ import fox.door.DataBase;
 import fox.door.SpringEngine;
 
 
-public class MonitorFrame<T> extends JFrame {
+public class MonitorFrame extends JFrame {
 	private JScrollPane scrollPane;
 	private JPanel midPane, downLabelTextPane, leftClinicsPane;
-	private MonitorFrame monitor; 
 	private JTextPane outputArea;
 
 	private static JProgressBar healProgress;
@@ -48,9 +47,7 @@ public class MonitorFrame<T> extends JFrame {
 	public MonitorFrame() {
 		tuneUI();
 		
-		monitor = this;
-		
-        setTitle("Monitor frame:");
+		setTitle("Monitor frame:");
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setMinimumSize(new Dimension(500, 300));
         setPreferredSize(new Dimension(750, 500));
@@ -270,9 +267,10 @@ public class MonitorFrame<T> extends JFrame {
 	private void tuneUI() {
 		try {
 			UIManager.setLookAndFeel(new NimbusLookAndFeel());
-			UIManager.getLookAndFeelDefaults().put("TextPane[Enabled].backgroundPainter", new Painter<T>() {
+			UIManager.getLookAndFeelDefaults().put("TextPane[Enabled].backgroundPainter", new Painter<Object>() {
+
 				@Override
-				public void paint(Graphics2D g, T object, int width, int height) {
+				public void paint(Graphics2D g, Object object, int width, int height) {
 					g.setColor(Color.GREEN);
 					g.fillRect(0, 0, 3, 3);
 				}
@@ -415,7 +413,7 @@ public class MonitorFrame<T> extends JFrame {
 	// FRAME LOGIC:
 	private void addNewClinic() {
 		String name = JOptionPane.showInputDialog(MonitorFrame.this, "Название клиники:");
-		PetClinic clinic = DataBase.addClinic(new PetClinic(name, null, 2990345L, null, "my comment", null));
+		PetClinic clinic = DataBase.addClinic(new PetClinic(name, null, 2990345L, null, null, "my comment"));
 
 		if (clinic != null) {
 			System.out.println("Was created new clinic '" + clinic.getName() + "'.");

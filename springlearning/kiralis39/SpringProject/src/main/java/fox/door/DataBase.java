@@ -2,24 +2,19 @@ package fox.door;
 
 
 import fox.clinics.PetClinic;
-import org.postgresql.util.GT;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 
 import javax.swing.*;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
+
 
 public class DataBase {
     private static Connection conn;
 
     public DataBase(Connection connection) throws ClassNotFoundException {
-        this.conn = connection;
+        conn = connection;
         System.out.println("Data base is connected.");
     }
 

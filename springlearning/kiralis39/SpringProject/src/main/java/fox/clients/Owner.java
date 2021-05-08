@@ -1,37 +1,60 @@
 package fox.clients;
 
-import java.util.List;
-
-import fox.Pet;
 import fox.SEX;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 
 @Entity
 @Component
 public class Owner {
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
+	@Column(name = "name")
 	private String name;
+	
+	@Column(name = "age")
 	private int age;
+	
+	@Column(name = "address")
 	private String address;
+	
+	@Column(name = "phone")
 	private long phone;
+	
+	@Column(name = "sex")
+	@Enumerated(EnumType.STRING)
 	private SEX sex;
+	
+	@Column(name = "comment")
 	private String comment;
-
-	private List<Pet> pets;
 	
 
 	public Owner() {}
 
-	public Owner(@Value("${owner.defaultName}") String name, List<Pet> pets) {
+	public Owner(String name, int age, String address, long phone, SEX sex, String comment) {
 		this.name = name;
-		this.pets = pets;
+		this.age = age;
+		this.address = address;
+		this.phone = phone;
+		this.sex = sex;
+		this.comment = comment;
 	}
 
 	public String getName() {return name;}
-
-	public List<Pet> getPets() {return pets;}
+	
+	@Override
+	public String toString() {
+		return super.toString();
+	}
 }
