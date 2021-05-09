@@ -11,7 +11,7 @@ import java.util.Properties;
 public class IOM {
     private static List<Properties> propsArray = new ArrayList<>();
 
-    public static void addProperty(String name, File file) {
+    public static void addProperty(Class<?> enumClass, File file) {
         if (Files.notExists(file.toPath())) {
 
             File parentDir = file.getParentFile();
@@ -20,7 +20,7 @@ public class IOM {
             try {
                 Files.createFile(file.toPath());
                 try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(file))) {
-                    osw.write("PROP_NAME=" + name);
+                    osw.write("PROP_NAME=" + enumClass.getSimpleName());
                 } catch (IOException e) {
                     System.err.println("WARN! CANT WRITE THE PROP-FILE NAME!");
                     e.printStackTrace();
@@ -43,23 +43,23 @@ public class IOM {
         propsArray.add(newProp);
     }
 
-    public static String get(String key) {
+    public static String get(Object key) {
         for (Properties p : propsArray) {
-            if (p.containsKey(key)) {
-                return (String) p.getOrDefault(key, "NA");
+            if (p.containsKey(key.toString())) {
+                return (String) p.getOrDefault(key.toString(), "NA");
             }
         }
 
         return null;
     }
 
-    public static void set(String propName, String key, String value, boolean replace) {
+    public static void set(Class<?> propClass, Object key, String value, boolean replace) {
         for (Properties p : propsArray) {
-            if (p.get("PROP_NAME").equals(propName)) {
-                if (p.containsKey(key)) {
-                    if (replace) p.put(key, value);
+            if (p.get("PROP_NAME").equals(propClass.getSimpleName())) {
+                if (p.containsKey(key.toString())) {
+                    if (replace) p.put(key.toString(), value);
                 } else {
-                    p.put(key, value);
+                    p.put(key.toString(), value);
                 }
             }
         }

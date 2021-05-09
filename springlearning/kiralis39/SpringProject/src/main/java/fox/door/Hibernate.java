@@ -43,13 +43,13 @@ public class Hibernate {
 		return null;
 	}
 	
-	public static List<PetClinic> getClinics() {
-		ArrayList<PetClinic> existsClinics = new ArrayList<>();
+	public static List<?> getClinics() {
+		List<?> existsClinics = new ArrayList<>();
 
 		try (Session seshka = fuck.openSession()) {
-			Transaction trans = seshka.beginTransaction();
-//			seshka.save(clinic);
-			trans.commit();
+			seshka.beginTransaction();
+			existsClinics = seshka.createQuery("from PetClinic").getResultList();
+			seshka.getTransaction().commit();
 		} catch (Exception e) {
 			System.out.println("Не удалось выбрать клиники из базы данных!");
 			e.printStackTrace();
@@ -58,6 +58,20 @@ public class Hibernate {
 	
 		return existsClinics;
 	}
+	
+	public static boolean dropClinic(PetClinic dClinic) {
+		try (Session seshka = fuck.openSession()) {
+			Transaction trans = seshka.beginTransaction();
+			seshka.delete(dClinic);
+			trans.commit();
+			return true;
+		} catch (Exception e) {
+			System.out.println("Не удалось удалить клинику!");
+		    e.printStackTrace();
+		    return false;
+		}
+	}
+	
 	
 	public static void close() {fuck.close();}
 }

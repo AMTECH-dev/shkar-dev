@@ -1,6 +1,11 @@
 package fox.gui;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -10,6 +15,7 @@ import java.io.PipedOutputStream;
 import java.io.PrintStream;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,98 +23,197 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.Painter;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
-import javax.swing.text.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import fox.data.iPet;
 import fox.door.Hibernate;
 import fox.entities.PetClinic;
+import fox.gui.swing.VerticalFlowLayout;
 import fox.spring.SpringEngine;
+import fox.tools.IOM;
+import fox.tools.IOMs;
 
 
 public class MonitorFrame extends JFrame implements ActionListener {
 	private JScrollPane scrollPane;
-	private JPanel midPane, downLabelTextPane, leftClinicsPane;
+	private JPanel downLabelTextPane, leftClinicsPane;
 	private JTextPane outputArea;
+	private JTabbedPane midPane;
 
 	private static JProgressBar healProgress;
-	private static JLabel healedPets, failedPets;
+	private static JLabel clinicsLabel, doctorsLabel, healedPets, failedPets;
 
 	private String progressLabel = "Heal progress:";
 
+	private double leftPaneWidthPercent = 0.18D;
+	
 	private Font progressLabelFont = new Font("Arial Narrow", Font.BOLD, 12);
+	private Font uniFont = new Font("cl-unicode", Font.PLAIN, 24);
+	
+	private Dimension minFrameDim = new Dimension(600, 450);
+	
+	private ImageIcon consoleIcon = new ImageIcon("./media/icons/console.png");
+	private ImageIcon clinicIcon = new ImageIcon("./media/icons/clinic.png");
+	
 	
 	// GUI:
 	public MonitorFrame() {
 		tuneUI();
 		
-		setTitle("Monitor frame:");
+		setIconImage(clinicIcon.getImage());
+		setTitle(IOM.get(IOMs.GLOBAL.PROGRAMM_NAME) + " v." + IOM.get(IOMs.GLOBAL.PROGRAMM_VERSE));
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        setMinimumSize(new Dimension(500, 300));
+        setMinimumSize(minFrameDim);
         setPreferredSize(new Dimension(750, 500));
         
         JPanel basePane = new JPanel(new BorderLayout(3,3)) {
         	{
         		setBorder(new EmptyBorder(0, 0, 0, 0));
         		setBackground(Color.DARK_GRAY);
-        		
-        		JPanel upInfoPane = new JPanel(new GridLayout(1, 4, 3, 3)) {
-        			{
-        				setOpaque(false);
-        				setBorder(new EmptyBorder(0, 3, 0, 3));
-        				
-        				JPanel upHealedInfoPane = new JPanel(new BorderLayout(3,3)) {
-        					{
-        						setOpaque(false);
-        						
-        						healedPets = new JLabel("0") {
-                					{
-                						setForeground(Color.YELLOW);
-                					}
-                				};
-                				
-                				add(new JLabel("Pets healed:") {{setForeground(Color.YELLOW);}}, BorderLayout.WEST);
-                				add(healedPets, BorderLayout.CENTER);
-        					}
-        				};
-        				
-        				JPanel upFailedInfoPane = new JPanel(new BorderLayout(3,3)) {
-        					{
-        						setOpaque(false);
 
-                				failedPets = new JLabel("0") {
-                					{
-                						setForeground(Color.RED);
-                					}
-                				};
-                				
-                				add(new JLabel("Pets failed:") {{setForeground(Color.RED);}}, BorderLayout.WEST);
-                				add(failedPets, BorderLayout.CENTER);
-        					}
-        				};
-        				
-        				add(upHealedInfoPane);
-        				add(upFailedInfoPane);
-        			}
-        		};
 
-        		leftClinicsPane = new JPanel(new GridLayout(0,1,3,3)) {
+        		leftClinicsPane = new JPanel(new BorderLayout(3,3)) {
 					{
+						setOpaque(false);
+						setBorder(new EmptyBorder(3, 3, 0, 3));
+						
+						JPanel leftInfopane = new JPanel(new VerticalFlowLayout(VerticalFlowLayout.TOP, 3, 3)) {
+							{
+								setOpaque(false);
+								
+								JPanel clinicsLabelpane = new JPanel(new BorderLayout(3,3)) {
+		        					{
+		        						setOpaque(false);
+		        						setPreferredSize(new Dimension((int) (minFrameDim.getWidth() * leftPaneWidthPercent), 20));
+		        						
+		        						clinicsLabel = new JLabel("0") {
+		                					{
+		                						setForeground(Color.WHITE);
+		                					}
+		                				};
+		                				
+		                				add(new JLabel("Clinics:") {{setForeground(Color.WHITE);}}, BorderLayout.WEST);
+		                				add(clinicsLabel, BorderLayout.CENTER);
+		        					}
+		        				};
+		        				
+		        				JPanel doctorsLabelpane = new JPanel(new BorderLayout(3,3)) {
+		        					{
+		        						setOpaque(false);
+		        						setPreferredSize(new Dimension((int) (minFrameDim.getWidth() * leftPaneWidthPercent), 20));
+		        						
+		        						doctorsLabel = new JLabel("0") {
+		                					{
+		                						setForeground(Color.YELLOW);
+		                					}
+		                				};
+		                				
+		                				add(new JLabel("Doctors:") {{setForeground(Color.YELLOW);}}, BorderLayout.WEST);
+		                				add(doctorsLabel, BorderLayout.CENTER);
+		        					}
+		        				};
+								
+								JPanel upHealedInfoPane = new JPanel(new BorderLayout(3,3)) {
+		        					{
+		        						setOpaque(false);
+		        						setPreferredSize(new Dimension((int) (minFrameDim.getWidth() * leftPaneWidthPercent), 20));
+		        						
+		        						healedPets = new JLabel("0") {
+		                					{
+		                						setForeground(Color.GREEN);
+		                					}
+		                				};
+		                				
+		                				add(new JLabel("Pets healed:") {{setForeground(Color.GREEN);}}, BorderLayout.WEST);
+		                				add(healedPets, BorderLayout.CENTER);
+		        					}
+		        				};
+		        				
+		        				JPanel upFailedInfoPane = new JPanel(new BorderLayout(3,3)) {
+		        					{
+		        						setOpaque(false);
+		        						setPreferredSize(new Dimension((int) (minFrameDim.getWidth() * leftPaneWidthPercent), 20));
 
+		                				failedPets = new JLabel("0") {
+		                					{
+		                						setForeground(Color.RED);
+		                					}
+		                				};
+		                				
+		                				add(new JLabel("Heal failed:") {{setForeground(Color.RED);}}, BorderLayout.WEST);
+		                				add(failedPets, BorderLayout.CENTER);
+		        					}
+		        				};
+		        				
+		        				add(clinicsLabelpane);
+		        				add(doctorsLabelpane);
+		        				add(upHealedInfoPane);
+		        				add(upFailedInfoPane);
+							}
+						};
+						
+						JPanel leftButtonsPane = new JPanel(new VerticalFlowLayout(VerticalFlowLayout.TOP, 3, 3)) {
+							{
+								setOpaque(false);
+								
+								JButton clinicBut = new JButton("ADD CLINIC") {
+									{
+										setPreferredSize(new Dimension((int) (minFrameDim.getWidth() * leftPaneWidthPercent), 25));
+										setFocusPainted(false);
+										setBackground(Color.DARK_GRAY);
+										setForeground(Color.WHITE);
+										setActionCommand("addClinic");
+										addActionListener(MonitorFrame.this);
+									}
+								};
+								
+								JButton doctorBut = new JButton("ADD DOCTOR") {
+									{
+										setPreferredSize(new Dimension((int) (minFrameDim.getWidth() * leftPaneWidthPercent), 25));
+										setFocusPainted(false);
+										setBackground(Color.DARK_GRAY);
+										setForeground(Color.WHITE);
+										setActionCommand("addDoctor");
+										addActionListener(MonitorFrame.this);
+									}
+								};
+								
+								JButton petBut = new JButton("ADD PET") {
+		        					{
+		        						setPreferredSize(new Dimension((int) (minFrameDim.getWidth() * leftPaneWidthPercent), 25));
+		        						setFocusPainted(false);
+		        						setBackground(Color.DARK_GRAY);
+		        						setForeground(Color.WHITE);
+		        						setActionCommand("addPet");
+		        						addActionListener(MonitorFrame.this);
+		        					}
+		        				};
+								
+								add(clinicBut);
+								add(doctorBut);
+								add(petBut);
+							}
+						};
+						
+						add(leftInfopane, BorderLayout.CENTER);
+						add(leftButtonsPane, BorderLayout.SOUTH);
 					}
 				};
 
-        		midPane = new JPanel(new BorderLayout(3,3)) {
-        			{
-        				setBackground(Color.black);
-        				setBorder(new EmptyBorder(1,3,1,3));
-        				setOpaque(false);
-        			    
+        		midPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT) {
+					{
+						setFont(progressLabelFont);
+						
     			        outputArea = new JTextPane() {
         					{
         						setBackground(Color.BLACK);
@@ -124,7 +229,7 @@ public class MonitorFrame extends JFrame implements ActionListener {
         					}
         				};
 
-						add(scrollPane, BorderLayout.CENTER);
+        				addTab("Console  ", consoleIcon, scrollPane, "System out console");
         			}
         		};
         		
@@ -132,41 +237,11 @@ public class MonitorFrame extends JFrame implements ActionListener {
         			{
         				setBorder(new EmptyBorder(3, 3, 1, 3));
         				setBackground(Color.GRAY);
-
-						JButton clinicBut = new JButton("ADD CLINIC") {
-							{
-								setFocusPainted(false);
-								setBackground(Color.DARK_GRAY);
-								setForeground(Color.WHITE);
-								setActionCommand("addClinic");
-								addActionListener(MonitorFrame.this);
-							}
-						};
-
-        				JButton petBut = new JButton("ADD PET") {
-        					{
-        						setFocusPainted(false);
-        						setBackground(Color.DARK_GRAY);
-        						setForeground(Color.WHITE);
-        						setActionCommand("addPet");
-        						addActionListener(MonitorFrame.this);
-        					}
-        				};
-        				
-        				JButton exitBut = new JButton("EXIT") {
-        					{
-        						setFocusPainted(false);
-        						setBackground(Color.DARK_GRAY);
-        						setForeground(Color.WHITE);
-        						setActionCommand("exit");
-        						addActionListener(MonitorFrame.this);
-        					}
-        				};
         				
         				JPanel healProgressPane = new JPanel(new BorderLayout(3,3)) {
         					{
         						setOpaque(false);
-        						setBorder(new EmptyBorder(0, 2, 3, 2));
+        						setBorder(new EmptyBorder(0, 6, 3, 2));
         						
         						healProgress = new JProgressBar(0, 100) {
         							{
@@ -194,7 +269,7 @@ public class MonitorFrame extends JFrame implements ActionListener {
 										add(new JLabel("\u2665") {
 												{
 													setForeground(Color.RED);
-													setFont(new Font("cl-unicode", Font.PLAIN, 24));
+													setFont(uniFont);
 												}
 											}, BorderLayout.WEST);
 									}
@@ -205,14 +280,21 @@ public class MonitorFrame extends JFrame implements ActionListener {
         					}
         				};
 
-        				add(clinicBut, BorderLayout.WEST);
-        				add(petBut, BorderLayout.CENTER);
+        				JButton exitBut = new JButton("EXIT") {
+        					{
+        						setFocusPainted(false);
+        						setBackground(Color.DARK_GRAY);
+        						setForeground(Color.WHITE);
+        						setActionCommand("exit");
+        						addActionListener(MonitorFrame.this);
+        					}
+        				};
+
+        				add(healProgressPane, BorderLayout.CENTER);
         				add(exitBut, BorderLayout.EAST);
-        				add(healProgressPane, BorderLayout.SOUTH);
         			}
         		};
         		
-        		add(upInfoPane, BorderLayout.NORTH);
 				add(leftClinicsPane, BorderLayout.WEST);
         		add(midPane, BorderLayout.CENTER);
         		add(downButPane, BorderLayout.SOUTH);
@@ -227,17 +309,24 @@ public class MonitorFrame extends JFrame implements ActionListener {
 
 		launchMonitorConsoleThread();
 
-		downLabelTextPane.setPreferredSize(new Dimension((int) downLabelTextPane.getGraphics().getFontMetrics(progressLabelFont).getStringBounds(progressLabel, downLabelTextPane.getGraphics()).getWidth() + 20, 30));
+		downLabelTextPane.setPreferredSize(new Dimension((int) (minFrameDim.getWidth() * leftPaneWidthPercent), 28));
 		downLabelTextPane.revalidate();
 
-		updateData();
+		reloadGame();
 	}
 
-	private void updateData() {
-		List<PetClinic> clinics = Hibernate.getClinics();
+	@SuppressWarnings("unchecked")
+	private void reloadGame() {
+		int tc = midPane.getTabCount();
+		for (int i = tc - 1; i > 0; i--) {
+			System.out.println("Delete tab bu index " + i + "/" + tc);
+			midPane.removeTabAt(i);
+		}
+		
+		List<PetClinic> clinics = (List<PetClinic>) Hibernate.getClinics();
 		for(PetClinic pc : clinics) {
 			System.out.println("Finded the clinic '" + pc.getName() + "' into DB.");
-			leftClinicsPane.add(new JLabel(pc.getName()));
+			addNewClinic(pc);
 		}
 	}
 
@@ -388,13 +477,17 @@ public class MonitorFrame extends JFrame implements ActionListener {
 	}
 
 	// FRAME LOGIC:
-	private void addNewClinic() {
-		String name = JOptionPane.showInputDialog(MonitorFrame.this, "Название клиники:");
-		
-		PetClinic clinic = Hibernate.newClinicRecord(name, null, 2990345L, null, null, "my comment");
+	private void addNewClinic(PetClinic clinic) {
 		if (clinic != null) {
-			System.out.println("Was created new clinic '" + clinic.getName() + "'.");
+			midPane.addTab(clinic.getName() + "  ", clinicIcon, new ClinicPanel(clinic), "Clinic '" + clinic.getName() + "'");
+			midPane.revalidate();
+			updateInfo();
 		}
+	}
+
+	private void updateInfo() {
+		clinicsLabel.setText("" + (midPane.getTabCount() - 1));
+		doctorsLabel.setText("NA");
 	}
 
 	private void addNewPet(iPet pet) {
@@ -403,8 +496,9 @@ public class MonitorFrame extends JFrame implements ActionListener {
 			System.out.println("We have a ghost? Its a revenge!!!");
 			return;
 		}
-		System.out.println("New pet income:\n" + pet.toString());
-		SpringEngine.getContext().getBean(PetClinic.class).work(pet);
+//		System.out.println("New pet income:\n" + pet.toString());
+//		SpringEngine.getContext().getBean(PetClinic.class).work(pet);
+		updateInfo();
 	}
 
 	// EXIT:
@@ -432,9 +526,21 @@ public class MonitorFrame extends JFrame implements ActionListener {
 				break;
 				
 			case "addClinic": 
+				if (midPane.getTabCount() >= 3) {
+					JOptionPane.showConfirmDialog(MonitorFrame.this, "<html><b>It is DEMO version!</b><hr>Maximum clinics allowed - <b>3", "DEMO", 
+							JOptionPane.PLAIN_MESSAGE, JOptionPane.INFORMATION_MESSAGE, clinicIcon);
+					return;
+				}
 				healProgress.setIndeterminate(true);
-				addNewClinic();
+				String name = JOptionPane.showInputDialog(MonitorFrame.this, "Название клиники:");
+				if (name != null && !name.isBlank()) {
+					addNewClinic(Hibernate.newClinicRecord(name, null, 2990345L, null, null, "my comment"));
+					System.out.println("Was created new clinic '" + name + "'.");
+				}
 				healProgress.setIndeterminate(false);
+				break;
+				
+			case "addDoctor": 
 				break;
 				
 			case "addPet": 
@@ -444,6 +550,33 @@ public class MonitorFrame extends JFrame implements ActionListener {
 				break;
 				
 			default: 
+		}
+	}
+
+	// SUB-CLASSES:
+	public class ClinicPanel extends JPanel {
+
+		public ClinicPanel(PetClinic clinic) {
+			setLayout(new BorderLayout(3,3));
+			
+			JButton deleteClinicBtn = new JButton("Delete the clinic") {
+				{
+					setBackground(Color.RED);
+					setForeground(Color.WHITE);
+					addActionListener(new ActionListener() {						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							if (Hibernate.dropClinic(clinic)) {
+								midPane.remove(ClinicPanel.this);
+								updateInfo();
+							}
+						}
+					});
+				}
+			};
+			
+			add(new JLabel(clinic.getName()), BorderLayout.NORTH);
+			add(deleteClinicBtn, BorderLayout.SOUTH);
 		}
 	}
 }

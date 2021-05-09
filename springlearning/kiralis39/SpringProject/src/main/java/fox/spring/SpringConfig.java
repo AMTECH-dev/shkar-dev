@@ -8,6 +8,8 @@ import org.springframework.context.annotation.*;
 
 
 @Configuration
+@EnableAspectJAutoProxy
+@ComponentScan("fox.spring.aspects")
 @PropertySource("classpath:springProp.properties")
 public class SpringConfig {
     @Value("${db.url}")
