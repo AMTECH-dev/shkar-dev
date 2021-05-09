@@ -1,4 +1,4 @@
-package fox;
+package fox.data;
 
 public enum STATE {
     HEALTH,

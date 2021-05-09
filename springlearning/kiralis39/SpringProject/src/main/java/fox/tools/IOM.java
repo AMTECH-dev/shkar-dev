@@ -1,4 +1,4 @@
-package fox.settings;
+package fox.tools;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

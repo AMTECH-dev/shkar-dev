@@ -1,7 +1,6 @@
-package fox;
+package fox.data;
 
-
-public interface Pet {
+public interface iPet {
 	public String getName();
 	public void setName(String value);
 	

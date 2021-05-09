@@ -25,13 +25,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import javax.swing.text.*;
 
-import fox.Pet;
-import fox.clinics.PetClinic;
-import fox.door.DataBase;
-import fox.door.SpringEngine;
+import fox.data.iPet;
+import fox.door.Hibernate;
+import fox.entities.PetClinic;
+import fox.spring.SpringEngine;
 
 
-public class MonitorFrame extends JFrame {
+public class MonitorFrame extends JFrame implements ActionListener {
 	private JScrollPane scrollPane;
 	private JPanel midPane, downLabelTextPane, leftClinicsPane;
 	private JTextPane outputArea;
@@ -57,7 +57,7 @@ public class MonitorFrame extends JFrame {
         		setBorder(new EmptyBorder(0, 0, 0, 0));
         		setBackground(Color.DARK_GRAY);
         		
-        		JPanel upInfoPane = new JPanel(new GridLayout(1, 3, 3, 3)) {
+        		JPanel upInfoPane = new JPanel(new GridLayout(1, 4, 3, 3)) {
         			{
         				setOpaque(false);
         				setBorder(new EmptyBorder(0, 3, 0, 3));
@@ -138,14 +138,8 @@ public class MonitorFrame extends JFrame {
 								setFocusPainted(false);
 								setBackground(Color.DARK_GRAY);
 								setForeground(Color.WHITE);
-
-								addActionListener(new ActionListener() {
-									@Override public void actionPerformed(ActionEvent arg0) {
-										healProgress.setIndeterminate(true);
-										addNewClinic();
-										healProgress.setIndeterminate(false);
-									}
-								});
+								setActionCommand("addClinic");
+								addActionListener(MonitorFrame.this);
 							}
 						};
 
@@ -154,14 +148,8 @@ public class MonitorFrame extends JFrame {
         						setFocusPainted(false);
         						setBackground(Color.DARK_GRAY);
         						setForeground(Color.WHITE);
-        						
-        						addActionListener(new ActionListener() {									
-									@Override public void actionPerformed(ActionEvent arg0) {
-										healProgress.setIndeterminate(true);
-										addNewPet(new PetCreator(MonitorFrame.this).get());
-										healProgress.setIndeterminate(false);
-									}
-								});
+        						setActionCommand("addPet");
+        						addActionListener(MonitorFrame.this);
         					}
         				};
         				
@@ -170,19 +158,8 @@ public class MonitorFrame extends JFrame {
         						setFocusPainted(false);
         						setBackground(Color.DARK_GRAY);
         						setForeground(Color.WHITE);
-        						
-        						addActionListener(new ActionListener() {									
-									@Override public void actionPerformed(ActionEvent arg0) {
-										exitReq();
-									}
-
-									private void exitReq() {
-										int req = JOptionPane.showConfirmDialog(MonitorFrame.this, "Завершить работу?", "Exit reqiest:", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-										if (req == 0) {
-											endWorkEndExit(0);
-										}
-									}
-								});
+        						setActionCommand("exit");
+        						addActionListener(MonitorFrame.this);
         					}
         				};
         				
@@ -257,7 +234,7 @@ public class MonitorFrame extends JFrame {
 	}
 
 	private void updateData() {
-		List<PetClinic> clinics = DataBase.getClinics();
+		List<PetClinic> clinics = Hibernate.getClinics();
 		for(PetClinic pc : clinics) {
 			System.out.println("Finded the clinic '" + pc.getName() + "' into DB.");
 			leftClinicsPane.add(new JLabel(pc.getName()));
@@ -413,14 +390,14 @@ public class MonitorFrame extends JFrame {
 	// FRAME LOGIC:
 	private void addNewClinic() {
 		String name = JOptionPane.showInputDialog(MonitorFrame.this, "Название клиники:");
-		PetClinic clinic = DataBase.addClinic(new PetClinic(name, null, 2990345L, null, null, "my comment"));
-
+		
+		PetClinic clinic = Hibernate.newClinicRecord(name, null, 2990345L, null, null, "my comment");
 		if (clinic != null) {
 			System.out.println("Was created new clinic '" + clinic.getName() + "'.");
 		}
 	}
 
-	private void addNewPet(Pet pet) {
+	private void addNewPet(iPet pet) {
 		if (pet == null) {
 			healProgress.setValue(100);
 			System.out.println("We have a ghost? Its a revenge!!!");
@@ -431,12 +408,42 @@ public class MonitorFrame extends JFrame {
 	}
 
 	// EXIT:
+	private void exitReq() {
+		int req = JOptionPane.showConfirmDialog(MonitorFrame.this, "Завершить работу?", "Exit reqiest:", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		if (req == 0) {endWorkEndExit(0);}
+	}
+	
 	private void endWorkEndExit(int errCode) {
-//		DataBase.clearDB();
 		healProgress.setIndeterminate(true);
 		healProgress.setString("Closing the Clinics... wait please...");
-		SpringEngine.getContext().close();
+		
+		Hibernate.close();
+		SpringEngine.close();
+		
 		System.out.println("Clinic system is shutting down with code #" + errCode);
 		System.exit(errCode);
+	}
+
+	// LISTENERS:
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		switch (e.getActionCommand()) {
+			case "exit": exitReq();
+				break;
+				
+			case "addClinic": 
+				healProgress.setIndeterminate(true);
+				addNewClinic();
+				healProgress.setIndeterminate(false);
+				break;
+				
+			case "addPet": 
+				healProgress.setIndeterminate(true);
+				addNewPet(new PetCreator(MonitorFrame.this).get());
+				healProgress.setIndeterminate(false);
+				break;
+				
+			default: 
+		}
 	}
 }

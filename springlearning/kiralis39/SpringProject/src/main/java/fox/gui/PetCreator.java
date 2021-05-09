@@ -25,16 +25,16 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
-import fox.Pet;
-import fox.SEX;
-import fox.door.SpringEngine;
-import fox.pets.Cat;
-import fox.pets.Dog;
-import fox.pets.Fox;
+import fox.data.iPet;
+import fox.entities.pets.Cat;
+import fox.entities.pets.Dog;
+import fox.entities.pets.Fox;
+import fox.data.SEX;
+import fox.spring.SpringEngine;
 
 
 public class PetCreator extends JDialog {
-	private Pet pet;
+	private iPet pet;
 	
 	
 	public PetCreator(JFrame parent) {
@@ -82,7 +82,7 @@ public class PetCreator extends JDialog {
 						JComboBox<SEX> sexCBox;
 						JTextField colorField;
 						Dimension labelDim = new Dimension(60, 30);
-						private Pet customizePet(Pet pet) {
+						private iPet customizePet(iPet pet) {
 							new JDialog() {
 								{
 									setTitle("Pet sets");
@@ -212,5 +212,5 @@ public class PetCreator extends JDialog {
 		setVisible(true);
 	}
 	
-	public Pet get() {return pet;}
+	public iPet get() {return pet;}
 }
