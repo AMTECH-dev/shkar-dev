@@ -15,6 +15,7 @@
 
         <property name="show_sql">true</property> <!-- Show SQL in console -->
         <property name="format_sql">true</property> <!-- Show SQL formatted -->
+        <property name="generate_statistic">true</property>
 
     </session-factory>
 </hibernate-configuration>

@@ -27,21 +27,6 @@ public class MainClass {
 		}
 	}
 	
-	void test() {
-//        AbstractPet tmp = null;
-//        try (Session seshka = fuck.openSession()) {
-//            Transaction trans = seshka.beginTransaction();
-//            tmp = seshka.get(AbstractPet.class, 3);
-//            trans.commit();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-//        tmp = new AbstractPet("Rita", 3, SEX.FEMA, "Brown", "fr-fr", null);
-//
-//        Doctor tmp = new Doctor("dr.Watson", 42, "Moscow, Krasnaya, 1", 26495, SEX.FEMA);
-    }
-	
 	void seeOSFonts() {
 		System.out.println("Fonts:");
 		for (Font f : GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts()) {
@@ -55,5 +40,6 @@ public class MainClass {
 		IOM.set(IOMs.GLOBAL.class, IOMs.GLOBAL.ALLOW_START, "true", false);
 		IOM.set(IOMs.GLOBAL.class, IOMs.GLOBAL.PROGRAMM_NAME, "Funny pets clinic manager", false);
 		IOM.set(IOMs.GLOBAL.class, IOMs.GLOBAL.PROGRAMM_VERSE, "1.0.0", false);
+		IOM.set(IOMs.GLOBAL.class, IOMs.GLOBAL.USE_RENDER, "true", false);
 	}
 }

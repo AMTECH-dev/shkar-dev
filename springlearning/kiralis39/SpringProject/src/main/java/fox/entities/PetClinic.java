@@ -1,17 +1,22 @@
 package fox.entities;
 
-import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import fox.data.iPet;
+import fox.entities.clinicData.Photodir;
+import fox.entities.clinicData.Webpage;
 import fox.gui.MonitorFrame;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -33,43 +38,35 @@ public class PetClinic {
 	@Column(name = "phone")
 	private long phone;
 	
-	@Column(name = "webpageid")
-	private Integer webpageIndex;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="webpageid")
+	private Webpage webpage;
 	
-	@Column(name = "photodirid")
-	private Integer photoDirIndex;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "photodirid")
+	private Photodir photodir;
 	
 	@Column(name = "comment")
 	private String comment;
 
 	@Transient
-	private List<Doctor> doctors;
+	private List<Doctor> doctors = new ArrayList<Doctor>();
 	@Transient
 	private final long doctorAwaitingTime = 5_000L;
 
 	
 	public PetClinic() {}
 
-	public PetClinic(ResultSet rs) throws Exception {
-		this(
-				rs.getString("name"),
-				rs.getString("fiasGUID"),
-				rs.getLong("phone"),
-				rs.getInt("webpageid"),
-				rs.getInt("photodirid"),
-				rs.getString("comment")
-		);
-	}
-
-	public PetClinic(String name, String fias, long phone, Integer webpageIndex, Integer photoDirIndex, String comment) {
+	public PetClinic(String name, String fias, long phone, Webpage webpage, Photodir photodir, String comment) {
 		this.name = name;
 		this.fias = fias;
 		this.phone = phone;
-		this.webpageIndex = webpageIndex;
-		this.photoDirIndex = photoDirIndex;
-		this.comment = comment;
+		this.webpage = webpage;
+		this.photodir = photodir;
+		this.comment = comment;		
 	}
 
+	
 	public void addDoctor(Doctor doc) {
 		System.out.println("The clinic '" + name + "' has a new doctor '" + doc.getName() + "'.");
 		doctors.add(doc);
@@ -112,6 +109,8 @@ public class PetClinic {
 		}
 	}
 
+	
+	public int getID() {return this.id;}
 
 	public String getName() {return name;}
 	public void setName(String clinicName) {this.name = clinicName;}
@@ -122,14 +121,14 @@ public class PetClinic {
 	public long getPhone() {return phone;}
 	public void setPhone(long phone) {this.phone = phone;}
 
-	public Integer getUrlIndex() {return webpageIndex;}
-	public void setUrlIndex(Integer webpageIndex) {this.webpageIndex = webpageIndex;}
+	public Webpage getWebpage() {return webpage;}
+	public void setWebpage(Webpage webpage) {this.webpage = webpage;}
 
 	public String getComment() {return comment;}
 	public void setComment(String comment) {this.comment = comment;}
 
-	public Integer getPhotoDirIndex() {return photoDirIndex;}
-	public void setPhotoDirIndex(Integer photoDirIndex) {this.photoDirIndex = photoDirIndex;}
+	public Photodir getPhotoDir() {return photodir;}
+	public void setPhotoDir(Photodir photodir) {this.photodir = photodir;}
 
 	public List<Doctor> getDoctors() {return doctors;}
 	public void setDoctors(List<Doctor> doctors) {this.doctors = doctors;}
@@ -140,7 +139,5 @@ public class PetClinic {
 	public long getDoctorAwaitingTime() {return doctorAwaitingTime;}
 	
 	@Override
-	public String toString() {
-		return super.toString();
-	}
+	public String toString() {return super.toString();}
 }
