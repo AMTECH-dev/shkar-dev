@@ -26,26 +26,25 @@ public class Main {
                 .addAnnotatedClass(Owners.class)
                 .addAnnotatedClass(Pets.class)
                 .buildSessionFactory();
+        Session session = null;
 
         try {
             Pets pets = new Pets("Scientist", 6, "none", 1, "Cat");
 
-            Session session = factory.openSession();
+            session = factory.getCurrentSession();
             session.beginTransaction();
             session.save(pets);
             session.getTransaction().commit();
-            session.close();
         }
         finally {
             factory.close();
+            if (session != null) session.close();
         }
-
 
 //        String SQLQuery = "SELECT * FROM Pets where owner_id = 111";
 //        SQL.connectToBase(URL, USER, PASS, SQLQuery);
 
 // без ioc, di
-
 /*
         Office clinic = new Office();
 
