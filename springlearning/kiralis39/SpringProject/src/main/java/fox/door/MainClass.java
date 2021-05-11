@@ -1,18 +1,19 @@
 package fox.door;
 
-import fox.gui.MonitorFrame;
-import fox.settings.IOM;
-
-import java.awt.*;
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 import java.io.File;
-import java.util.Arrays;
+
+import fox.gui.MonitorFrame;
+import fox.spring.SpringEngine;
+import fox.tools.IOM;
+import fox.tools.IOMs;
 
 
-public class MainClass {	
+public class MainClass {
 	
 	public static void main(String[] args) {
-//		seeOSFonts();
-
+//		seeOSFonts();		
 		System.out.println("Launch the programm!");
 
 		buildIOM();
@@ -25,8 +26,8 @@ public class MainClass {
 			System.exit(114);
 		}
 	}
-
-	private static void seeOSFonts() {
+	
+	void seeOSFonts() {
 		System.out.println("Fonts:");
 		for (Font f : GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts()) {
 			System.out.println(f);
@@ -35,7 +36,10 @@ public class MainClass {
 	}
 
 	private static void buildIOM() {
-		IOM.addProperty("GLOBAL", new File("./configurations/global.conf"));
-		IOM.set("GLOBAL", "ALLOW_START", "true", false);
+		IOM.addProperty(IOMs.GLOBAL.class, new File("./configurations/global.conf"));
+		IOM.set(IOMs.GLOBAL.class, IOMs.GLOBAL.ALLOW_START, "true", false);
+		IOM.set(IOMs.GLOBAL.class, IOMs.GLOBAL.PROGRAMM_NAME, "Funny pets clinic manager", false);
+		IOM.set(IOMs.GLOBAL.class, IOMs.GLOBAL.PROGRAMM_VERSE, "1.0.0", false);
+		IOM.set(IOMs.GLOBAL.class, IOMs.GLOBAL.USE_RENDER, "true", false);
 	}
 }
