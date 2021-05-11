@@ -51,7 +51,7 @@ public class Office {
         pet.setDiagnose(Diagnose.NONE);
     }
 
-    public void addOwnersToTheBase(Owner... owners) {
+    public void addOwnersToTheBase(Owner ... owners) {
         for (Owner owner : owners) {
             clients.put(owner, owner.getPets());
             System.out.println(owner + " added to the base.");

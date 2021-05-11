@@ -2,7 +2,7 @@ package com.company.db;
 
 import java.sql.*;
 
-public class SQL {
+public class ManipulatingDBData {
     public static void connectToBase(String url, String user, String pass, String SQLQuery) {
         try (Connection connection = DriverManager.getConnection(url, user, pass)) {
             try (Statement statement = connection.createStatement()) {

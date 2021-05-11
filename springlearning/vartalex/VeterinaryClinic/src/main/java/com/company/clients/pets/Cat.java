@@ -1,6 +1,5 @@
-package com.company.clients.pets.home_pets;
+package com.company.clients.pets;
 
-import com.company.clients.pets.Pet;
 import com.company.illnesses.Diagnose;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

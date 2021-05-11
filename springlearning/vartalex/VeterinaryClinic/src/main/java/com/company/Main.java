@@ -1,14 +1,8 @@
 package com.company;
 
 import com.company.clients.Owner;
-import com.company.clients.pets.Pet;
-import com.company.clients.pets.home_pets.*;
+import com.company.clients.pets.*;
 import com.company.clinic.Office;
-import com.company.entities.Owners;
-import com.company.entities.Pets;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Main {
@@ -19,32 +13,12 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Program launched!");
 
-//        createContext();
+        createContext();
 
-        SessionFactory factory = new Configuration()
-                .configure("hibernate.cfg.xml")
-                .addAnnotatedClass(Owners.class)
-                .addAnnotatedClass(Pets.class)
-                .buildSessionFactory();
-        Session session = null;
+//        String SQLQuery = "SELECT * FROM pets where owner_id = 1";
+//        ManipulatingDBData.connectToBase(URL, USER, PASS, SQLQuery);
 
-        try {
-            Pets pets = new Pets("Scientist", 6, "none", 1, "Cat");
-
-            session = factory.getCurrentSession();
-            session.beginTransaction();
-            session.save(pets);
-            session.getTransaction().commit();
-        }
-        finally {
-            factory.close();
-            if (session != null) session.close();
-        }
-
-//        String SQLQuery = "SELECT * FROM Pets where owner_id = 111";
-//        SQL.connectToBase(URL, USER, PASS, SQLQuery);
-
-// без ioc, di
+// БЕЗ IoC и DI
 /*
         Office clinic = new Office();
 

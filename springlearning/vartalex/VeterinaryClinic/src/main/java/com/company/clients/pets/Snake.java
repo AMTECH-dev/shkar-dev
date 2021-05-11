@@ -1,6 +1,5 @@
-package com.company.clients.pets.home_pets;
+package com.company.clients.pets;
 
-import com.company.clients.pets.Pet;
 import com.company.illnesses.Diagnose;
 
 public class Snake extends Pet {

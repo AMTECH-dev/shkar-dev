@@ -3,15 +3,9 @@ package com.company.clinic;
 import com.company.clients.pets.Pet;
 
 public class Doctor {
-    private final int id;
 
     public Doctor() {
-        this.id = this.hashCode();
         System.out.println(Doctor.class.getSimpleName() + " came to patient.");
-    }
-
-    public int getId() {
-        return id;
     }
 
     public void makeFullCheck(Pet pet) {
@@ -40,8 +34,6 @@ public class Doctor {
 
     @Override
     public String toString() {
-        return "Doctor{" +
-                "id=" + id +
-                '}';
+        return "Doctor{}";
     }
 }

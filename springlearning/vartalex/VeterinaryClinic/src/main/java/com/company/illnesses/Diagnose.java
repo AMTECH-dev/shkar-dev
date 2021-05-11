@@ -1,20 +1,20 @@
 package com.company.illnesses;
 
 public enum Diagnose {
-    FRACTURE(1),
-    VIRUS(2),
-    GASTROINTESTINAL_DISEASES(3),
-    TOOTHACHE(4),
-    NEED_VACCINATION(5),
-    NONE(6);
+    FRACTURE("fracture"),
+    VIRUS("virus"),
+    GASTROINTESTINAL_DISEASES("gastritis"),
+    TOOTHACHE("toothache"),
+    NEED_VACCINATION("need vaccination"),
+    NONE("none");
 
-    private final int id;
+    private final String nameOfIllness;
 
-    Diagnose(int id) {
-        this.id = id;
+    Diagnose(String nameOfIllness) {
+        this.nameOfIllness = nameOfIllness;
     }
 
-    public int getId() {
-        return id;
+    public String getNameOfIllness() {
+        return nameOfIllness;
     }
 }
