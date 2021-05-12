@@ -5,9 +5,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 public class Main {
     public static void main(String[] args) {
         SessionFactory factory = new Configuration()
@@ -34,51 +31,31 @@ public class Main {
     }
 
     private static void manipulateDBData(Session session) {
-//        VetClinic clinic = new VetClinic("OopsClinic");
-//        VetClinic clinic2 = new VetClinic("Non, je ne regrette rien");
+/*
+            Owner owner = new Owner("Kate");
+            Owner owner2 = new Owner("Bill");
 
-//        Balin, Dwalin, Dori, Nori, Ori, Oin, Gloin, Bifur, Bofur, Bombur, Fili, and Kili
-//        Haldir, Arwen, Thranduil, Celebrimbor, Legolas, Celeborn, Glorfindel
+            Pet cat = new Cat("Tigra", 3, owner, Illness.NONE.getNameOfIllness());
+            Pet dog = new Dog("Gogo", 24, owner, Illness.TOOTHACHE.getNameOfIllness());
 
-//        Owner owner1 = new Owner("Haldir");
-//        Owner owner2 = new Owner("Arwen");
-//        Owner owner3 = new Owner("Thranduil");
-//        Owner owner4 = new Owner("Legolas");
-//
-//        Pet cat = new Cat("Balin", 3, owner1, Illness.NONE.getNameOfIllness());
-//        Pet dog = new Dog("Dwalin", 24, owner1, Illness.TOOTHACHE.getNameOfIllness());
-//
-//        Pet snail = new Snail("Dori", 2, owner2, Illness.FRACTURE.getNameOfIllness());
-//
-//        Pet pet = new Cat("Nori", 3, owner3, Illness.VIRUS.getNameOfIllness());
-//        Pet pet1 = new Dog("Ori", 12, owner4, Illness.GASTRITIS.getNameOfIllness());
-//        Pet pet2 = new Cat("Oin", 1, owner4, Illness.NEED_VACCINATION.getNameOfIllness());
-//        Pet pet3 = new Snail("Gloin", 1, owner4, Illness.NONE.getNameOfIllness());
-//
-//        owner1.setPets(Arrays.asList(cat, dog));
-//        owner2.setPets(Collections.singletonList(snail));
-//        owner3.setPets(Collections.singletonList(pet));
-//        owner4.setPets(Arrays.asList(pet1, pet2, pet3));
-//
-//        owner1.addClinic(clinic);
-//        owner2.addClinic(clinic);
-//        owner3.addClinic(clinic);
-//        owner1.addClinic(clinic2);
-//        owner4.addClinic(clinic2);
-//
-//        Doctor doctor = new Doctor("Evil", clinic);
-//        Doctor doctor1 = new Doctor("Good", clinic);
-//        Doctor doctor2 = new Doctor("Who", clinic);
-//        Doctor doctor3 = new Doctor("Esculap", clinic2);
-//        Doctor doctor4 = new Doctor("Hippo", clinic2);
-//
-//        clinic.setDoctors(Arrays.asList(doctor, doctor1, doctor2));
-//        clinic.addClients(Arrays.asList(owner1, owner2, owner3));
-//        clinic2.setDoctors(Arrays.asList(doctor3, doctor4));
-//        clinic2.addClients(Arrays.asList(owner1, owner4));
-//
-//        session.save(clinic);
-//        session.save(clinic2);
-        System.out.println(session.get(VetClinic.class, 21));
+            Pet snail = new Snail("Lol", 2, owner2, Illness.FRACTURE.getNameOfIllness());
+
+            owner.setPets(Arrays.asList(cat, dog));
+            owner2.setPets(Arrays.asList(snail));
+
+//            VetClinic clinic = new VetClinic("OopsClinic");
+            VetClinic clinic = session.get(VetClinic.class, 1);
+            owner.setClinic(clinic);
+            owner2.setClinic(clinic);
+
+            Doctor doctor = session.get(Doctor.class, 1);
+            Doctor doctor2 = session.get(Doctor.class, 2);
+
+            clinic.setDoctors(Arrays.asList(doctor, doctor2));
+            clinic.setClients(Arrays.asList(owner, owner2));
+
+            session.save(clinic);
+*/
+        System.out.println(session.get(VetClinic.class, 1));
     }
 }

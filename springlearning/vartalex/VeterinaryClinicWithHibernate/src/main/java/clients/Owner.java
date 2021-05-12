@@ -4,7 +4,6 @@ import clients.pets.Pet;
 import clinic.VetClinic;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,11 +20,9 @@ public class Owner {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private List<Pet> pets;
 
-    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
-    @JoinTable(name = "owner_clinic",
-        joinColumns = @JoinColumn(name = "owner_id"),
-        inverseJoinColumns = @JoinColumn(name = "clinic_id"))
-    private List<VetClinic> clinics;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "clinic_id")
+    private VetClinic clinic;
 
     public Owner() {
     }
@@ -50,14 +47,12 @@ public class Owner {
         this.name = name;
     }
 
-    public List<VetClinic> getClinics() {
-        return clinics;
+    public VetClinic getClinic() {
+        return clinic;
     }
 
-    public void addClinic(VetClinic clinic) {
-        if (clinics == null)
-            clinics = new ArrayList<>();
-        clinics.add(clinic);
+    public void setClinic(VetClinic clinic) {
+        this.clinic = clinic;
     }
 
     public List<Pet> getPets() {
