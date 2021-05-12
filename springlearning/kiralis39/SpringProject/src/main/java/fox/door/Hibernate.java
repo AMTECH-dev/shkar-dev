@@ -1,6 +1,6 @@
 package fox.door;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -8,9 +8,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-import fox.entities.Pet;
 import fox.entities.Doctor;
 import fox.entities.Owner;
+import fox.entities.Pet;
 import fox.entities.PetClinic;
 import fox.entities.clinicData.Photodir;
 import fox.entities.clinicData.Webpage;
@@ -32,6 +32,7 @@ public class Hibernate {
                .addAnnotatedClass(Doctor.class)
                // ---
                .addAnnotatedClass(Pet.class)
+               // ---
                .addAnnotatedClass(Owner.class)
                // ---
                .buildSessionFactory();
@@ -42,14 +43,12 @@ public class Hibernate {
 		}		
 	}
 	
-	public static PetClinic newClinicRecord(String name, String fias, long phone, Webpage webpage, Photodir photodir, String comment) {
-		PetClinic clinic = new PetClinic(name, fias, phone, webpage, photodir, comment);
-		
+	public static PetClinic writeClinic(PetClinic cl) {
 		try (Session seshka = fuck.openSession()) {
-			Transaction trans = seshka.beginTransaction();
-			seshka.save(clinic);
-			trans.commit();
-			return clinic;
+			seshka.beginTransaction();
+			seshka.saveOrUpdate(cl);			
+			seshka.getTransaction().commit();
+			return cl;
 		} catch (Exception e) {
 			System.out.println("Не удалось создать/записать клинику!");
 		    e.printStackTrace();
@@ -58,31 +57,31 @@ public class Hibernate {
 		return null;
 	}
 	
-	public static PetClinic newClinicRecord(PetClinic clCreated) {
-		try (Session seshka = fuck.openSession()) {
-			Transaction trans = seshka.beginTransaction();
-			seshka.save(clCreated);
-			trans.commit();
-			return clCreated;
+	public static Doctor writeWildDoctor(Doctor d) {
+		try (Session session = fuck.openSession()) {
+			session.beginTransaction();
+			session.saveOrUpdate(d);
+			session.getTransaction().commit();
+			return d;
 		} catch (Exception e) {
-			System.out.println("Не удалось создать/записать клинику!");
+			System.out.println("Не удалось создать/записать доктора! (" + d + ")");
 		    e.printStackTrace();
 		}
 		
 		return null;
 	}
 	
-	public static List<?> getClinics() {
-		List<?> existsClinics = new ArrayList<>();
+	
+	public static List<PetClinic> getClinics() {
+		List<PetClinic> existsClinics = null;
 
 		try (Session seshka = fuck.openSession()) {
 			seshka.beginTransaction();
-			existsClinics = seshka.createQuery("from PetClinic").getResultList();
+			existsClinics = seshka.createQuery("from PetClinic", PetClinic.class).getResultList();
 			seshka.getTransaction().commit();
 		} catch (Exception e) {
 			System.out.println("Не удалось выбрать клиники из базы данных!");
 			e.printStackTrace();
-			return null;
 		}
 	
 		return existsClinics;
@@ -95,31 +94,88 @@ public class Hibernate {
 			trans.commit();
 			return true;
 		} catch (Exception e) {
-			System.out.println("Не удалось удалить клинику!");
+			System.out.println("Не удалось удалить клинику! (" + dClinic + ")");
 		    e.printStackTrace();
 		    return false;
 		}
 	}
-	
-//	public static String getWebPageOf(PetClinic clinic) {
-//		String url = "NA";
-//		
-//		try (Session seshka = fuck.openSession()) {
-//			seshka.beginTransaction();
-//			url = (String) seshka.createQuery("from webpages where webpages.id="+clinic.getUrlIndex()).getSingleResult();
-//			seshka.getTransaction().commit();
-//			return url;
-//		} catch (Exception e) {
-//			System.out.println("Не удалось удалить клинику!");
-//		    e.printStackTrace();
-//		}
-//		
-//		return url;
-//	}
 	
 	public static void close() {
 		if (fuck != null && fuck.isOpen()) {
 			fuck.close();
 		}
 	}
+
+	
+	public static void writeDoctor(PetClinic clinic, Doctor aNewDoc) {
+		try (Session seshka = fuck.openSession()) {
+			seshka.beginTransaction();
+			seshka.saveOrUpdate(clinic);
+			seshka.save(aNewDoc);
+			seshka.getTransaction().commit();
+		} catch (Exception e) {
+			System.out.println("Не удалось обновить/записать clidoc! (" + clinic + "/" + aNewDoc + ")");
+			e.printStackTrace();
+		}
+	}
+
+    public static void deleteDoctor(PetClinic clinic, Doctor doctor) {
+		try (Session seshka = fuck.openSession()) {
+			if (clinic.fireDoctor(doctor)) {
+				seshka.beginTransaction();
+				seshka.saveOrUpdate(clinic);
+				seshka.delete(doctor);
+				seshka.getTransaction().commit();
+			}
+		} catch (Exception e) {
+			System.out.println("Не удалось уволить доктора! (" + doctor + ")");
+			e.printStackTrace();
+		}
+    }
+
+    public static List<Owner> getOwnersList() {
+		List<Owner> existsOwners = null;
+
+		try (Session seshka = fuck.openSession()) {
+			seshka.beginTransaction();
+			existsOwners = seshka.createQuery("from Owner", Owner.class).getResultList();
+			seshka.getTransaction().commit();
+		} catch (Exception e) {
+			System.out.println("Не удалось выбрать хозяев из базы данных!");
+			e.printStackTrace();
+		}
+
+		return existsOwners;
+    }
+
+	public static boolean writePet(Pet pet) {
+		System.out.println("Write to Hibernate the Pet '" + pet + " (owner: " + pet.getOwner() + ")..");
+		
+		try (Session seshka = fuck.openSession()) {
+			seshka.beginTransaction();
+			seshka.saveOrUpdate(pet.getOwner());
+			seshka.save(pet);
+			seshka.getTransaction().commit();
+			return true;
+		} catch (Exception e) {
+			System.out.println("Не удалось обновить/записать pet`s owner! (" + pet.getOwner() + ")");
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+    public static List<Pet> getPets() {
+		List<Pet> existsPets = null;
+
+		try (Session seshka = fuck.openSession()) {
+			seshka.beginTransaction();
+			existsPets = seshka.createQuery("from Pet", Pet.class).getResultList();
+			seshka.getTransaction().commit();
+		} catch (Exception e) {
+			System.out.println("Не удалось выбрать петов из базы данных!");
+			e.printStackTrace();
+		}
+
+		return existsPets;
+    }
 }

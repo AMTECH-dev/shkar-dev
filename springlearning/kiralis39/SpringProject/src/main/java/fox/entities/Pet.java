@@ -2,9 +2,12 @@ package fox.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -36,8 +39,9 @@ public class Pet implements iPet {
     @Column(name = "comment")
     private String comment;
     
-    @Column(name = "ownerid")
-    private Integer ownerid;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ownerid")
+    private Owner owner;
     
     @Transient
 	private int hp;
@@ -49,13 +53,13 @@ public class Pet implements iPet {
 		this("noname pet", 1, SEX.MALE, "Iro-iro", "no comments", null);
 	}
 
-	public Pet(String name, float age, SEX sex, String color, String comment, Integer ownerid) {
+	public Pet(String name, float age, SEX sex, String color, String comment, Owner owner) {
 		this.name = name;
 		this.age = age;
 		this.sex = sex;
 		this.color = color;
 		this.comment = comment;
-		this.ownerid = ownerid;
+		this.owner = owner;
 		
 		this.hp = 50;
 		this.isHealed = false;
@@ -76,8 +80,8 @@ public class Pet implements iPet {
 	public String getComment() {return comment;}
 	public void setComment(String comment) {this.comment = comment;}
 	
-	public Integer getOwnerID() {return ownerid;}
-	public void setOwnerID(Integer ownerid) {this.ownerid = ownerid;}
+	public Owner getOwner() {return owner;}
+	public void setOwner(Owner owner) {this.owner = owner;}
 	
 		
 	public boolean isHealed() {return this.isHealed;}
@@ -100,6 +104,6 @@ public class Pet implements iPet {
 	
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " named '" + name + "' (" + age + " y.o.; " + sex.name() + "; " + color + "; [" + comment + "]) Owner ID: " + ownerid + ".";		
+		return getClass().getSimpleName() + " named '" + name + "' (" + age + " y.o.; " + sex.name() + "; " + color + "; [" + comment + "]) Owner: " + owner + ".";		
 	}
 }

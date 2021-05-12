@@ -12,15 +12,18 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Path;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import fox.entities.PetClinic;
 import fox.entities.clinicData.Photodir;
@@ -29,6 +32,7 @@ import fox.entities.clinicData.Webpage;
 
 public class ClinicCreator extends JDialog {
 	private PetClinic clinic;
+	
 	private Font labelsFont = new Font("Arial Narrow", Font.BOLD, 18); 
 	private JTextField nameField, fiasField, phoneField, wPageField, phDirField;
 	private JTextArea commentArea;
@@ -54,7 +58,8 @@ public class ClinicCreator extends JDialog {
 						add(new JLabel("Name:") {{setFont(labelsFont);}});
 						add(new JLabel("FIAS:") {{setFont(labelsFont);}});
 						add(new JLabel("Phone:") {{setFont(labelsFont);}});
-						add(new JLabel("Web id:") {{setFont(labelsFont);}});
+						add(new JLabel("Web url:") {{setFont(labelsFont);}});
+						add(new JLabel("Photo dir:") {{setFont(labelsFont);}});
 					}
 				};
 				
@@ -63,46 +68,65 @@ public class ClinicCreator extends JDialog {
 						nameField = new JTextField();
 						fiasField = new JTextField();
 						phoneField = new JTextField();
+						wPageField = new JTextField();
 						
-						JPanel webPhotoLinePane = new JPanel(new GridLayout(0, 3, 0, 0)) {
+						JPanel photoLinePane = new JPanel(new BorderLayout(0,0)) {
 							{
-								setBorder(new EmptyBorder(0, 0, 0, -1));
 								
-								wPageField = new JTextField() {
-									{
-										setHorizontalAlignment(0);
-										setBackground(Color.DARK_GRAY);
-										setForeground(Color.WHITE);
-										addKeyListener(new KeyAdapter() {					
-											@Override public void keyReleased(KeyEvent e) {
-												if (!getText().isBlank()) {setBackground(Color.DARK_GRAY);}
-											}
-										});
-									}
-								};						
 								phDirField = new JTextField() {
 									{
 										setHorizontalAlignment(0);
 										setBackground(Color.DARK_GRAY);
 										setForeground(Color.WHITE);
-										addKeyListener(new KeyAdapter() {					
-											@Override public void keyReleased(KeyEvent e) {
-												if (!getText().isBlank()) {setBackground(Color.DARK_GRAY);}
+										addKeyListener(new KeyAdapter() {
+											@Override
+											public void keyReleased(KeyEvent e) {
+												if (!getText().isBlank()) {
+													setBackground(Color.DARK_GRAY);
+												}
 											}
 										});
 									}
 								};
 								
-								add(wPageField);
-								add(new JLabel("Photo id:") {{setFont(labelsFont); setHorizontalAlignment(4);}});
-								add(phDirField);
+								JButton choiseDir = new JButton("...") {
+									{
+										addActionListener(new ActionListener() {											
+											@Override public void actionPerformed(ActionEvent arg0) {
+												phDirField.setText(choisePhotoDirectory().toString());
+											}
+
+											private Path choisePhotoDirectory() {
+												JFileChooser phDirChooser = new JFileChooser("./media/photo") {
+													{
+														setDialogTitle("Выберите папку с фото клиники:");
+														setFileFilter(new FileNameExtensionFilter("Images", "png", "jpg"));
+														setFileSelectionMode(DIRECTORIES_ONLY);
+														setMultiSelectionEnabled(false);
+													}
+												};
+												
+												int result = phDirChooser.showOpenDialog(ClinicCreator.this);
+												if (result == JFileChooser.APPROVE_OPTION) {
+													return phDirChooser.getSelectedFile().toPath();
+												}
+												
+												return null;
+											}
+										});
+									}
+								};
+								
+								add(phDirField, BorderLayout.CENTER);
+								add(choiseDir, BorderLayout.EAST);
 							}
 						};
 						
 						add(nameField);
 						add(fiasField);
 						add(phoneField);
-						add(webPhotoLinePane);
+						add(wPageField);
+						add(photoLinePane);
 					}
 				};
 			

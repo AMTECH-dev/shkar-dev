@@ -1,8 +1,8 @@
 package fox.door;
 
-import java.awt.Font;
-import java.awt.GraphicsEnvironment;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 import fox.gui.MonitorFrame;
 import fox.spring.SpringEngine;
@@ -13,9 +13,9 @@ import fox.tools.IOMs;
 public class MainClass {
 	
 	public static void main(String[] args) {
-//		seeOSFonts();		
 		System.out.println("Launch the programm!");
 
+		importantDirsCheck();
 		buildIOM();
 
 		try {
@@ -27,12 +27,20 @@ public class MainClass {
 		}
 	}
 	
-	void seeOSFonts() {
-		System.out.println("Fonts:");
-		for (Font f : GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts()) {
-			System.out.println(f);
+	private static void importantDirsCheck() {
+		File[] impFiles = new File[] {
+				new File("./media/"),
+				new File("./media/photo")
+		};
+		
+		for (File file : impFiles) {
+			if (Files.notExists(file.toPath())) {
+				try {Files.createDirectory(file.toPath());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
-		System.out.println();
 	}
 
 	private static void buildIOM() {

@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Random;
 
-@Component
+
 public class TraditionalDoctor implements Doctor {
-    @Override
+    
     public boolean healAllPets(Person p) {
         if (p.getPets() == null) return false;
 
@@ -35,12 +35,12 @@ public class TraditionalDoctor implements Doctor {
         return isHealed;
     }
 
-    @Override
+    
     public boolean heal(Pet pet) {
         return !(pet instanceof NakedMoleRat) && !(pet instanceof Parrot);
     }
 
-    @Override
+    
     public String getHelp() {
         return "НА НОЧЬ ПРОВЕСТИ 7 КРУГОВ ВОКРУГ ДУБА И ОББЕЖАТЬ РЕКУ С НОЧНЫМИ ФУРИЯМИ!";
     }

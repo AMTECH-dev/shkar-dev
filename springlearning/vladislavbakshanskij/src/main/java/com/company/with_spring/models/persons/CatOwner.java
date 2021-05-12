@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
+
 public class CatOwner implements Person {
     private final List<Pet> cats;
 
-    public CatOwner(@Qualifier("cat") List<Pet> pets) {
+    public CatOwner(List<Pet> pets) {
         boolean isInit = true;
         for (Pet pet : pets) {
             if (!(pet instanceof Cat)) {
@@ -25,7 +25,7 @@ public class CatOwner implements Person {
         this.cats = isInit ? pets : null;
     }
 
-    @Override
+    
     public List<Pet> getPets() {
         return cats;
     }

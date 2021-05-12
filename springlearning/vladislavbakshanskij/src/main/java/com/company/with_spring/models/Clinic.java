@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-@Component
+
 public class Clinic {
     private List<Doctor> doctors;
 
@@ -18,7 +18,6 @@ public class Clinic {
         System.out.println("Clinic is created");
     }
 
-    @Autowired
     public void setDoctors(List<Doctor> doctors) {
         this.doctors = doctors;
     }
@@ -31,6 +30,7 @@ public class Clinic {
         Random random = new Random();
 
         for (Person person : people) {
+            if (person.getPets() == null) continue;
             Doctor doctor = doctors.get(random.nextInt(doctors.size()));
             System.out.println("Сейчас лечит: " + doctor.getClass().getSimpleName());
             if (random.nextBoolean()) {
