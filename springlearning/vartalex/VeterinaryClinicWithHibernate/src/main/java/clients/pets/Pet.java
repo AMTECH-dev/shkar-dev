@@ -21,7 +21,7 @@ public class Pet {
     @Column(name = "illness")
     private String illness;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
