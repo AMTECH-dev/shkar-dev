@@ -4,29 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import fox.door.Hibernate;
@@ -39,6 +19,7 @@ import fox.spring.SpringEngine;
 public class PetCreator extends JDialog {
 	private Pet pet;
 	private Owner owner;
+	private JComboBox<Pet> existsPetsBox;
 	
 	public PetCreator(JFrame parent) {
 		super(parent, "Новое животное:", true);
@@ -46,7 +27,27 @@ public class PetCreator extends JDialog {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setMinimumSize(new Dimension(300, 300));
 		getContentPane().setLayout(new BorderLayout(3, 3));
-		
+
+		JPanel existsPetsPane = new JPanel(new BorderLayout(3,3)) {
+			{
+				existsPetsBox = new JComboBox(Hibernate.getPets().toArray()) {
+					{
+						addItemListener(new ItemListener() {
+							@Override
+							public void itemStateChanged(ItemEvent e) {
+								pet = (Pet) getSelectedItem();
+								PetCreator.this.dispose();
+							}
+						});
+					}
+				};
+				existsPetsBox.setSelectedIndex(-1);
+
+				add(existsPetsBox, BorderLayout.NORTH);
+				add(new JSeparator(0), BorderLayout.SOUTH);
+			}
+		};
+
 		DefaultListModel<String> listModel = new DefaultListModel<String>();
 		JList<String> petsList = new JList<>(listModel) {
 			{
@@ -77,8 +78,9 @@ public class PetCreator extends JDialog {
 		listModel.add(listModel.getSize(), "Fox");
 		listModel.add(listModel.getSize(), "Seal");
 		listModel.add(listModel.getSize(), "Beaver");
-		
-		add(scroll);
+
+		add(existsPetsPane, BorderLayout.NORTH);
+		add(scroll, BorderLayout.CENTER);
 		
 		pack();
 		setLocationRelativeTo(null);
@@ -238,9 +240,6 @@ public class PetCreator extends JDialog {
 		};
 		
 		if (petNameField.getText().isBlank()) {return null;}
-		
-//		Pet pet = new Pet(petNameField.getText(), (float) hpSpinner.getValue(), (SEX) sexCBox.getSelectedItem(), colorField.getText(), petTypeName, (Owner) ownerName.getSelectedItem());
-		
 		return pet;
 	}
 		
@@ -256,7 +255,6 @@ public class PetCreator extends JDialog {
 					
 					JPanel basePane = new JPanel(new GridLayout(0,1,3,3)) {
 						{
-							
 							JPanel namePane = new JPanel(new BorderLayout(3,3)) {
 								{
 									

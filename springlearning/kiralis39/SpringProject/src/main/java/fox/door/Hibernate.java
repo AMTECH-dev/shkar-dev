@@ -1,5 +1,6 @@
 package fox.door;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -162,4 +163,19 @@ public class Hibernate {
 			return false;
 		}
 	}
+
+    public static List<Pet> getPets() {
+		List<Pet> existsPets = null;
+
+		try (Session seshka = fuck.openSession()) {
+			seshka.beginTransaction();
+			existsPets = seshka.createQuery("from Pet", Pet.class).getResultList();
+			seshka.getTransaction().commit();
+		} catch (Exception e) {
+			System.out.println("Не удалось выбрать петов из базы данных!");
+			e.printStackTrace();
+		}
+
+		return existsPets;
+    }
 }
