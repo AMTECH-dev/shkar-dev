@@ -1,34 +1,53 @@
 package fox.door;
 
-import fox.pets.Cat;
-import fox.pets.Dog;
-import fox.pets.Fox;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
-import fox.Pet;
-import fox.clinics.PetClinic;
+import fox.gui.MonitorFrame;
+import fox.spring.SpringEngine;
+import fox.tools.IOM;
+import fox.tools.IOMs;
 
 
 public class MainClass {
-	private String clinicName;
-
+	
 	public static void main(String[] args) {
 		System.out.println("Launch the programm!");
 
-		springCreate();
-	}
+		importantDirsCheck();
+		buildIOM();
 
-	static void springCreate() {
-		try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("appCont.xml")) {
-			context
-				.getBean(PetClinic.class)
-				.work(
-					context.getBean(Cat.class),
-					context.getBean(Dog.class),
-					context.getBean(Fox.class));
+		try {
+			new SpringEngine();
+			new MonitorFrame();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}		
+			System.exit(114);
+		}
+	}
+	
+	private static void importantDirsCheck() {
+		File[] impFiles = new File[] {
+				new File("./media/"),
+				new File("./media/photo")
+		};
+		
+		for (File file : impFiles) {
+			if (Files.notExists(file.toPath())) {
+				try {Files.createDirectory(file.toPath());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	private static void buildIOM() {
+		IOM.addProperty(IOMs.GLOBAL.class, new File("./configurations/global.conf"));
+		IOM.set(IOMs.GLOBAL.class, IOMs.GLOBAL.ALLOW_START, "true", false);
+		IOM.set(IOMs.GLOBAL.class, IOMs.GLOBAL.PROGRAMM_NAME, "Funny pets clinic manager", false);
+		IOM.set(IOMs.GLOBAL.class, IOMs.GLOBAL.PROGRAMM_VERSE, "1.0.0", false);
+		IOM.set(IOMs.GLOBAL.class, IOMs.GLOBAL.USE_RENDER, "true", false);
 	}
 }

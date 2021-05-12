@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- bean definitions here -->
+    <bean id="Virus1" class="com.company.Clinic.Disease" scope="prototype">
+        <constructor-arg value="Virus01Constructor"></constructor-arg>
+        <constructor-arg value="01"></constructor-arg>
+
+    </bean>
+    <bean id="Virus2" class="com.company.Clinic.Disease" scope="prototype">
+        <property name="name" value="Virus Second"></property>
+        <property name="damage" value="10"></property>
+    </bean>
+
+    <bean id="Dog1" class="com.company.Clinic.Animals.Dog">
+        <constructor-arg name="name" value="DogName1Constuctor"></constructor-arg>
+        <constructor-arg name="age" value="1"></constructor-arg>
+
+        <property name="name" value="DogName1"></property>
+        <property name="age" value="1"></property>
+        <property name="disease" ref="Virus1"></property>
+        <property name="diseases">
+            <list>
+                <ref bean="Virus1"></ref>
+                <ref bean="Virus2"></ref>
+            </list>
+        </property>
+    </bean>
+    <bean id="Cat1" class="com.company.Clinic.Animals.Cat">
+        <property name="name" value="CatName1"></property>
+        <property name="age" value="2"></property>
+        <property name="disease" ref="Virus1"></property>
+    </bean>
+    <bean id="Cat2" class="com.company.Clinic.Animals.Cat">
+        <property name="name" value="CatName2"></property>
+        <property name="age" value="2"></property>
+        <property name="disease" ref="Virus2"></property>
+    </bean>
+
+    <bean id="man" class="com.company.Clinic.Master">
+        <constructor-arg name="name" value="Victor"></constructor-arg>
+        <constructor-arg name="pets" >
+            <list>
+                <ref bean="Dog1"></ref>
+                <ref bean="Cat1"></ref>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="woman" class="com.company.Clinic.Master">
+        <constructor-arg name="name" value="Ann"></constructor-arg>
+        <constructor-arg name="pet" ref="Cat2"></constructor-arg>
+    </bean>
+
+    <bean id="Doctor1" class="com.company.Clinic.Doctor.NormalDoctor">
+        <property name="name" value="Tom"></property>
+    </bean>
+
+    <bean id="Doctor2" class="com.company.Clinic.Doctor.StrongDoctor">
+        <property name="name" value="Hard"></property>
+    </bean>
+
+    <bean id="PrimaryClinic" class="com.company.Clinic.Clinic">
+        <constructor-arg name="doctors">
+            <list>
+                <ref bean="Doctor1"></ref>
+                <ref bean="Doctor2"></ref>
+            </list>
+        </constructor-arg>
+        <property name="reception" ref="man"></property>
+    </bean>
+</beans>
