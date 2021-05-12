@@ -4,12 +4,12 @@ import com.company.with_spring.models.virus.Virus;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-@Component
+
 public class Cat implements Pet {
     private String name;
     private final Virus virus;
 
-    public Cat(@Qualifier("cold") Virus virus) {
+    public Cat(Virus virus) {
         System.out.println("Cat is created");
         this.virus = virus;
     }
@@ -18,12 +18,12 @@ public class Cat implements Pet {
         this.name = name;
     }
 
-    @Override
+    
     public String getName() {
         return name;
     }
 
-    @Override
+    
     public Virus getVirus() {
         return virus;
     }

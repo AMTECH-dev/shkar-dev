@@ -3,7 +3,7 @@ package com.company.with_spring.models.pets;
 import com.company.with_spring.models.virus.Virus;
 import org.springframework.stereotype.Component;
 
-@Component
+
 public class NakedMoleRat implements Pet {
     private String name;
 
@@ -15,12 +15,12 @@ public class NakedMoleRat implements Pet {
         this.name = name;
     }
 
-    @Override
+    
     public String getName() {
         return name;
     }
 
-    @Override
+    
     public Virus getVirus() {
         return null;
     }

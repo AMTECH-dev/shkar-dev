@@ -6,12 +6,14 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
+
 public class Owner implements Person {
-    @Autowired
     private List<Pet> pets;
 
-    @Override
+    public void setPets(List<Pet> pets) {
+        this.pets = pets;
+    }
+
     public List<Pet> getPets() {
         return pets;
     }
