@@ -1,3 +1,4 @@
+/*
 package org.example.hibernate;
 
 import org.hibernate.SessionFactory;
@@ -10,7 +11,7 @@ public class CreateConfig {
   public SessionFactory factory() {
     return new Configuration()
         .configure()
-        .addAnnotatedClass(TestOwner.class)
+        .addAnnotatedClass(Owner.class)
         .buildSessionFactory();
   }
 
@@ -19,3 +20,4 @@ public class CreateConfig {
     return new Test(sessionFactory);
   }
 }
+*/
