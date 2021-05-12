@@ -63,6 +63,7 @@ import javax.swing.text.StyledDocument;
 
 import fox.data.iPet;
 import fox.door.Hibernate;
+import fox.entities.Doctor;
 import fox.entities.PetClinic;
 import fox.entities.clinicData.Photodir;
 import fox.gui.swing.VerticalFlowLayout;
@@ -223,11 +224,11 @@ public class MonitorFrame extends JFrame implements ActionListener {
 								
 								doctorBut = new JButton("ADD DOCTOR") {
 									{
+										setEnabled(false);
 										setPreferredSize(new Dimension((int) (minFrameDim.getWidth() * leftPaneWidthPercent), 25));
 										setFocusPainted(false);
 										setBackground(Color.DARK_GRAY);
 										setForeground(Color.WHITE);
-										setEnabled(false);
 										setActionCommand("addDoctor");
 										addActionListener(MonitorFrame.this);
 									}
@@ -235,6 +236,7 @@ public class MonitorFrame extends JFrame implements ActionListener {
 								
 								petBut = new JButton("ADD PET") {
 		        					{
+		        						setEnabled(false);
 		        						setPreferredSize(new Dimension((int) (minFrameDim.getWidth() * leftPaneWidthPercent), 25));
 		        						setFocusPainted(false);
 		        						setBackground(Color.DARK_GRAY);
@@ -278,16 +280,8 @@ public class MonitorFrame extends JFrame implements ActionListener {
         				addMouseListener(new MouseAdapter() {							
 							@Override
 							public void mousePressed(MouseEvent e) {
-								petBut.setEnabled(false);
-								doctorBut.setEnabled(getSelectedIndex() > 0);
-								
-								if (getSelectedComponent() instanceof ClinicPanel) {
-									PetClinic tmp = ((ClinicPanel) getSelectedComponent()).getClinic();
-									System.out.println(tmp.getName());
-									int doctorsCount = tmp.getDoctors().size();
-									petBut.setEnabled(doctorsCount > 0);
-								}
-							}
+								updateLeftButtons();			
+							}							
 						});
         				
         				addTab("Console  ", consoleIcon, scrollPane, "System out console");
@@ -385,8 +379,23 @@ public class MonitorFrame extends JFrame implements ActionListener {
 		
 		midPane.setBackgroundAt(0, Color.BLACK);
 	}
-
-	@SuppressWarnings("unchecked")
+	
+	private void updateLeftButtons() {
+		petBut.setEnabled(false);
+		doctorBut.setEnabled(false);
+		
+		if (midPane.getSelectedComponent() instanceof ClinicPanel) {
+			PetClinic tmp = ((ClinicPanel) midPane.getSelectedComponent()).getClinic();
+			System.out.println(tmp.getName());
+			int doctorsCount = tmp.getDoctors().size();
+			petBut.setEnabled(doctorsCount > 0 && tmp.isOpen());
+			doctorBut.setEnabled(midPane.getSelectedIndex() > 0 && tmp.isOpen());
+			((ClinicPanel) midPane.getSelectedComponent()).showControlBtn(doctorsCount > 0 && tmp.isOpen());
+			
+			System.out.println("Clinic " + tmp + " has " + tmp.getListOfDoctors().length + " doctors.");
+		}
+	}
+	
 	private void reloadGame() {
 		int tc = midPane.getTabCount();
 		for (int i = tc - 1; i > 0; i--) {
@@ -394,7 +403,7 @@ public class MonitorFrame extends JFrame implements ActionListener {
 			midPane.removeTabAt(i);
 		}
 		
-		List<PetClinic> clinics = (List<PetClinic>) Hibernate.getClinics();
+		List<PetClinic> clinics = Hibernate.getClinics();
 		for(PetClinic pc : clinics) {
 			System.out.println("Finded the clinic '" + pc.getName() + "' into DB.");
 			addNewClinic(pc);
@@ -628,8 +637,8 @@ public class MonitorFrame extends JFrame implements ActionListener {
 			System.out.println("We have a ghost? Its a revenge!!!");
 			return;
 		}
-//		System.out.println("New pet income:\n" + pet.toString());
-//		SpringEngine.getContext().getBean(PetClinic.class).work(pet);
+		System.out.println("Clinic " + ((ClinicPanel) midPane.getSelectedComponent()).getClinic().getName() + " has new pet income:\n" + pet.toString());
+		((ClinicPanel) midPane.getSelectedComponent()).getClinic().work(pet);
 		updateInfo();
 	}
 
@@ -657,6 +666,7 @@ public class MonitorFrame extends JFrame implements ActionListener {
 			case "exit": exitReq();
 				break;
 				
+				
 			case "addClinic": 
 				if (midPane.getTabCount() > 3) {
 					JOptionPane.showConfirmDialog(MonitorFrame.this, "<html><b>It is DEMO version!</b><hr>Maximum clinics allowed - <b>3", "DEMO", 
@@ -666,14 +676,27 @@ public class MonitorFrame extends JFrame implements ActionListener {
 				healProgress.setIndeterminate(true);
 				PetClinic clCreated = new ClinicCreator(MonitorFrame.this).get();
 				if (clCreated != null) {
-					addNewClinic(Hibernate.newClinicRecord(clCreated));
+					addNewClinic(Hibernate.writeClinic(clCreated));
 					System.out.println("Was created new clinic '" + clCreated.getName() + "'.");
 				}
 				healProgress.setIndeterminate(false);
 				break;
 				
+				
 			case "addDoctor": 
+				PetClinic clinic = ((ClinicPanel) midPane.getSelectedComponent()).getClinic();
+				Doctor aNewDoc = new DoctorCreator(MonitorFrame.this).get();
+				if (aNewDoc != null) {
+					
+					clinic.addDoctor(aNewDoc);
+					aNewDoc.addClinic(clinic);
+					Hibernate.writeDoctor(clinic, aNewDoc);
+					
+					updateLeftButtons();
+				}				
+				
 				break;
+				
 				
 			case "addPet": 
 				healProgress.setIndeterminate(true);
@@ -692,7 +715,9 @@ public class MonitorFrame extends JFrame implements ActionListener {
 		
 		private final PetClinic clinic;
 		private JPanel photosPane;
-		private JScrollPane photoScroll;
+		private JScrollPane photoScroll, commentScroll;
+		private JButton doctorsControlBtn;
+		
 		private boolean isActive = false;
 		
 		
@@ -740,11 +765,12 @@ public class MonitorFrame extends JFrame implements ActionListener {
 									{
 										try {
 											String address = clinic.getWebpage().getUrl().toString();
-											if (address.contains("www.")) {address = address.split("www.")[1];}
+											if (address.contains("www.")) {address = address.substring(address.indexOf("www.") + 4);}
 											if (address.contains("http://")) {address = address.split("http://")[1];}
-											setText("<html><u color=blue> " + address + "</u> ");
+											if (address.contains("https://")) {address = address.split("https://")[1];}
+											setText("<html><u color=blue> " + address + " </u>");
 										} catch (Exception e) {
-											setText("<html><u color=blue> NA</u> ");
+											setText("<html><u color=blue> NA </u>");
 										}
 										
 										setFont(linksFont);									
@@ -784,12 +810,25 @@ public class MonitorFrame extends JFrame implements ActionListener {
 							
 							photosPane = new JPanel(new FlowLayout(0, 0, 0));
 							fillPhotos(photosPane);
-							photoScroll = new JScrollPane(photosPane);
+							photoScroll = new JScrollPane(photosPane) {
+								{
+									getVerticalScrollBar().setUnitIncrement(32);
+								}
+							};
 							
-							JTextArea commentArea = new JTextArea(clinic.getComment());
+							JTextArea commentArea = new JTextArea(clinic.getComment()) {
+								{
+									setLineWrap(true);
+									setWrapStyleWord(true);
+									setBackground(Color.DARK_GRAY);
+									setForeground(Color.WHITE);
+									setFont(linksFont);
+								}
+							};
+							commentScroll = new JScrollPane(commentArea);
 							
 							setLeftComponent(photoScroll);
-							setRightComponent(commentArea);
+							setRightComponent(commentScroll);
 						}
 
 						private void fillPhotos(JPanel photosPane) {
@@ -847,10 +886,45 @@ public class MonitorFrame extends JFrame implements ActionListener {
 				{
 					setOpaque(false);
 					
+					JButton startStopBtn = new JButton() {
+						{
+							setText("Clinic is " + (clinic.isOpen() ? "open" : "close"));
+							setBackground(clinic.isOpen() ? Color.GREEN : Color.RED);
+							setForeground(clinic.isOpen() ? Color.BLACK : Color.WHITE);
+							setFocusPainted(false);
+							
+							addActionListener(new ActionListener() {
+								@Override
+								public void actionPerformed(ActionEvent e) {
+									clinic.setOpen(!clinic.isOpen());
+									setText("Clinic is " + (clinic.isOpen() ? "open" : "close"));
+									setBackground(clinic.isOpen() ? Color.GREEN : Color.RED);
+									setForeground(clinic.isOpen() ? Color.BLACK : Color.WHITE);
+									
+									updateLeftButtons();
+								}
+							});
+						}
+					};
+					
+					doctorsControlBtn = new JButton("Personal coltrol") {
+						{
+							setBackground(Color.yellow);
+							setFocusPainted(false);
+							addActionListener(new ActionListener() {
+								@Override
+								public void actionPerformed(ActionEvent e) {
+									new ClinicControlDialog(clinic);
+								}
+							});
+						}
+					};
+					
 					JButton deleteClinicBtn = new JButton("Delete the clinic") {
 						{
 							setBackground(Color.RED);
 							setForeground(Color.WHITE);
+							setFocusPainted(false);
 							addActionListener(new ActionListener() {
 								@Override
 								public void actionPerformed(ActionEvent e) {
@@ -869,6 +943,8 @@ public class MonitorFrame extends JFrame implements ActionListener {
 						}
 					};
 					
+					add(startStopBtn, BorderLayout.WEST);
+					add(doctorsControlBtn, BorderLayout.CENTER);
 					add(deleteClinicBtn, BorderLayout.EAST);
 				}
 			};
@@ -880,6 +956,10 @@ public class MonitorFrame extends JFrame implements ActionListener {
 			add(downControlButtonsPane, BorderLayout.SOUTH);
 		}
 
+		
+		public void showControlBtn(boolean show) {
+			doctorsControlBtn.setEnabled(show);
+		}
 
 		public PetClinic getClinic() {return clinic;}
 

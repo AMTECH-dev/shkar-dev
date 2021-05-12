@@ -12,10 +12,13 @@ import fox.gui.MonitorFrame;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -49,11 +52,15 @@ public class PetClinic {
 	@Column(name = "comment")
 	private String comment;
 
-	@Transient
-	private List<Doctor> doctors = new ArrayList<Doctor>();
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "clidoc", joinColumns = @JoinColumn(name="clinic_id"), inverseJoinColumns = @JoinColumn(name="doctor_id"))
+	private List<Doctor> doctors = new ArrayList<Doctor>();	
+	
 	@Transient
 	private final long doctorAwaitingTime = 5_000L;
-
+	@Transient
+	private boolean isOpen;
+	
 	
 	public PetClinic() {}
 
@@ -68,8 +75,8 @@ public class PetClinic {
 
 	
 	public void addDoctor(Doctor doc) {
-		System.out.println("The clinic '" + name + "' has a new doctor '" + doc.getName() + "'.");
 		doctors.add(doc);
+		System.out.println("The clinic '" + name + "' has a new doctor '" + doc.getName() + "'.");
 	}
 
 	public void work(iPet... pets) {
@@ -135,6 +142,9 @@ public class PetClinic {
 	public Doctor[] getListOfDoctors() {
 		return doctors.toArray(new Doctor[0]);
 	}
+
+	public boolean isOpen() {return isOpen;}
+	public void setOpen(boolean isOpen) {this.isOpen = isOpen;}
 
 	public long getDoctorAwaitingTime() {return doctorAwaitingTime;}
 	

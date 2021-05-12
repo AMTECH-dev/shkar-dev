@@ -4,11 +4,16 @@ import fox.data.iPet;
 import fox.data.SEX;
 import fox.gui.MonitorFrame;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -33,13 +38,17 @@ public class Doctor {
 	@Column(name = "phone")
 	private long phone;
 	
-	@Column(name = "sex")
+	@Column(name = "sexid")
 	private SEX sex;
 
+	@ManyToMany(mappedBy = "doctors", fetch = FetchType.LAZY)
+	private Set<PetClinic> clinics = new HashSet<PetClinic>();
+
+	
 	@Transient
 	private static boolean isFree = true;
-
-
+	
+	
 	public Doctor() {}
 
 	public Doctor(String name, int age, String address, long phone, SEX sex) {
@@ -50,6 +59,7 @@ public class Doctor {
 		this.sex = sex;
 	}
 
+	
 	public synchronized void setCaresPet(iPet pet) {
 		System.out.println("Pet '" + pet.getName() + "' arrived to dr." + getName());
 		
@@ -87,10 +97,27 @@ public class Doctor {
 		}).start();		
 	}
 
+	public int getID() {return id;}
+	public void setID(int id) {this.id = id;}
+
 	public String getName() {return this.name;}
+	
+	public int getAge() {return age;}
+	public void setAge(int age) {this.age = age;}
+
+	public String getAddress() {return address;}
+	public void setAddress(String address) {this.address = address;}
+
+	public long getPhone() {return phone;}
+	public void setPhone(long phone) {this.phone = phone;}
+
+	public SEX getSex() {return sex;}
+	public void setSex(SEX sex) {this.sex = sex;}
 
 	public boolean isFree() {return isFree;}
 	public void setFree(boolean isFree) {Doctor.isFree = isFree;}
+	
+	public void addClinic(PetClinic p) {clinics.add(p);}
 	
 	@Override
 	public String toString() {

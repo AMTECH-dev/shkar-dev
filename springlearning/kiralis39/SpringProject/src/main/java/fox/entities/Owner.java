@@ -30,7 +30,7 @@ public class Owner {
 	@Column(name = "phone")
 	private long phone;
 	
-	@Column(name = "sex")
+	@Column(name = "sexid")
 	private SEX sex;
 	
 	@Column(name = "comment")
