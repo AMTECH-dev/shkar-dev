@@ -24,6 +24,9 @@ public class Employee {
     @Column(name="c_department")
     private String department;
 
+    public Employee() {
+    }
+
     public Employee(String name, int age, float salary, String department) {
         this.name = name;
         this.age = (byte) age;
@@ -65,7 +68,7 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "Employee{" +
+        return "TOSTRING: Employee {" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", age=" + age +
