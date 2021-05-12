@@ -3,7 +3,6 @@ package clinic;
 import clients.Owner;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,7 +19,7 @@ public class VetClinic {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "clinic")
     private List<Doctor> doctors;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "clinics")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "clinic")
     private List<Owner> clients;
 
     public VetClinic() {
@@ -58,7 +57,7 @@ public class VetClinic {
         return clients;
     }
 
-    public void addClients(List<Owner> clients) {
+    public void setClients(List<Owner> clients) {
         this.clients = clients;
     }
 
