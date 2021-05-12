@@ -150,4 +150,13 @@ public class PetClinic {
 	
 	@Override
 	public String toString() {return super.toString();}
+
+    public boolean fireDoctor(Doctor doctor) {
+		if (doctors.contains(doctor)) {
+			doctors.remove(doctor);
+			return true;
+		}
+
+		return false;
+    }
 }

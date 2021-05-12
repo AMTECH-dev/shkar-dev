@@ -31,6 +31,7 @@ public class Hibernate {
                .addAnnotatedClass(Doctor.class)
                // ---
                .addAnnotatedClass(Pet.class)
+               // ---
                .addAnnotatedClass(Owner.class)
                // ---
                .buildSessionFactory();
@@ -62,7 +63,7 @@ public class Hibernate {
 			session.getTransaction().commit();
 			return d;
 		} catch (Exception e) {
-			System.out.println("Не удалось создать/записать доктора!");
+			System.out.println("Не удалось создать/записать доктора! (" + d + ")");
 		    e.printStackTrace();
 		}
 		
@@ -92,7 +93,7 @@ public class Hibernate {
 			trans.commit();
 			return true;
 		} catch (Exception e) {
-			System.out.println("Не удалось удалить клинику!");
+			System.out.println("Не удалось удалить клинику! (" + dClinic + ")");
 		    e.printStackTrace();
 		    return false;
 		}
@@ -112,8 +113,53 @@ public class Hibernate {
 			seshka.save(aNewDoc);
 			seshka.getTransaction().commit();
 		} catch (Exception e) {
-			System.out.println("Не удалось выбрать клиники из базы данных!");
+			System.out.println("Не удалось обновить/записать clidoc! (" + clinic + "/" + aNewDoc + ")");
 			e.printStackTrace();
+		}
+	}
+
+    public static void deleteDoctor(PetClinic clinic, Doctor doctor) {
+		try (Session seshka = fuck.openSession()) {
+			if (clinic.fireDoctor(doctor)) {
+				seshka.beginTransaction();
+				seshka.saveOrUpdate(clinic);
+				seshka.delete(doctor);
+				seshka.getTransaction().commit();
+			}
+		} catch (Exception e) {
+			System.out.println("Не удалось уволить доктора! (" + doctor + ")");
+			e.printStackTrace();
+		}
+    }
+
+    public static List<Owner> getOwnersList() {
+		List<Owner> existsOwners = null;
+
+		try (Session seshka = fuck.openSession()) {
+			seshka.beginTransaction();
+			existsOwners = seshka.createQuery("from Owner", Owner.class).getResultList();
+			seshka.getTransaction().commit();
+		} catch (Exception e) {
+			System.out.println("Не удалось выбрать хозяев из базы данных!");
+			e.printStackTrace();
+		}
+
+		return existsOwners;
+    }
+
+	public static boolean writePet(Pet pet) {
+		System.out.println("Write to Hibernate the Pet '" + pet + " (owner: " + pet.getOwner() + ")..");
+		
+		try (Session seshka = fuck.openSession()) {
+			seshka.beginTransaction();
+			seshka.saveOrUpdate(pet.getOwner());
+			seshka.save(pet);
+			seshka.getTransaction().commit();
+			return true;
+		} catch (Exception e) {
+			System.out.println("Не удалось обновить/записать pet`s owner! (" + pet.getOwner() + ")");
+			e.printStackTrace();
+			return false;
 		}
 	}
 }

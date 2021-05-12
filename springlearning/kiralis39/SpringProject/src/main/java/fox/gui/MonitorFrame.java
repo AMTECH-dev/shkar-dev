@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -61,9 +62,9 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import fox.data.iPet;
 import fox.door.Hibernate;
 import fox.entities.Doctor;
+import fox.entities.Pet;
 import fox.entities.PetClinic;
 import fox.entities.clinicData.Photodir;
 import fox.gui.swing.VerticalFlowLayout;
@@ -74,7 +75,7 @@ import fox.tools.IOMs;
 
 public class MonitorFrame extends JFrame implements ActionListener {
 	private JScrollPane scrollPane;
-	private JPanel downLabelTextPane, leftClinicsPane;
+	private JPanel downLabelTextPane, leftClinicsPane, outPane;
 	private JTextPane outputArea;
 	private JTabbedPane midPane;
 	private JButton doctorBut, petBut;
@@ -91,6 +92,7 @@ public class MonitorFrame extends JFrame implements ActionListener {
 	private Font progressLabelFont = new Font("Arial Narrow", Font.BOLD, defaultHeaderFontSize);
 	private Font uniFont = new Font("cl-unicode", Font.PLAIN, 24);
 	private Font linksFont = new Font("cl-unicode", Font.PLAIN, 14);
+	private Font littleFont = new Font("cl-unicode", Font.PLAIN, 10);
 	private Font headerFont = new Font("Arial", Font.BOLD, 20);
 	
 	private Style normal, red, green, cyan, orange;
@@ -262,29 +264,38 @@ public class MonitorFrame extends JFrame implements ActionListener {
 						setFont(progressLabelFont);
 						setBorder(plateBorder);
 
-    			        outputArea = new JTextPane() {
+        				outPane = new JPanel(new BorderLayout()) {
         					{
         						setBackground(Color.BLACK);
-        						setEditable(false);
+        						
+        						outputArea = new JTextPane() {
+                					{
+                						setBackground(Color.BLACK);
+                						setEditable(false);
+                					}
+                				};
+                				
+                				scrollPane = new JScrollPane(outputArea) {
+                					{
+                						getViewport().setBackground(Color.BLACK);
+                						setBackground(Color.BLACK);
+                						setBorder(null);
+                					}
+                				};
+		        				
+		        				add(scrollPane, BorderLayout.CENTER);
         					}
         				};
         				
-        				scrollPane = new JScrollPane(outputArea) {
-        					{
-        						getViewport().setBackground(Color.BLACK);
-        						setBackground(Color.BLACK);
-        						setBorder(null);
-        					}
-        				};
-
-        				addMouseListener(new MouseAdapter() {							
+    			        
+        				addMouseListener(new MouseAdapter() {
 							@Override
 							public void mousePressed(MouseEvent e) {
 								updateLeftButtons();			
 							}							
 						});
         				
-        				addTab("Console  ", consoleIcon, scrollPane, "System out console");
+        				addTab("Console  ", consoleIcon, outPane, "System out console");
         			}
         		};
         		
@@ -334,7 +345,7 @@ public class MonitorFrame extends JFrame implements ActionListener {
         						add(healProgress, BorderLayout.CENTER);
         					}
         				};
-
+        				
         				JButton exitBut = new JButton("EXIT") {
         					{
         						setFocusPainted(false);
@@ -369,6 +380,29 @@ public class MonitorFrame extends JFrame implements ActionListener {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+        
+        render((Graphics2D) outputArea.getGraphics());
+        
+        outPane.add(new JPanel(new GridLayout(outPane.getHeight() / 32, 1, 0, 0)) {
+			{
+				setOpaque(false);
+				
+				add(new JButton("C") {
+					{
+						setBorder(null);
+						setFont(littleFont);
+						setPreferredSize(new Dimension(32, 32));
+						setFocusPainted(false);
+						setBackground(Color.YELLOW);
+						setForeground(Color.BLACK);
+						setActionCommand("clear");
+						addActionListener(MonitorFrame.this);
+					}
+				});
+				
+				
+			}
+		}, BorderLayout.WEST);
         
 		launchMonitorConsoleThread();
 
@@ -500,6 +534,10 @@ public class MonitorFrame extends JFrame implements ActionListener {
 	}
 	
 	private void render(Graphics2D g2D) {
+		if (g2D == null) {
+			System.err.println("render(): Graphics income is NULL");
+		}
+		
 		if (IOM.get(IOMs.GLOBAL.USE_RENDER).equals("true")) {
 			g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			
@@ -541,7 +579,7 @@ public class MonitorFrame extends JFrame implements ActionListener {
 							while (reader.ready() && (nextLine = reader.readLine()) != null) {
 								appendOut("\r\n");
 								appendOut(nextLine);
-								try {Thread.sleep(90); /* animation */} catch (Exception e) {/* IGNORE ANIMATION */}
+								try {Thread.sleep(60); /* animation */} catch (Exception e) {/* IGNORE ANIMATION */}
 							}
 							appendOut("\r\n\r\n");
 						}
@@ -567,6 +605,8 @@ public class MonitorFrame extends JFrame implements ActionListener {
 				doc.insertString(doc.getLength(), line, cyan);
 			} else if (line.contains("pet income")) {
 				doc.insertString(doc.getLength(), line, orange);
+			} else if (line.contains(" restricted")) {
+				doc.insertString(doc.getLength(), line, red);
 			} else {
 				doc.insertString(doc.getLength(), line, normal);
 			}
@@ -598,6 +638,12 @@ public class MonitorFrame extends JFrame implements ActionListener {
 //		outputArea.insertComponent(radio);
 	}
 
+	public void clearOut() {
+		StyledDocument doc = (StyledDocument) outputArea.getDocument();
+		try {doc.remove(0, doc.getLength());
+		} catch (BadLocationException e) {e.printStackTrace();}
+	}
+	
 	// DOWN PROGRESS BAR:
 	public static void setHealProgressValue(int value, String label) {
 		healProgress.setValue(value);
@@ -631,12 +677,19 @@ public class MonitorFrame extends JFrame implements ActionListener {
 		doctorsLabel.setText("NA");
 	}
 
-	private void addNewPet(iPet pet) {
+	private void addNewPet(Pet pet) {
 		if (pet == null) {
 			healProgress.setValue(100);
 			System.out.println("We have a ghost? Its a revenge!!!");
 			return;
 		}
+		
+		if (pet.getOwner() == null) {
+			healProgress.setValue(100);
+			System.out.println("Pets comes without owners restricted!");
+			return;
+		}
+		
 		System.out.println("Clinic " + ((ClinicPanel) midPane.getSelectedComponent()).getClinic().getName() + " has new pet income:\n" + pet.toString());
 		((ClinicPanel) midPane.getSelectedComponent()).getClinic().work(pet);
 		updateInfo();
@@ -666,6 +719,8 @@ public class MonitorFrame extends JFrame implements ActionListener {
 			case "exit": exitReq();
 				break;
 				
+			case "clear": clearOut();
+				break;
 				
 			case "addClinic": 
 				if (midPane.getTabCount() > 3) {

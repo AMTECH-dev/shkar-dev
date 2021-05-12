@@ -5,28 +5,28 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import fox.door.Hibernate;
 import fox.entities.Doctor;
 import fox.entities.PetClinic;
 import fox.gui.swing.VerticalFlowLayout;
 
 
 public class ClinicControlDialog extends JDialog {
-	private JPanel doctorsPane;
-	private JScrollPane docsScroll;
-	
+	private static JPanel doctorsPane;
+	private static JScrollPane docsScroll;
+	private static PetClinic clinic;
 	
 	public ClinicControlDialog(PetClinic clinic) {
+		this.clinic = clinic;
+
 		setTitle("Контроль клиники:");
 		setModal(false);
 		
@@ -60,17 +60,17 @@ public class ClinicControlDialog extends JDialog {
 		add(basePane);
 		
 		addComponentListener(new ComponentAdapter() {
-			@Override public void componentResized(ComponentEvent arg0) {update();}
+			@Override public void componentResized(ComponentEvent arg0) {updateList();}
 		});
 		
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
-		
-		update();
+
+		updateList();
 	}
 		
-	private void update() {
+	private static void updateList() {
 		for (Component c : doctorsPane.getComponents()) {
 			if (c instanceof DoctorLine) {
 				((DoctorLine) c).setPreferredSize(new Dimension(docsScroll.getWidth() - 28, ((DoctorLine) c).getHeight()));
@@ -96,7 +96,26 @@ public class ClinicControlDialog extends JDialog {
 					add(new JPanel(new GridLayout(0,1,6,6)) {
 						{
 							add(new JButton("C") {{setBackground(Color.YELLOW); setToolTipText("Change this doctor");}});
-							add(new JButton("D") {{setBackground(Color.RED); setToolTipText("Delete this doctor");}});
+							add(new JButton("D") {
+								{
+									setBackground(Color.RED);
+									setToolTipText("Delete this doctor");
+
+									addActionListener(new ActionListener() {
+										@Override
+										public void actionPerformed(ActionEvent e) {
+											int req = JOptionPane.showConfirmDialog(
+													DoctorLine.this, "Удалить врача?", "Delete reqiest:",
+													JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+											if (req == 0) {
+												Hibernate.deleteDoctor(clinic, doctor);
+												doctorsPane.remove(DoctorLine.this);
+												updateList();
+											}
+										}
+									});
+								}
+							});
 						}
 					});
 					add(new JSeparator(1), BorderLayout.WEST);
