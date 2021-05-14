@@ -8,10 +8,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class DefaultController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String showDefaultView() {
+    public String getResource() {
         return "default-view";
     }
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String showIndexPage() {return "index";}
+    public String showIndexPage() {
+        return "index";
+    }
+
+    @RequestMapping(value = "/card", method = RequestMethod.GET)
+    public String showCardPage() {
+        return "card";
+    }
 }
