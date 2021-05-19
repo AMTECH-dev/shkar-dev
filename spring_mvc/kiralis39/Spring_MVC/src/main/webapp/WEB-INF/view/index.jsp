@@ -75,11 +75,11 @@
 
             <div id="headerMenu">
                 <ul class="headerMenuUL">
-                    <li><a href="/MVC_learns_war_exploded/">Home</a></li>
+                    <li><a href="/MVC/">Home</a></li>
+                    <li><a href="/MVC/card">Card</a></li>
                     <li><a href="#">Empty</a></li>
                     <li><a href="#">Empty</a></li>
-                    <li><a href="#">Empty</a></li>
-                    <li><a href="#">Empty</a></li>
+                    <li><a href="/MVC/errPage">Error page</a></li>
                     <li><a href="#">Empty</a></li>
                 </ul>
             </div>
