@@ -53,6 +53,9 @@ label {
     padding: 0;
     display: flex;
     flex-flow: row;
+    align-items: stretch;
+    justify-content: stretch;
+    justify-items: stretch;
 
     flex-grow: 9;
 }
@@ -87,12 +90,30 @@ label {
 }
 .fieldInput {
     width: 50%;
-    display: inline;
-    background: blue;
+    display: flex;
+    flex-flow: row;
+
+    align-content: center;
+    align-items: stretch;
+
+    justify-content: space-evenly;
+
+    font-size: 18px;
+    /*background: blue;*/
     float: right;
     overflow: hidden;
 }
-.fioField, .passField, .birthField, .addrField, .phoneFieldBody, .phoneHFieldBody, .mailFieldBody, .sexFieldBody {
+.phoneHFieldBody {
+    display: flex;
+    flex-flow: row;
+
+
+    overflow: hidden;
+    color: white;
+    padding: 0;
+    margin-top: 3px;
+}
+.fioField, .passField, .birthField, .addrField, .phoneFieldBody, .mailFieldBody, .sexFieldBody {
     background: #ccc;
     width: 100%;
     float: right;
@@ -158,9 +179,9 @@ input::-webkit-inner-spin-button {
     align-items: stretch;
     justify-content: stretch;
     justify-items: stretch;
-    flex-grow: 32;
+    flex-grow: 36;
 
-    background: darkred;
+    /*background: darkred;*/
 }
 .milestoneDiv {
     display: block;
@@ -168,6 +189,9 @@ input::-webkit-inner-spin-button {
 
     width: 75%;
     min-width: 25%;
+    height: 100%;
+
+    /*background: lime;*/
 }
 .resizeSpan {
     display: block;
@@ -195,8 +219,11 @@ input::-webkit-inner-spin-button {
     display: flex;
     flex-flow: row;
 
-    background: #333366;
-    flex-grow: 1;
+    margin-bottom: -30px;
+    margin-top: 6px;
+
+    /*background: #333366;*/
+    flex-grow: 0.1;
 }
 #btnReset {
     font-size: 10pt;

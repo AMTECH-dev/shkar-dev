@@ -30,8 +30,8 @@ $(document).ready(function() {
         debug("chart_width:" + chart_width + "; line.width(): " + line.width() + "; mouse X: " + e.clientX + "; locked = " + isLocked);
 
         if (!isLocked) {
+            disposeChart();
             change = e.clientX;
-            // change = chart_width + e.clientX;
 
             if (chart_width < line.width() && chart_width > 0) {
                 chartDIV.css("width", change);
@@ -82,12 +82,16 @@ $(document).ready(function() {
 log("Listeners are connected!");
 
 function lockMove() {
+    if (isLocked) {return;}
+
     isLocked = true;
 
     try {
         resizer.css("background-color", "#f93");
         chart_width = chartDIV.width();
-        reloadChart();
+
+        loadChart();
+
         log("changed lock ON (" + isLocked + ")");
     } catch (ex) {log(ex);}
 }
@@ -98,8 +102,6 @@ function unlockMove() {
     historyDIV.css("margin-left", line.clientX + 1);
 
     try {
-        disposeChart();
-
         chart_width = chartDIV.width();
         resizer.css("background-color", "#00f");
 

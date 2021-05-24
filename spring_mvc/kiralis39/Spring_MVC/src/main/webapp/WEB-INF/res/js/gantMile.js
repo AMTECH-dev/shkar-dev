@@ -1,7 +1,9 @@
 console.log("Loading gantMile.js");
 
 google.charts.load('current', {'packages':['gantt']});
-google.charts.setOnLoadCallback(reloadChart);
+google.charts.setOnLoadCallback(loadChart);
+
+let chartDiv;
 
 let chart;
 let data;
@@ -57,12 +59,6 @@ function buildData() {
 
 function buildOptions() {
     options = {
-        title: 'London Olympics Medals',
-
-        legend: {
-            position: 'none'
-        },
-
         backgroundColor: {
             fill: '#404044'
         },
@@ -96,32 +92,40 @@ function buildOptions() {
             innerGridDarkTrack: {fill: '#446'},
             barCornerRadius: 9,
             trackHeight: rowHeight,
-            barHeight: rowHeight * 0.85,
+            barHeight: rowHeight * 0.8,
             percentEnabled: true,
             shadowEnabled: true,
             shadowOffset: 2,
             sortTasks: TSort
             // labelMaxWidth: 128
-        }
+        },
+
+        height: chartDiv.clientHeight
     };
 }
 
 function disposeChart() {
-    $(".milestoneDiv").replaceWith($('<div class="milestoneDiv"></div>'));
+    $(".milestoneDiv").replaceWith($('<div class=milestoneDiv></div>'));
     chartDIV = $(".milestoneDiv");
 }
 
-function reloadChart() {
+function loadChart() {
     console.log("Recreating chart...");
 
-    let msDiv = document.getElementsByClassName('milestoneDiv')[0];
-    let msHeight = msDiv.clientHeight;
-    // let msHeight = msDiv.offsetHeight;
-    rowHeight = msHeight / rows;
-
     buildData();
+    for (let i = 0; i < 3; i++) {
+        setTimeout(function () {
+            reloadChart();
+        }, 300); // время в мс
+    }
+}
+
+function reloadChart() {
+    chartDiv = document.getElementsByClassName(milestoneDiv)[0];
+    rowHeight = chartDiv.clientHeight / (rows + 1);
+
     buildOptions();
 
-    chart = new google.visualization.Gantt(msDiv);
+    chart = new google.visualization.Gantt(chartDiv);
     chart.draw(data, options);
 }
